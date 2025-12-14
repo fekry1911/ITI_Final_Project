@@ -1,1 +1,2 @@
-const onBoarding="/onboarding";
+const onBoarding = "/onboarding";
+const home = "/home";
