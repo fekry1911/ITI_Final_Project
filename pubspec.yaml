@@ -41,6 +41,10 @@ dependencies:
   typewritertext: ^3.0.9
   animated_text_kit: ^4.2.3
   flutter_localization: ^0.3.3
+  lottie: ^3.1.0
+  shared_preferences: ^2.5.4
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -68,6 +72,7 @@ flutter:
     - assets/animation/
     - assets/images/
   #   - images/a_dot_ham.jpeg
+     - assets/lottie/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
