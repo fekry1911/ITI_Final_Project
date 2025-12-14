@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 
-import '../../../../core/const/const_paths.dart';
-
-class ButtonDone extends StatelessWidget {
-  const ButtonDone({super.key});
+class ButtonDoneRegister extends StatelessWidget {
+  const ButtonDoneRegister({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +16,9 @@ class ButtonDone extends StatelessWidget {
 
       child: MaterialButton(
         onPressed: () {
-          context.pushNamed(homeScreen);
-
+          context.pushNamed(loginScreen);
         },
-        child: Text("تأكيد", style: AppTextStyle.font18WhiteMedium),
+        child: Text("ابدأ الآن", style: AppTextStyle.font18WhiteMedium),
         color: AppColors.blackColor,
         splashColor: AppColors.mainColor,
         shape: RoundedRectangleBorder(
