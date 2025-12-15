@@ -11,4 +11,7 @@ extension NavigatorContext on BuildContext{
       arguments: arguments,
     );
   }
+  void popScreen<T extends Object?>([T? result]) {
+    Navigator.of(this).pop(result);
+  }
 }

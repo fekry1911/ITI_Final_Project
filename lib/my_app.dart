@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/const/const_paths.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:iti_moqaf/featuers/home/screen.dart';
 import 'package:iti_moqaf/featuers/on_boarding/screen/on_boarding_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,16 +24,31 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
+      builder: (_, __) {
       builder: (_, child) {
         return MaterialApp(
-          onGenerateRoute: appRouter.generateRoute,
-          initialRoute: onBoarding,
           debugShowCheckedModeBanner: false,
-          title: 'First Method',
-          // You can use the library anywhere in the app even in theme
+          title: 'ITI Moqaf',
+          locale: const Locale('ar'),
+          supportedLocales: const [Locale('ar')],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+
+          builder: (context, child) {
+            return Directionality(
+              textDirection: TextDirection.rtl,
+              child: child!,
+            );
+          },
+
+          onGenerateRoute: appRouter.generateRoute,
+          initialRoute: splashScreen,
+
           theme: ThemeData(
-            primarySwatch: Colors.blue,
-            textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
+            scaffoldBackgroundColor: Colors.white,
           ),
           home: FutureBuilder<bool>(
             future: isOnboardingDone(),

@@ -11,6 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
 
+class OnBoardingScreen extends StatelessWidget {
+   OnBoardingScreen({super.key});
+TextEditingController demo=TextEditingController();
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
