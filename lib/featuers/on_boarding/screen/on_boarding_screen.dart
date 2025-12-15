@@ -11,12 +11,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
 
-class OnBoardingScreen extends StatelessWidget {
-   OnBoardingScreen({super.key});
-TextEditingController demo=TextEditingController();
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
+
+
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final PageController _pageController = PageController();
@@ -26,7 +25,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool("onBoarding_finish", true);
     if (!mounted) return;
-    Navigator.pushNamed(context, home);
+    Navigator.pushNamed(context, loginScreen);
   }
 
   void nextPage() {

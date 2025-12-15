@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
+import 'package:iti_moqaf/featuers/on_boarding/screen/on_boarding_screen.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/const/const_paths.dart';
+import '../../login/screen/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,10 +20,19 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  Future<bool> isOnboardingDone() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('onboarding_done') ?? false;
+  }
+
   @override
   void initState() {
     super.initState();
-    Timer(Duration(milliseconds: 9000), () => context.pushNamed(loginScreen));
+
+    Timer(
+      Duration(milliseconds: 9000),
+      () async => await isOnboardingDone() ? Navigator.pushNamed(context, loginScreen) : Navigator.pushNamed(context, onBoarding),
+    );
   }
 
   @override
@@ -29,50 +40,67 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Stack(
         children: [
-         Center(
-           child: Column(
-             mainAxisAlignment: MainAxisAlignment.center,
-             crossAxisAlignment: CrossAxisAlignment.center,
-             children: [
-               SizedBox(
-                 child: Lottie.asset("assets/animation/BusSplash.json"),
-               ).animate().scaleXY(delay: 4000.ms, duration: 1500.ms),
-               Text("لو تايه احنا ندلّك",style: AppTextStyle.font30BlackBold.copyWith(
-                 color: AppColors.mainColor
-               ),
-               ).animate().fadeIn(delay: 4000.ms, duration: 2000.ms),
-             ],
-           ),
-         ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  child: Lottie.asset("assets/animation/BusSplash.json"),
+                ).animate().scaleXY(delay: 4000.ms, duration: 1500.ms),
+                Text(
+                  "لو تايه احنا ندلّك",
+                  style: AppTextStyle.font30BlackBold.copyWith(
+                    color: AppColors.mainColor,
+                  ),
+                ).animate().fadeIn(delay: 4000.ms, duration: 2000.ms),
+              ],
+            ),
+          ),
           Expanded(
             child: Column(
               children: [
-                Expanded(child: Container(color: AppColors.mainColor)).animate().moveY(delay:3000.ms, begin: 0.w, end: -1000.w, duration: 2500.ms),
-                Expanded(child: Container(color: AppColors.mainColor)).animate().moveY(delay:3000.ms,begin: 0.w, end: 1000.w, duration: 2500.ms),
+                Expanded(
+                  child: Container(color: AppColors.mainColor),
+                ).animate().moveY(
+                  delay: 3000.ms,
+                  begin: 0.w,
+                  end: -1000.w,
+                  duration: 2500.ms,
+                ),
+                Expanded(
+                  child: Container(color: AppColors.mainColor),
+                ).animate().moveY(
+                  delay: 3000.ms,
+                  begin: 0.w,
+                  end: 1000.w,
+                  duration: 2500.ms,
+                ),
               ],
             ),
           ),
           Center(
-            child: SizedBox(
-              height: 100.h,
-              width: 100.w,
-              child: Lottie.asset(
-                "assets/animation/bus2.json",
-                delegates: LottieDelegates(
-                  values: [
-                    ValueDelegate.color(
-                      ['**'],
-                      value: Colors.white,
+            child:
+                SizedBox(
+                      height: 100.h,
+                      width: 100.w,
+                      child: Lottie.asset(
+                        "assets/animation/bus2.json",
+                        delegates: LottieDelegates(
+                          values: [
+                            ValueDelegate.color(['**'], value: Colors.white),
+                          ],
+                        ),
+                      ),
+                    )
+                    .animate()
+                    .scaleXY(duration: 1500.ms)
+                    .moveX(
+                      delay: 2000.ms,
+                      begin: 0,
+                      end: 1000.w,
+                      duration: 2000.ms,
                     ),
-                  ],
-                ),
-              ),
-            ).animate().scaleXY( duration: 1500.ms).moveX(
-              delay: 2000.ms,
-              begin: 0,
-              end: 1000.w,
-              duration: 2000.ms
-            ),
           ),
         ],
       ),
