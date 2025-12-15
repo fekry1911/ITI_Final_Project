@@ -15,8 +15,6 @@ class OnBoardingScreen extends StatefulWidget {
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
 
-
-
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final PageController _pageController = PageController();
   int currentIndex = 0;
@@ -71,7 +69,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 Buttons(
                   isLastPage: currentIndex == onboardingData.length - 1,
                   icon: Icons.arrow_forward_ios_rounded,
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.centerLeft,
                   onNext: nextPage,
                 ),
                 // Buttons(
