@@ -17,13 +17,6 @@ class AppRouter {
 
           transition: TransitionType.slideFromRight,
         );
-      case home:
-        return _buildPageRoute(
-          settings,
-          HomeScreen(),
-
-          transition: TransitionType.slideFromRight,
-        );
       case splashScreen:
         return _buildPageRoute(
           settings,
