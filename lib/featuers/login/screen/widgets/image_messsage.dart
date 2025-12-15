@@ -1,0 +1,38 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
+import 'package:lottie/lottie.dart';
+
+import '../../../../core/theme/color/colors.dart';
+
+class ImageAndMessage extends StatelessWidget {
+  const ImageAndMessage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 173.h,
+          width: double.infinity,
+          child: Lottie.asset("assets/animation/login.json"),
+        ).animate().scaleXY(duration: 2000.ms),
+        Text("مرحبا بعودتك", style: AppTextStyle.font40BlackRegular.copyWith(
+          color: AppColors.whiteColor,
+            letterSpacing: 0.7
+
+        )),
+        SizedBox(height: 3.h),
+        Text(
+          "قم بتسجيل الدخول للوصول إلى حسابك",
+          style: AppTextStyle.font14GreyRegular.copyWith(
+            color: AppColors.strongGrey,
+            letterSpacing: 0.7
+          ),
+        ),
+      ],
+    );
+  }
+}

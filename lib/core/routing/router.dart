@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:iti_moqaf/featuers/home/screen.dart';
+import 'package:iti_moqaf/featuers/home/screens/screen.dart';
 import 'package:iti_moqaf/featuers/on_boarding/screen/on_boarding_screen.dart';
+import 'package:iti_moqaf/featuers/register/screen/register.dart';
 
+import '../../featuers/login/screen/login_screen.dart';
+import '../../featuers/splash/screen/splash_screen.dart';
 import '../const/const_paths.dart';
 
 class AppRouter {
@@ -20,6 +23,33 @@ class AppRouter {
           HomeScreen(),
 
           transition: TransitionType.slideFromRight,
+        );
+      case splashScreen:
+        return _buildPageRoute(
+          settings,
+          SplashScreen(),
+
+          transition: TransitionType.fade,
+        );
+      case loginScreen:
+        return _buildPageRoute(
+          settings,
+          LoginScreen(),
+
+          transition: TransitionType.fade,
+        );
+      case registerScreen:
+        return _buildPageRoute(
+          settings,
+          RegisterScreen(),
+
+          transition: TransitionType.scale,
+        );
+      case homeScreen:
+        return _buildPageRoute(
+          settings,
+          HomeScreen(),
+          transition: TransitionType.scale,
         );
 
       default:
