@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:iti_moqaf/featuers/home/screen.dart';
-import 'package:iti_moqaf/featuers/on_boarding/screen/on_boarding_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 import 'core/routing/router.dart';
 
@@ -13,10 +11,7 @@ class MyApp extends StatelessWidget {
 
   final AppRouter appRouter;
 
-  Future<bool> isOnboardingDone() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('onboarding_done') ?? false;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +19,6 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, __) {
       builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -49,18 +43,6 @@ class MyApp extends StatelessWidget {
 
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
-          ),
-          home: FutureBuilder<bool>(
-            future: isOnboardingDone(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Scaffold(
-                  body: Center(child: CircularProgressIndicator()),
-                );
-              }
-
-              return snapshot.data! ? HomeScreen() : OnBoardingScreen();
-            },
           ),
         );
       },
