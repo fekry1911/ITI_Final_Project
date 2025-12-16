@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 class AppColors {
   static Color mainColor = Color(0xff1B737E);
+  static Color secondColor = Color(0xff97dfe8);
   static Color greyColor = Color(0xff757575);
   static Color blackColor = Color(0xff000000);
   static Color whiteColor=Color(0xffFFFFFF);
@@ -10,4 +11,8 @@ class AppColors {
   static Color redColor=Color(0xffcd0000);
   static Color strongGrey=Color(0xffA9B2B9);
   static Color formGreyColor=Color(0xffE6E6E6);
+  static Color scaffoldColor=Color(0xffF6F8F8);
+  static Color lightGrey=Color(0xffD1D5DB);
+  static Color lightGreen=Color(0xff638488);
+  static Color badgeColor=Color(0xffF3F4F6);
 }

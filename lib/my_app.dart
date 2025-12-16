@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:iti_moqaf/core/theme/color/colors.dart';
 
 
 import 'core/routing/router.dart';
@@ -39,10 +40,13 @@ class MyApp extends StatelessWidget {
           },
 
           onGenerateRoute: appRouter.generateRoute,
-          initialRoute: splashScreen,
+          initialRoute:splashScreen,
 
           theme: ThemeData(
-            scaffoldBackgroundColor: Colors.white,
+            scaffoldBackgroundColor: AppColors.scaffoldColor,
+            appBarTheme: AppBarTheme(
+              backgroundColor: AppColors.scaffoldColor
+            )
           ),
         );
       },

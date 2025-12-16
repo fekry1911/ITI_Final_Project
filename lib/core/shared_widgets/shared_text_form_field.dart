@@ -13,7 +13,10 @@ class SharedTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.onTap,
     this.shown = false,
-    required this.suffixIcon,
+    this.suffixIcon = const SizedBox.shrink(),
+    this.prefixIcon = const SizedBox.shrink(),
+    this.fillColor,
+    this.boderRaduis,
   });
 
   String hintText;
@@ -23,6 +26,9 @@ class SharedTextFormField extends StatelessWidget {
   bool shown;
   TextEditingController controller;
   Widget suffixIcon;
+  Widget prefixIcon;
+  Color? fillColor;
+  double? boderRaduis;
 
   @override
   Widget build(BuildContext context) {
@@ -36,23 +42,24 @@ class SharedTextFormField extends StatelessWidget {
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(boderRaduis ??16.r),
           borderSide: BorderSide(color: AppColors.blackColor),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(boderRaduis ??16.r),
           borderSide: BorderSide(color: AppColors.greyColor),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(boderRaduis ??16.r),
           borderSide: BorderSide.none,
         ),
         errorStyle: TextStyle(color: AppColors.redColor, fontSize: 12.sp),
         errorMaxLines: 2,
         suffixIcon: suffixIcon,
+        prefixIcon: prefixIcon,
         contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
         hintText: hintText,
-        fillColor: AppColors.formGreyColor,
+        fillColor: fillColor ?? AppColors.formGreyColor,
         filled: true,
         enabled: true,
       ),
