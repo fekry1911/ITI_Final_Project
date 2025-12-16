@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iti_moqaf/core/const/const_paths.dart';
+import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import 'package:iti_moqaf/featuers/home/widgets/recent_route_card.dart';
@@ -18,8 +20,8 @@ class HomeBottomSheet extends StatelessWidget {
       builder: (context, scrollController) {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
-          decoration: const BoxDecoration(
-            color: Colors.white,
+          decoration: BoxDecoration(
+            color: AppColors.scaffoldColor,
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           child: ListView(
@@ -63,7 +65,9 @@ class HomeBottomSheet extends StatelessWidget {
                   ),
                   Spacer(),
                   InkWell(
-
+                    onTap: () {
+                      context.pushNamed(stationsScreen);
+                    },
                     child: Text(
                       "عرض الكل",
                       style: AppTextStyle.font18GreyRegular.copyWith(
