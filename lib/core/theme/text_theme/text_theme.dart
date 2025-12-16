@@ -13,6 +13,13 @@ class AppTextStyle {
     letterSpacing: 0.7,
   );
 
+  static TextStyle font18WhiteBold = GoogleFonts.amiri(
+    color: AppColors.whiteColor,
+    fontWeight: FontWeightHelper.bold,
+    fontSize: 18.sp,
+    letterSpacing: 0.7,
+  );
+
   static TextStyle font40BlackRegular = GoogleFonts.amiri(
     color: AppColors.blackColor,
     fontWeight: FontWeightHelper.regular,
@@ -21,6 +28,12 @@ class AppTextStyle {
   );
   static TextStyle font14GreyRegular = GoogleFonts.amiri(
     color: AppColors.greyColor,
+    fontWeight: FontWeightHelper.regular,
+    fontSize: 14.sp,
+    letterSpacing: 0.7,
+  );
+  static TextStyle font14formGreyColorRegular = GoogleFonts.amiri(
+    color: AppColors.formGreyColor,
     fontWeight: FontWeightHelper.regular,
     fontSize: 14.sp,
     letterSpacing: 0.7,
@@ -60,7 +73,8 @@ class AppTextStyle {
     color: AppColors.greyColor,
     fontWeight: FontWeightHelper.regular,
     fontSize: 15.sp,
-    letterSpacing: 0.7,);
+    letterSpacing: 0.7,
+  );
 
   static TextStyle font24BlackSemiBold = TextStyle(
     color: AppColors.darkBBlack,
