@@ -10,6 +10,7 @@ import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/const/const_paths.dart';
+import '../../../core/helpers/cach_helper.dart';
 import '../../login/screen/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,18 +21,17 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  Future<bool> isOnboardingDone() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('onboarding_done') ?? false;
-  }
+
 
   @override
   void initState() {
     super.initState();
+bool isOnboardingDone=CacheHelper.getBoolean(key: "onBoarding_finish")??false;
+
 
     Timer(
       Duration(milliseconds: 9000),
-      () async => await isOnboardingDone() ? Navigator.pushNamed(context, loginScreen) : Navigator.pushNamed(context, onBoarding),
+      ()  =>  isOnboardingDone ? Navigator.pushNamed(context, loginScreen) : Navigator.pushNamed(context, onBoarding),
     );
   }
 

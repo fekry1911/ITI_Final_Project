@@ -6,70 +6,82 @@ import '../color/colors.dart';
 import 'font_weight.dart';
 
 class AppTextStyle {
-  static TextStyle font30BlackBold = GoogleFonts.amiri(
+  static TextStyle font30BlackBold = GoogleFonts.cairo(
     color: AppColors.darkBBlack,
     fontWeight: FontWeightHelper.bold,
     fontSize: 30.sp,
     letterSpacing: 0.7,
   );
 
-  static TextStyle font40BlackRegular = GoogleFonts.amiri(
+  static TextStyle font40BlackRegular = GoogleFonts.cairo(
     color: AppColors.blackColor,
     fontWeight: FontWeightHelper.regular,
     fontSize: 40.sp,
     letterSpacing: 0.7,
   );
-  static TextStyle font14GreyRegular = GoogleFonts.amiri(
+  static TextStyle font14GreyRegular = GoogleFonts.cairo(
     color: AppColors.greyColor,
     fontWeight: FontWeightHelper.regular,
     fontSize: 14.sp,
     letterSpacing: 0.7,
   );
-  static TextStyle font9BlackRegular = GoogleFonts.amiri(
+  static TextStyle font9BlackRegular = GoogleFonts.cairo(
     color: AppColors.blackColor,
     fontWeight: FontWeightHelper.regular,
     fontSize: 9.sp,
     letterSpacing: 0.7,
   );
-  static TextStyle font14BlackRegular = GoogleFonts.amiri(
+  static TextStyle font14BlackRegular = GoogleFonts.cairo(
     color: AppColors.blackColor,
     fontWeight: FontWeightHelper.regular,
     fontSize: 14.sp,
     letterSpacing: 0.7,
   );
-  static TextStyle font18WhiteMedium = GoogleFonts.amiri(
+  static TextStyle font18WhiteMedium = GoogleFonts.cairo(
     color: AppColors.whiteColor,
     fontWeight: FontWeightHelper.medium,
     fontSize: 18.sp,
     letterSpacing: 0.7,
   );
-  static TextStyle font11RedMedium = GoogleFonts.amiri(
+  static TextStyle font11RedMedium = GoogleFonts.cairo(
     color: AppColors.redColor,
     fontWeight: FontWeightHelper.medium,
     fontSize: 11.sp,
     letterSpacing: 0.7,
   );
-  static TextStyle font11BlackRegular = GoogleFonts.amiri(
+  static TextStyle font11BlackRegular = GoogleFonts.cairo(
     color: AppColors.blackColor,
     fontWeight: FontWeightHelper.regular,
     fontSize: 11.sp,
     letterSpacing: 0.7,
   );
 
-  static TextStyle font15GreyRegular = GoogleFonts.amiri(
+  static TextStyle font15GreyRegular = GoogleFonts.cairo(
     color: AppColors.greyColor,
     fontWeight: FontWeightHelper.regular,
     fontSize: 15.sp,
-    letterSpacing: 0.7,);
+    letterSpacing: 0.7,
+  );
 
-  static TextStyle font24BlackSemiBold = TextStyle(
+  static TextStyle font24BlackSemiBold = GoogleFonts.cairo(
     color: AppColors.darkBBlack,
     fontWeight: FontWeightHelper.semiBold,
     fontSize: 24.sp,
+    letterSpacing: 0.7,
+
+
   );
-  static TextStyle font18GreyRegular = TextStyle(
+
+  static TextStyle font18GreyRegular = GoogleFonts.cairo(
     color: AppColors.greyColor,
     fontWeight: FontWeightHelper.regular,
-    fontSize: 14.sp,
+    fontSize: 18.sp,
+    letterSpacing: 0.7,
+  );
+  static TextStyle font18BlackBold = GoogleFonts.cairo(
+    color: AppColors.blackColor,
+    fontWeight: FontWeightHelper.bold,
+    fontSize: 18.sp,
+    letterSpacing: 0.7,
   );
 }

@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:iti_moqaf/featuers/home/screens/screen.dart';
+import 'package:iti_moqaf/featuers/map/map.dart';
 import 'package:iti_moqaf/featuers/on_boarding/screen/on_boarding_screen.dart';
 import 'package:iti_moqaf/featuers/register/screen/register.dart';
+import 'package:iti_moqaf/featuers/stations_details/screen/station_details_screen.dart';
 
 import '../../featuers/login/screen/login_screen.dart';
 import '../../featuers/splash/screen/splash_screen.dart';
+import '../../featuers/stations/screens/StationsScreen.dart';
 import '../const/const_paths.dart';
 
 class AppRouter {
@@ -42,6 +45,24 @@ class AppRouter {
         return _buildPageRoute(
           settings,
           HomeScreen(),
+          transition: TransitionType.scale,
+        );
+      case stationsScreen:
+        return _buildPageRoute(
+          settings,
+          StationsScreen(),
+          transition: TransitionType.scale,
+        );
+      case stationDetailsScreen:
+        return _buildPageRoute(
+          settings,
+          StationDetailsScreen(),
+          transition: TransitionType.scale,
+        );
+      case mapScreen:
+        return _buildPageRoute(
+          settings,
+          MapSample(),
           transition: TransitionType.scale,
         );
 
