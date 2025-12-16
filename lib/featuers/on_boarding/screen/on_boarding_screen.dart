@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:iti_moqaf/core/const/onBoarding_pages.dart';
+import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/featuers/on_boarding/widgets/buttons.dart';
 import 'package:iti_moqaf/featuers/on_boarding/widgets/dots.dart';
 import 'package:iti_moqaf/featuers/on_boarding/widgets/pages.dart';
@@ -20,8 +21,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   int currentIndex = 0;
 
   Future<void> finishOnboarding() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool("onBoarding_finish", true);
+    CacheHelper.putBoolean(key: "onBoarding_finish", value: true);
     if (!mounted) return;
     Navigator.pushNamed(context, loginScreen);
   }
