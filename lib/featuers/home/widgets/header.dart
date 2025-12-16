@@ -26,12 +26,7 @@ class Header extends StatelessWidget {
             ),
             SizedBox(width: 12.w),
 
-            Text(
-              "أحمد طارق",
-              style: AppTextStyle.font18WhiteBold.copyWith(
-                color: AppColors.blackColor,
-              ),
-            ),
+            Text("أحمد طارق", style: AppTextStyle.font18BlackBold),
             Spacer(),
             CircleAvatar(
               radius: 24,
