@@ -23,7 +23,7 @@ class Pages extends StatelessWidget {
         SizedBox(height: 10.h),
         Text(
           data.description,
-          style: AppTextStyle.font18GreyRegular,
+          style: AppTextStyle.font14GreyRegular,
           textAlign: TextAlign.center,
         ),
       ],
