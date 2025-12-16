@@ -63,6 +63,7 @@ class HomeBottomSheet extends StatelessWidget {
                   ),
                   Spacer(),
                   InkWell(
+
                     child: Text(
                       "عرض الكل",
                       style: AppTextStyle.font18GreyRegular.copyWith(

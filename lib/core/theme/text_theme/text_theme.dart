@@ -13,6 +13,12 @@ class AppTextStyle {
     letterSpacing: 0.7,
   );
 
+  static TextStyle font18WhiteBold = GoogleFonts.cairo(
+    color: AppColors.whiteColor,
+    fontWeight: FontWeightHelper.bold,
+    fontSize: 18.sp,
+    letterSpacing: 0.7,
+  );
   static TextStyle font40BlackRegular = GoogleFonts.cairo(
     color: AppColors.blackColor,
     fontWeight: FontWeightHelper.regular,
