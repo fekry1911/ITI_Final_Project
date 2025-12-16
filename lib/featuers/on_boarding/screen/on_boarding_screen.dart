@@ -23,7 +23,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool("onBoarding_finish", true);
     if (!mounted) return;
-    Navigator.pushNamed(context, loginScreen);
+    Navigator.pushNamed(context, homeScreen);
   }
 
   void nextPage() {
