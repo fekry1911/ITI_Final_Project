@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 
 class RecentRouteCard extends StatelessWidget {
   final String title;
@@ -56,18 +58,16 @@ class RecentRouteCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: AppTextStyle.font14BlackRegular
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     subtitle,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.grey.shade600,
-                    ),
+                    style: AppTextStyle.font14BlackRegular.copyWith(
+                      fontSize: 9.sp,
+                      color: Colors.grey.shade600
+
+                    )
                   ),
                 ],
               ),
@@ -101,6 +101,6 @@ class RecentRouteCard extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ).animate().scaleXY(duration: 500.ms);
   }
 }

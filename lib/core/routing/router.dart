@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
-import 'package:iti_moqaf/featuers/home/screens/screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iti_moqaf/core/di/di.dart';
 import 'package:iti_moqaf/featuers/map/map.dart';
 import 'package:iti_moqaf/featuers/on_boarding/screen/on_boarding_screen.dart';
 import 'package:iti_moqaf/featuers/register/screen/register.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/station_details_screen.dart';
 
+import '../../featuers/home/logic/home_cubit.dart';
+import '../../featuers/home/screens/home_screen.dart';
 import '../../featuers/login/screen/login_screen.dart';
+import '../../featuers/near_stations/screens/screen.dart';
+import '../../featuers/register/logic/register_user_cubit.dart';
 import '../../featuers/splash/screen/splash_screen.dart';
 import '../../featuers/stations/screens/StationsScreen.dart';
 import '../const/const_paths.dart';
@@ -37,14 +42,19 @@ class AppRouter {
       case registerScreen:
         return _buildPageRoute(
           settings,
-          RegisterScreen(),
-
+          BlocProvider(
+            create: (context) => getIt<RegisterUserCubit>(),
+            child: RegisterScreen(),
+          ),
           transition: TransitionType.scale,
         );
       case homeScreen:
         return _buildPageRoute(
           settings,
-          HomeScreen(),
+          BlocProvider(
+            create: (context) => HomeCubit(),
+            child: HomeScreen(),
+          ),
           transition: TransitionType.scale,
         );
       case stationsScreen:
@@ -72,11 +82,10 @@ class AppRouter {
   }
 
   /// Helper function to build custom transitions
-  PageRouteBuilder _buildPageRoute(
-    RouteSettings settings,
-    Widget screen, {
-    TransitionType transition = TransitionType.fade,
-  }) {
+  PageRouteBuilder _buildPageRoute(RouteSettings settings,
+      Widget screen, {
+        TransitionType transition = TransitionType.fade,
+      }) {
     return PageRouteBuilder(
       settings: settings,
       pageBuilder: (_, __, ___) => screen,

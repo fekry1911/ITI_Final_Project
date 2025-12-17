@@ -4,8 +4,8 @@ import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/home/widgets/recent_route_card.dart';
-import 'package:iti_moqaf/featuers/home/widgets/search_field.dart';
+import 'package:iti_moqaf/featuers/near_stations/screens/widgets/recent_route_card.dart';
+import 'package:iti_moqaf/featuers/near_stations/screens/widgets/search_field.dart';
 
 class HomeBottomSheet extends StatelessWidget {
   const HomeBottomSheet({super.key});
