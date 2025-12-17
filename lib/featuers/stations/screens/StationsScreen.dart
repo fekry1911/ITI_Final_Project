@@ -32,33 +32,35 @@ class _StationsscreenState extends State<StationsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("المحطات", style: AppTextStyle.font30BlackBold),
-        actions: [
-          Container(margin: EdgeInsets.symmetric(horizontal: 10.w),
-            child: CircleAvatar(
-              backgroundColor: AppColors.whiteColor,
-              radius: 30,
-              child: Icon(Icons.map,color: AppColors.mainColor,),
-            ),
-          )
-        ],
-      ),
-      body: Padding(
+    return Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
 
           children: [
-            SharedTextFormField(
-              controller: controller,
-              hintText: "ابحث عن محطه",
-              validator: (x) {},
-              boderRaduis: 30.r,
-              fillColor: AppColors.whiteColor,
-              prefixIcon: Icon(Icons.search),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: SharedTextFormField(
+                controller: controller,
+                hintText: "ابحث عن محطه",
+                validator: (x) {
+                  return null;
+                },
+                boderRaduis: 30.r,
+                fillColor: AppColors.whiteColor,
+                prefixIcon: Icon(Icons.search),
+              ),
             ),
             SizedBox(height: 10.h),
             SizedBox(
@@ -88,7 +90,7 @@ class _StationsscreenState extends State<StationsScreen> {
                     child: FilterWidget(
                       text: label,
                       backColor: fillter ==  label
-                          ? AppColors.mainColor
+                          ? AppColors.mainColor.withOpacity(.7)
                           : AppColors.whiteColor,
                       textColor:  fillter ==  label
                           ? AppColors.whiteColor
@@ -102,7 +104,7 @@ class _StationsscreenState extends State<StationsScreen> {
             Expanded(
               child: ListView.separated(
                 itemBuilder: (BuildContext context, int index) {
-                  return StationCard(data: currentStations![index]);
+                  return StationCard(data: currentStations![index],index: index,);
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return SizedBox(height: 5.h);
@@ -112,7 +114,6 @@ class _StationsscreenState extends State<StationsScreen> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

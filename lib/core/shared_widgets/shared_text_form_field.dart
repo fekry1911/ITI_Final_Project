@@ -29,7 +29,6 @@ class SharedTextFormField extends StatelessWidget {
   Widget prefixIcon;
   Color? fillColor;
   double? boderRaduis;
-
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -42,16 +41,20 @@ class SharedTextFormField extends StatelessWidget {
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(boderRaduis ??16.r),
+          borderRadius: BorderRadius.circular(16.r),
           borderSide: BorderSide(color: AppColors.blackColor),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(boderRaduis ??16.r),
-          borderSide: BorderSide(color: AppColors.greyColor),
+          borderRadius: BorderRadius.circular(16.r),
+          borderSide: BorderSide(color: AppColors.redColor),
         ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.r),
+            borderSide: BorderSide(color: AppColors.blackColor),
+          ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(boderRaduis ??16.r),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(16.r),
+          borderSide: BorderSide(color: AppColors.blackColor),
         ),
         errorStyle: TextStyle(color: AppColors.redColor, fontSize: 12.sp),
         errorMaxLines: 2,

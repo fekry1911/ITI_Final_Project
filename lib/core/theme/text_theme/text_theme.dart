@@ -31,6 +31,19 @@ class AppTextStyle {
     fontSize: 14.sp,
     letterSpacing: 0.7,
   );
+
+  static TextStyle font40BlackRegularAmiri = GoogleFonts.amiri(
+    color: AppColors.blackColor,
+    fontWeight: FontWeightHelper.regular,
+    fontSize: 40.sp,
+    letterSpacing: 0.7,
+  );
+  static TextStyle font14GreyRegularAmiri = GoogleFonts.amiri(
+    color: AppColors.greyColor,
+    fontWeight: FontWeightHelper.regular,
+    fontSize: 14.sp,
+    letterSpacing: 0.7,
+  );
   static TextStyle font9BlackRegular = GoogleFonts.cairo(
     color: AppColors.blackColor,
     fontWeight: FontWeightHelper.regular,
@@ -74,8 +87,6 @@ class AppTextStyle {
     fontWeight: FontWeightHelper.semiBold,
     fontSize: 24.sp,
     letterSpacing: 0.7,
-
-
   );
 
   static TextStyle font18GreyRegular = GoogleFonts.cairo(
