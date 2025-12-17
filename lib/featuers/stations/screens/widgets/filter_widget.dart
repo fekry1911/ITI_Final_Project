@@ -22,7 +22,7 @@ class FilterWidget extends StatelessWidget {
         color: backColor,
         borderRadius: BorderRadius.all(Radius.circular(20.r)),
       ),
-      child: Text(text,style: AppTextStyle.font15GreyRegular.copyWith(
+      child: Text(text,style: AppTextStyle.font14BlackRegular.copyWith(
         color: textColor
       ),textAlign:TextAlign.center,),
     );

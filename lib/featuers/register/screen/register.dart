@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
+import 'package:iti_moqaf/core/shared_widgets/toast.dart';
 import 'package:iti_moqaf/featuers/register/screen/widgets/button_done.dart';
 import 'package:iti_moqaf/featuers/register/screen/widgets/email_password.dart';
-import 'package:iti_moqaf/featuers/register/screen/widgets/image_messsage.dart';
 
 import '../../../core/const/const_paths.dart';
-import '../../../core/theme/color/colors.dart';
+import '../../../core/shared_widgets/image_messsage.dart';
 import '../../../core/theme/text_theme/text_theme.dart';
+import '../logic/register_user_cubit.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -20,40 +22,19 @@ class RegisterScreen extends StatelessWidget {
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Center(
-          child: Stack(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                height: .43.sh,
-                width: 1.sw,
-                decoration: BoxDecoration(
-                  color: AppColors.mainColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(50.r),
-                    bottomRight: Radius.circular(50.r),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 25.h,
-                child: IconButton(
-                  onPressed: () {
-                    print("Done");
-                   context.popScreen();
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios_new,
-                    color: AppColors.whiteColor,
-                  ),
-                ),
+              ImageAndMessage(
+                title: ' ابدا الان',
+                desc: 'من خلال انشاء حساب مجاني',
+                register: true,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
+                padding: EdgeInsets.symmetric(horizontal: 10.0.w,vertical: 10.h),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    ImageAndMessageRegister(),
-                    SizedBox(height: 30.h),
                     EmailAndPasswordRegister(),
                     SizedBox(height: 20.h),
                     ButtonDoneRegister(),
@@ -80,6 +61,22 @@ class RegisterScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              BlocListener<RegisterUserCubit, RegisterUserState>(
+                listener: (BuildContext context, state) {
+                  if (state is RegisterUserSuccess) {
+                    sucssesToast(
+                      context,
+                      " عمليه تسجيل ناجحه",
+                      "تم تسجيل حسابك بنجاح",
+                    );
+                    context.pushNamed(homeScreen);
+                  }
+                  if (state is RegisterUserError) {
+                    errorToast(context, " عمليه تسجيل فاشله", state.error);
+                  }
+                },
+                child: SizedBox.shrink(),
               ),
             ],
           ),

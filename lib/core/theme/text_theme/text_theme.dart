@@ -13,6 +13,12 @@ class AppTextStyle {
     letterSpacing: 0.7,
   );
 
+  static TextStyle font18WhiteBold = GoogleFonts.cairo(
+    color: AppColors.whiteColor,
+    fontWeight: FontWeightHelper.bold,
+    fontSize: 18.sp,
+    letterSpacing: 0.7,
+  );
   static TextStyle font40BlackRegular = GoogleFonts.cairo(
     color: AppColors.blackColor,
     fontWeight: FontWeightHelper.regular,
@@ -20,6 +26,19 @@ class AppTextStyle {
     letterSpacing: 0.7,
   );
   static TextStyle font14GreyRegular = GoogleFonts.cairo(
+    color: AppColors.greyColor,
+    fontWeight: FontWeightHelper.regular,
+    fontSize: 14.sp,
+    letterSpacing: 0.7,
+  );
+
+  static TextStyle font40BlackRegularAmiri = GoogleFonts.amiri(
+    color: AppColors.blackColor,
+    fontWeight: FontWeightHelper.regular,
+    fontSize: 40.sp,
+    letterSpacing: 0.7,
+  );
+  static TextStyle font14GreyRegularAmiri = GoogleFonts.amiri(
     color: AppColors.greyColor,
     fontWeight: FontWeightHelper.regular,
     fontSize: 14.sp,
@@ -68,8 +87,6 @@ class AppTextStyle {
     fontWeight: FontWeightHelper.semiBold,
     fontSize: 24.sp,
     letterSpacing: 0.7,
-
-
   );
 
   static TextStyle font18GreyRegular = GoogleFonts.cairo(

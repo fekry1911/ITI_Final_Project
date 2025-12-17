@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
@@ -37,7 +38,7 @@ class StationInfo extends StatelessWidget {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                              color: AppColors.mainColor,
+                              color: Colors.green,
                               borderRadius: BorderRadius.circular(20.r),
                             ),
                             padding: EdgeInsets.all(6.h),
@@ -93,6 +94,6 @@ class StationInfo extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ).animate().shimmer(duration: 2000.ms);
   }
 }

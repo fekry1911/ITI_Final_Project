@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
@@ -7,34 +8,36 @@ import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import '../../../../core/theme/color/colors.dart';
 
 class StationCard extends StatelessWidget {
-  StationCard({super.key, required this.data});
+  StationCard({super.key, required this.data,required this.index});
 
   dynamic data;
+  int index;
+
 
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4,
+      elevation: 1,
       borderOnForeground: true,
       color: AppColors.whiteColor,
       child: ListTile(
         leading: data["status"] != "Issues"
             ? CircleAvatar(
-                backgroundColor: AppColors.mainColor,
-                radius: 30.r,
+                backgroundColor: AppColors.mainColor.withOpacity(.8),
+                radius: 22.r,
                 child: Icon(
                   Icons.train,
                   color: AppColors.whiteColor,
-                  size: 25.r,
+                  size: 22.r,
                 ),
               )
             : CircleAvatar(
-                backgroundColor: AppColors.lightGrey,
+                backgroundColor: AppColors.greyColor.withOpacity(.1),
                 radius: 30.r,
                 child: Icon(
                   Icons.build_sharp,
-                  color: AppColors.greyColor,
+                  color: AppColors.greyColor.withOpacity(.7),
                   size: 25.r,
                 ),
               ),
@@ -54,9 +57,7 @@ class StationCard extends StatelessWidget {
                             data["name"],
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyle.font24BlackSemiBold.copyWith(
-                              fontSize: 17.sp,
-                            ),
+                            style: AppTextStyle.font14BlackRegular
                           ),
                         ),
                         SizedBox(width: 6.w),
@@ -73,19 +74,21 @@ class StationCard extends StatelessWidget {
                     data["status"] == "Issues"
                         ? Text(
                             "مغلق للصيانه",
-                            style: AppTextStyle.font15GreyRegular.copyWith(
+                            style: AppTextStyle.font14BlackRegular.copyWith(
                               color: AppColors.redColor,
+                                fontSize: 9.sp
+
                             ),
                           )
                         : Row(
                             children: [
                               Text(
                                 " علي بعد ${data["distance"]} كم ",
-                                style: AppTextStyle.font15GreyRegular.copyWith(
-                                  color: AppColors.lightGreen,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                  style: AppTextStyle.font14BlackRegular.copyWith(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 9.sp
+                                  )
+
                               ),
                               SizedBox(width: 5.w),
                               Icon(
@@ -125,6 +128,6 @@ class StationCard extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ).animate().scaleXY(duration: 500.ms);
   }
 }
