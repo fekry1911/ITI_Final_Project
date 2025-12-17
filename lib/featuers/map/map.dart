@@ -1,10 +1,9 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 
 
 class MapSample extends StatefulWidget {
@@ -63,6 +62,7 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: GoogleMap(
         mapType: MapType.normal,
         myLocationEnabled: true,
@@ -75,6 +75,7 @@ class MapSampleState extends State<MapSample> {
           _controller.complete(controller);
         },
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: _goToMyLocation,
         child: const Icon(Icons.my_location),

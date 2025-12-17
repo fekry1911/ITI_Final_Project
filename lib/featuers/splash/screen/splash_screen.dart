@@ -5,13 +5,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/on_boarding/screen/on_boarding_screen.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/const/const_paths.dart';
 import '../../../core/helpers/cach_helper.dart';
-import '../../login/screen/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,18 +18,28 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
-
+  @override
   @override
   void initState() {
     super.initState();
-bool isOnboardingDone=CacheHelper.getBoolean(key: "onBoarding_finish")??false;
 
+    final bool isOnboardingDone =
+        CacheHelper.getBoolean(key: "onBoarding_finish") ?? false;
+    final bool isRegistered = CacheHelper.getBoolean(key: "register") ?? false;
 
-    Timer(
-      Duration(milliseconds: 9000),
-      ()  =>  isOnboardingDone ? Navigator.pushNamed(context, loginScreen) : Navigator.pushNamed(context, onBoarding),
-    );
+    Future.delayed(const Duration(milliseconds: 9000), () {
+      if (!mounted) return;
+
+      if (isOnboardingDone) {
+        if (isRegistered) {
+          Navigator.pushReplacementNamed(context, homeScreen);
+        } else {
+          Navigator.pushReplacementNamed(context, loginScreen);
+        }
+      } else {
+        Navigator.pushReplacementNamed(context, onBoarding);
+      }
+    });
   }
 
   @override
