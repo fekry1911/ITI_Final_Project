@@ -1,3 +1,3 @@
-const String apiBaseURL="https://auth-api-2-jz52.onrender.com";
-const String register="/api/users/register";
-const String login="/api/users/login";
+const String apiBaseURL = "http://10.0.2.2:5000";
+const String register = "/api/auth/register";
+const String login = "/api/auth/login";
