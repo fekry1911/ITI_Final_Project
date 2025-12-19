@@ -9,6 +9,6 @@ class DioConfig {
 
   Dio dio = Dio()
     ..options.baseUrl = apiBaseURL
-    ..options.connectTimeout = const Duration(seconds: 190)
+    ..options.connectTimeout = const Duration(seconds: 10)
     ..options.receiveTimeout = const Duration(seconds: 10);
 }

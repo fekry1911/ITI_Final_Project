@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
 
-sealed class ApiResult{}
+sealed class ApiResult {}
 
-class ApiSuccess<T> extends ApiResult{
+class ApiSuccess<T> extends ApiResult {
   final T data;
 
   ApiSuccess(this.data);
 }
 
-class ApiError extends ApiResult{
+class ApiError extends ApiResult {
   final String message;
 
   ApiError(this.message);

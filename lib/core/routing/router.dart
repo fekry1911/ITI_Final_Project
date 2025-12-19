@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iti_moqaf/core/di/di.dart';
+import 'package:iti_moqaf/featuers/login/logic/login_cubit.dart';
 import 'package:iti_moqaf/featuers/map/map.dart';
 import 'package:iti_moqaf/featuers/on_boarding/screen/on_boarding_screen.dart';
 import 'package:iti_moqaf/featuers/register/screen/register.dart';
@@ -35,7 +36,10 @@ class AppRouter {
       case loginScreen:
         return _buildPageRoute(
           settings,
-          LoginScreen(),
+          BlocProvider(
+            create: (BuildContext context) => getIt<LoginCubit>(),
+            child: LoginScreen(),
+          ),
 
           transition: TransitionType.fade,
         );
@@ -51,10 +55,7 @@ class AppRouter {
       case homeScreen:
         return _buildPageRoute(
           settings,
-          BlocProvider(
-            create: (context) => HomeCubit(),
-            child: HomeScreen(),
-          ),
+          BlocProvider(create: (context) => HomeCubit(), child: HomeScreen()),
           transition: TransitionType.scale,
         );
       case stationsScreen:
@@ -82,10 +83,11 @@ class AppRouter {
   }
 
   /// Helper function to build custom transitions
-  PageRouteBuilder _buildPageRoute(RouteSettings settings,
-      Widget screen, {
-        TransitionType transition = TransitionType.fade,
-      }) {
+  PageRouteBuilder _buildPageRoute(
+    RouteSettings settings,
+    Widget screen, {
+    TransitionType transition = TransitionType.fade,
+  }) {
     return PageRouteBuilder(
       settings: settings,
       pageBuilder: (_, __, ___) => screen,
