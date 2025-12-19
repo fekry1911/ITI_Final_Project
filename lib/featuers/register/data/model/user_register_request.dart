@@ -3,24 +3,28 @@ import 'package:json_annotation/json_annotation.dart';
 part 'user_register_request.g.dart';
 
 @JsonSerializable()
-class User {
+class UserRegisterRequest {
   /// email field
   final String email;
+
   /// password field
   final String password;
+
   /// firstName field
   final String firstName;
+
   /// lastName field
   final String lastName;
 
-  const User({
+  const UserRegisterRequest({
     required this.email,
     required this.password,
     required this.firstName,
     required this.lastName,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory UserRegisterRequest.fromJson(Map<String, dynamic> json) =>
+      _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
+import 'package:iti_moqaf/featuers/login/logic/login_cubit.dart';
 
 import '../../../../core/const/const_paths.dart';
 
@@ -11,22 +13,33 @@ class ButtonDone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 230.w,
-      height: 40.h,
+    return BlocBuilder<LoginCubit, LoginStates>(
+      builder: (context, state) {
+        var cubit = context.read<LoginCubit>();
+        return SizedBox(
+          width: 230.w,
+          height: 40.h,
 
-      child: MaterialButton(
-        onPressed: () {
-          context.pushNamed(homeScreen);
-
-        },
-        child: Text("تأكيد", style: AppTextStyle.font18WhiteMedium),
-        color: AppColors.blackColor,
-        splashColor: AppColors.mainColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.r),
-        ),
-      ),
+          child: MaterialButton(
+            onPressed: () {
+              if (cubit.formKey.currentState!.validate()) {
+                cubit.login(
+                  email: cubit.emailController.text,
+                  password: cubit.passwordController.text,
+                );
+              }
+            },
+            color: AppColors.blackColor,
+            splashColor: AppColors.mainColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.r),
+            ),
+            child: state is LoginLoading
+                ? CircularProgressIndicator()
+                : Text("تأكيد", style: AppTextStyle.font18WhiteMedium),
+          ),
+        );
+      },
     );
   }
 }

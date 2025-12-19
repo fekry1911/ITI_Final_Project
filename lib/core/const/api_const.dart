@@ -5,5 +5,5 @@ const String station="/api/station";
 const String lines="lines";
 const String near="/api/station/near";
 const String vichels="vichels";
-
+const String verifyEmailEndpoint = "/api/auth/verify-email";
 
