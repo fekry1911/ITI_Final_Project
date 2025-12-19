@@ -9,7 +9,9 @@ import 'package:iti_moqaf/featuers/stations_details/screen/widgets/station_info.
 import 'data/route_data.dart';
 
 class StationDetailsScreen extends StatelessWidget {
-  const StationDetailsScreen({super.key});
+  final String stationId;
+
+  const StationDetailsScreen({super.key, required this.stationId});
 
   @override
   Widget build(BuildContext context) {
