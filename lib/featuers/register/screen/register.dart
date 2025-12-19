@@ -73,7 +73,10 @@ class RegisterScreen extends StatelessWidget {
                       "   برجاء تاكيد حسابك ",
                       "تم ارسال رسالة الي حسابك بنجاح",
                     );
-                    context.pushNamed(homeScreen);
+                    context.pushNamed(
+                      verifyEmailScreen,
+                      arguments: state.user.email,
+                    );
                   }
                   if (state is RegisterUserError) {
                     errorToast(context, " عمليه تسجيل فاشله", state.error);

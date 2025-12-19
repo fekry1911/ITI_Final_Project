@@ -12,6 +12,7 @@ import '../../featuers/home/screens/home_screen.dart';
 import '../../featuers/login/screen/login_screen.dart';
 import '../../featuers/near_stations/screens/screen.dart';
 import '../../featuers/register/logic/register_user_cubit.dart';
+import '../../featuers/register/screen/verify_email_screen.dart';
 import '../../featuers/splash/screen/splash_screen.dart';
 import '../../featuers/stations/screens/StationsScreen.dart';
 import '../const/const_paths.dart';
@@ -56,6 +57,16 @@ class AppRouter {
         return _buildPageRoute(
           settings,
           BlocProvider(create: (context) => HomeCubit(), child: HomeScreen()),
+          transition: TransitionType.scale,
+        );
+      case verifyEmailScreen:
+        final email = settings.arguments as String;
+        return _buildPageRoute(
+          settings,
+          BlocProvider(
+            create: (context) => getIt<RegisterUserCubit>(),
+            child: VerifyEmailScreen(email: email),
+          ),
           transition: TransitionType.scale,
         );
       case stationsScreen:

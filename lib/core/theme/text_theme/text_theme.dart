@@ -101,4 +101,18 @@ class AppTextStyle {
     fontSize: 18.sp,
     letterSpacing: 0.7,
   );
+
+  static TextStyle font24BlackBold = GoogleFonts.cairo(
+    color: AppColors.blackColor,
+    fontWeight: FontWeightHelper.bold,
+    fontSize: 24.sp,
+    letterSpacing: 0.7,
+  );
+
+  static TextStyle font14BlackMedium = GoogleFonts.cairo(
+    color: AppColors.blackColor,
+    fontWeight: FontWeightHelper.medium,
+    fontSize: 14.sp,
+    letterSpacing: 0.7,
+  );
 }
