@@ -30,3 +30,20 @@ final class RegisterUserError extends RegisterUserState {
   // TODO: implement props
   List<Object?> get props => [error];
 }
+
+final class VerifyEmailLoading extends RegisterUserState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class VerifyEmailSuccess extends RegisterUserState {
+  @override
+  List<Object?> get props => [];
+}
+
+final class VerifyEmailError extends RegisterUserState {
+  final String error;
+  VerifyEmailError(this.error);
+  @override
+  List<Object?> get props => [error];
+}
