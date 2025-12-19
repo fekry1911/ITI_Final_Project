@@ -15,6 +15,7 @@ import '../../featuers/register/logic/register_user_cubit.dart';
 import '../../featuers/register/screen/verify_email_screen.dart';
 import '../../featuers/splash/screen/splash_screen.dart';
 import '../../featuers/stations/screens/StationsScreen.dart';
+import '../../featuers/stations_details/logic/get_one_station_cubit.dart';
 import '../const/const_paths.dart';
 
 class AppRouter {
@@ -76,11 +77,16 @@ class AppRouter {
           transition: TransitionType.scale,
         );
       case stationDetailsScreen:
+        final stationId = settings.arguments as String;
         return _buildPageRoute(
           settings,
-          StationDetailsScreen(),
+          BlocProvider(
+            create: (context) => getIt<GetOneStationCubit>()..getOneStationById(stationId),
+            child: StationDetailsScreen(stationId: stationId),
+          ),
           transition: TransitionType.scale,
         );
+
       case mapScreen:
         return _buildPageRoute(
           settings,
