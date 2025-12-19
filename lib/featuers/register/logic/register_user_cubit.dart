@@ -14,22 +14,58 @@ class RegisterUserCubit extends Cubit<RegisterUserState> {
   RegisterUser registerUser;
 
   RegisterUserCubit(this.registerUser) : super(RegisterUserInitial());
-  TextEditingController firstNameController= TextEditingController();
-  TextEditingController lastNameController= TextEditingController();
-  TextEditingController emailController= TextEditingController();
-  TextEditingController passwordController= TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  Future signUp({required String firstName,required String lastName,required String email,required String password}) async {
+  Future signUp({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String password,
+  }) async {
     emit(RegisterUserLoading());
-    User user=User(firstName: firstName, lastName: lastName, email: email, password: password);
+    UserRegisterRequest user = UserRegisterRequest(
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+    );
     var res = await registerUser.registerUser(user);
     if (res is ApiSuccess) {
       await CacheHelper.putBoolean(key: "register", value: true);
       emit(RegisterUserSuccess(user));
     }
     if (res is ApiError) {
+      print(res.message);
       emit(RegisterUserError(res.message));
+    }
+  }
+
+  Future verifyEmail({required String email, required String code}) async {
+    emit(VerifyEmailLoading());
+    var res = await registerUser.verifyEmail(email, code);
+    if (res is ApiSuccess) {
+      // res.data is the Dio Response object.
+      // res.data.data is the actual response body (Map).
+      var response = res.data;
+      if (response.data != null &&
+          response.data['data'] != null &&
+          response.data['data']['accessToken'] != null) {
+        await CacheHelper.putString(
+          key: "token",
+          value: response.data['data']['accessToken'],
+        );
+      } else {
+        print("Warning: Access Token not found in response: ${response.data}");
+      }
+
+      emit(VerifyEmailSuccess());
+    }
+    if (res is ApiError) {
+      emit(VerifyEmailError(res.message));
     }
   }
 }

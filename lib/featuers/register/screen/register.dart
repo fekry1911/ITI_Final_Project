@@ -32,7 +32,10 @@ class RegisterScreen extends StatelessWidget {
                 register: true,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0.w,vertical: 10.h),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10.0.w,
+                  vertical: 10.h,
+                ),
                 child: Column(
                   children: [
                     EmailAndPasswordRegister(),
@@ -67,10 +70,13 @@ class RegisterScreen extends StatelessWidget {
                   if (state is RegisterUserSuccess) {
                     sucssesToast(
                       context,
-                      " عمليه تسجيل ناجحه",
-                      "تم تسجيل حسابك بنجاح",
+                      "   برجاء تاكيد حسابك ",
+                      "تم ارسال رسالة الي حسابك بنجاح",
                     );
-                    context.pushNamed(homeScreen);
+                    context.pushNamed(
+                      verifyEmailScreen,
+                      arguments: state.user.email,
+                    );
                   }
                   if (state is RegisterUserError) {
                     errorToast(context, " عمليه تسجيل فاشله", state.error);
