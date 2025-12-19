@@ -9,4 +9,7 @@ class RegisterUser {
 
   Future<ApiResult> registerUser(UserRegisterRequest user) async =>
       apiService.registerUser(user);
+
+  Future<ApiResult> verifyEmail(String email, String code) async =>
+      apiService.verifyEmail(email, code);
 }
