@@ -31,4 +31,18 @@ class ApiService {
       return ApiError(e.toString());
     }
   }
+
+  Future<ApiResult> verifyEmail(String email, String code) async {
+    try {
+      var response = await dio.post(
+        verifyEmailEndpoint,
+        data: {"email": email, "verificationCode": code},
+      );
+      return ApiSuccess(response);
+    } on DioException catch (e) {
+      return ApiError(handleDioError(e));
+    } catch (e) {
+      return ApiError(e.toString());
+    }
+  }
 }
