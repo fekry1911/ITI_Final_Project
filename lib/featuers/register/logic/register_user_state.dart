@@ -9,19 +9,21 @@ final class RegisterUserInitial extends RegisterUserState {
   List<Object?> get props => [];
 }
 
-final class RegisterUserLoading extends RegisterUserState{
+final class RegisterUserLoading extends RegisterUserState {
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
-final class RegisterUserSuccess extends RegisterUserState{
-  final User user;
+
+final class RegisterUserSuccess extends RegisterUserState {
+  final UserRegisterRequest user;
   RegisterUserSuccess(this.user);
   @override
   // TODO: implement props
   List<Object?> get props => [user];
 }
-final class RegisterUserError extends RegisterUserState{
+
+final class RegisterUserError extends RegisterUserState {
   final String error;
   RegisterUserError(this.error);
   @override
