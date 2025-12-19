@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/const/const_paths.dart';
-import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
+import 'package:iti_moqaf/featuers/stations/data/model/stations_model.dart';
 
 import '../../../../core/theme/color/colors.dart';
 
 class StationCard extends StatelessWidget {
-  StationCard({super.key, required this.data,required this.index});
+  StationCard({super.key, required this.data, required this.index});
 
-  dynamic data;
+  SimpleStationData data;
   int index;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,7 @@ class StationCard extends StatelessWidget {
       borderOnForeground: true,
       color: AppColors.whiteColor,
       child: ListTile(
-        leading: data["status"] != "Issues"
+        leading: data.status != "Issues"
             ? CircleAvatar(
                 backgroundColor: AppColors.mainColor.withOpacity(.8),
                 radius: 22.r,
@@ -54,41 +52,39 @@ class StationCard extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            data["name"],
+                            data.stationName!,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyle.font14BlackRegular
+                            style: AppTextStyle.font14BlackRegular,
                           ),
                         ),
                         SizedBox(width: 6.w),
                         Icon(
                           Icons.circle,
                           size: 10.r,
-                          color: data["status"] == "Issues"
+                          color: data.status == "Issues"
                               ? AppColors.redColor
                               : Colors.green,
                         ),
                       ],
                     ),
                     SizedBox(height: 5.h),
-                    data["status"] == "Issues"
+                    data.status == "Issues"
                         ? Text(
                             "مغلق للصيانه",
                             style: AppTextStyle.font14BlackRegular.copyWith(
                               color: AppColors.redColor,
-                                fontSize: 9.sp
-
+                              fontSize: 9.sp,
                             ),
                           )
                         : Row(
                             children: [
                               Text(
-                                " علي بعد ${data["distance"]} كم ",
-                                  style: AppTextStyle.font14BlackRegular.copyWith(
-                                    color: Colors.grey.shade600,
-                                    fontSize: 9.sp
-                                  )
-
+                                " علي بعد} كم ",
+                                style: AppTextStyle.font14BlackRegular.copyWith(
+                                  color: Colors.grey.shade600,
+                                  fontSize: 9.sp,
+                                ),
                               ),
                               SizedBox(width: 5.w),
                               Icon(
@@ -104,7 +100,7 @@ class StationCard extends StatelessWidget {
                                 ),
                                 padding: EdgeInsets.all(3.h),
                                 child: Text(
-                                  "${data["routesCount"]} مسارات",
+                                  " مسارات",
                                   style: AppTextStyle.font11BlackRegular
                                       .copyWith(color: AppColors.lightGreen),
                                 ),
@@ -117,7 +113,11 @@ class StationCard extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                context.pushNamed(stationDetailsScreen);
+                Navigator.pushNamed(
+                  context,
+                  stationDetailsScreen,
+                  arguments: data.id,
+                );
               },
               icon: Icon(
                 Icons.arrow_forward_ios_outlined,
