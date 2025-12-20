@@ -72,7 +72,7 @@ class LoginScreen extends StatelessWidget {
                     sucssesToast(
                       context,
                       " عمليه تسجيل دخول ناجحه",
-                      "تم تسجيل حسابك بنجاح",
+                      "مرحبا بك",
                     );
                     context.pushNamed(homeScreen);
                   }

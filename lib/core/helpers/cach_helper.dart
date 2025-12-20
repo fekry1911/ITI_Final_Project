@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:iti_moqaf/core/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheHelper {
@@ -31,5 +33,28 @@ class CacheHelper {
 
   static removeString({required String key}) {
     return sharedPreferences!.remove(key);
+  }
+
+  static Future<bool> saveUser(User user) async {
+    return await sharedPreferences!.setString(
+      'user_data',
+      jsonEncode(user.toJson()),
+    );
+  }
+
+  static User? getUser() {
+    String? userStr = sharedPreferences!.getString('user_data');
+    if (userStr != null) {
+      return User.fromJson(jsonDecode(userStr));
+    }
+    return null;
+  }
+
+  static Future<bool> clearUser() async {
+    return await sharedPreferences!.remove('user_data');
+  }
+
+  static Future<bool> clearData() async {
+    return await sharedPreferences!.clear();
   }
 }
