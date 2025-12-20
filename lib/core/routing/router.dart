@@ -10,7 +10,6 @@ import 'package:iti_moqaf/featuers/stations_details/screen/station_details_scree
 import '../../featuers/home/logic/home_cubit.dart';
 import '../../featuers/home/screens/home_screen.dart';
 import '../../featuers/login/screen/login_screen.dart';
-import '../../featuers/near_stations/screens/screen.dart';
 import '../../featuers/register/logic/register_user_cubit.dart';
 import '../../featuers/register/screen/verify_email_screen.dart';
 import '../../featuers/splash/screen/splash_screen.dart';

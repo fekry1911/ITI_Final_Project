@@ -21,8 +21,13 @@ class LoginCubit extends Cubit<LoginStates> {
     UserLoginRequest user = UserLoginRequest(email: email, password: password);
     var res = await loginUser.loginUser(user);
     if (res is ApiSuccess) {
-      await CacheHelper.putBoolean(key: "token", value: true);
+      print(res.data['accessToken']);
+      await CacheHelper.putString(
+        key: "token",
+        value: res.data['accessToken'],
+      );
       emit(LoginSuccess(user));
+
     }
     if (res is ApiError) {
       emit(LoginError(res.message));
