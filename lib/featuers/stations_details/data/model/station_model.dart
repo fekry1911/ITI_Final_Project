@@ -90,7 +90,9 @@ class LineModel {
   @JsonKey(name: '_id')
   final String id;
 
+  @JsonKey(fromJson: _stationToString)
   final String fromStation;
+  @JsonKey(fromJson: _stationToString)
   final String toStation;
 
   final num price;
@@ -106,6 +108,15 @@ class LineModel {
 
   factory LineModel.fromJson(Map<String, dynamic> json) =>
       _$LineModelFromJson(json);
+
+  static String _stationToString(dynamic value) {
+    if (value is Map) {
+      return value['stationName'] as String? ?? '';
+    } else if (value is String) {
+      return value;
+    }
+    return '';
+  }
 
   Map<String, dynamic> toJson() => _$LineModelToJson(this);
 }

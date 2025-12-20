@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/near_stations/data/model/near_stations_model.dart';
+import 'package:iti_moqaf/featuers/near_stations/logic/get_nearby_stations_cubit.dart';
 import 'package:iti_moqaf/featuers/near_stations/screens/widgets/recent_route_card.dart';
 import 'package:iti_moqaf/featuers/near_stations/screens/widgets/search_field.dart';
 
 class HomeBottomSheet extends StatelessWidget {
-  HomeBottomSheet({super.key, required this.data, required this.userPosition});
-
-  List<NearStationModel> data;
-  Position userPosition;
+  HomeBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -86,21 +83,43 @@ class HomeBottomSheet extends StatelessWidget {
 
               SizedBox(height: 16.h),
 
-              ListView.separated(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return RecentRouteCard(
-                    data: data[index],
-                    userPosition: userPosition,
-                  );
+             BlocBuilder<GetNearbyStationsCubit, GetNearbyStationsState>(
+                builder: (context, state) {
+                  var cubit = context.read<GetNearbyStationsCubit>();
+                  if (state is GetNearbyStationsSuccess) {
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return RecentRouteCard(
+                          data: state.data[index],
+                          userPosition: state.userPosition,
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(height: 10.h);
+                      },
+                      itemCount: state.data.length,
+                    );
+                  } else if (state is GetNearbyStationsError) {
+                    return Center(
+                      child: Column(
+                        children: [
+                          Text(state.error),
+                          TextButton(
+                            onPressed: () {
+                              cubit.getNearbyStations();
+                            },
+                            child: Text("حاول مره اخري"),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
                 },
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: 10.h);
-                },
-                itemCount: data.length,
               ),
-
             ],
           ),
         );

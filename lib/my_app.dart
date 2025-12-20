@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
           initialRoute:splashScreen,
 
           theme: ThemeData(
+            primaryColor: AppColors.mainColor,
             scaffoldBackgroundColor: AppColors.scaffoldColor,
             appBarTheme: AppBarTheme(
               backgroundColor: AppColors.scaffoldColor

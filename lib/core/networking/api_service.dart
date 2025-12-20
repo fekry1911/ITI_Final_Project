@@ -101,6 +101,7 @@ class ApiService {
     } on DioException catch (e) {
       return ApiError<StationModel>(handleDioError(e));
     } catch (e) {
+      print(e.toString());
       return ApiError<StationModel>(e.toString());
     }
   }
