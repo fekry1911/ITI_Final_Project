@@ -1,14 +1,13 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iti_moqaf/core/di/di.dart';
+import 'package:iti_moqaf/featuers/near_stations/logic/get_nearby_stations_cubit.dart';
 import 'package:iti_moqaf/featuers/near_stations/screens/screen.dart';
 import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
 import 'package:iti_moqaf/featuers/profile/screens/profile_screen.dart';
 import 'package:iti_moqaf/featuers/stations/logic/get_all_stations_cubit.dart';
 import 'package:iti_moqaf/featuers/stations/screens/StationsScreen.dart';
-import 'package:meta/meta.dart';
 
 import '../../community/screens/community.dart';
 

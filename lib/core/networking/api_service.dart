@@ -6,6 +6,8 @@ import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/featuers/stations_details/data/model/station_model.dart';
 import 'package:iti_moqaf/featuers/login/data/models/user_login_request.dart';
 import '../../featuers/login/data/models/user_login_response.dart';
+import '../../featuers/near_stations/data/model/near_stations_model.dart';
+
 
 import '../../featuers/register/data/model/user_register_request.dart';
 import '../../featuers/stations/data/model/stations_model.dart';
@@ -31,11 +33,14 @@ class ApiService {
       var response = await dio.post(login, data: user.toJson());
       return ApiSuccess(UserLoginResponse.fromJson(response.data));
     } on DioException catch (e) {
+      print(e.response);
       return ApiError(handleDioError(e));
     } catch (e) {
+      print(e.toString());
       return ApiError(e.toString());
     }
   }
+
 
   Future<ApiResult> verifyEmail(String email, String code) async {
     try {
@@ -101,25 +106,34 @@ class ApiService {
     }
   }
 
-  Future<ApiResult<SimpleStationsResponse>> getAllNearbyStations() async {
+  Future<ApiResult<StationsResponseModel>> getAllNearbyStations(double lat,double long ,double distance) async {
     try {
       final response = await dio.get(
         near,
+        data:
+          {
+            "lat": lat,
+            "lng":long,
+            "distance": distance
+          }
+
+
+        ,
         options: Options(
           headers: {
-            "accessToken":
+            "Authorization":
                 "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NDRiZDk3MjAyYmFlNDkyMmNjYTNlNiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NjE1MTU0OX0.2znGJ_AMWXzlQzoae4g1cQLFQYG_GExNjResKY-BEoA",
           },
         ),
       );
       print(response.data);
-      final SimpleStationsResponse stationsMoedl =
-          SimpleStationsResponse.fromJson(response.data);
-      print(stationsMoedl.toString());
-      return ApiSuccess<SimpleStationsResponse>(stationsMoedl);
+        StationsResponseModel stationsResponseModel = StationsResponseModel.fromJson(response.data);
+      return ApiSuccess<StationsResponseModel>(stationsResponseModel);
     } on DioException catch (e) {
       print(e.toString());
-      return ApiError<SimpleStationsResponse>(e.toString());
+      return ApiError<StationsResponseModel>(e.response.toString());
+    } catch (e) {
+      return ApiError(e.toString());
     }
   }
 
