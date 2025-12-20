@@ -78,7 +78,7 @@ class VerifyEmailScreen extends StatelessWidget {
                       "نجاح",
                       "تم تأكيد البريد الإلكتروني بنجاح",
                     );
-                    context.pushNamed(homeScreen);
+                    context.pushNamed(loginScreen);
                   } else if (state is VerifyEmailError) {
                     errorToast(context, "خطأ", state.error);
                   }

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import 'package:iti_moqaf/featuers/login/logic/login_cubit.dart';
-
-import '../../../../core/const/const_paths.dart';
 
 class ButtonDone extends StatelessWidget {
   const ButtonDone({super.key});
@@ -21,14 +18,16 @@ class ButtonDone extends StatelessWidget {
           height: 40.h,
 
           child: MaterialButton(
-            onPressed: () {
-              if (cubit.formKey.currentState!.validate()) {
-                cubit.login(
-                  email: cubit.emailController.text,
-                  password: cubit.passwordController.text,
-                );
-              }
-            },
+            onPressed: state is LoginLoading
+                ? null
+                : () {
+                    if (cubit.formKey.currentState!.validate()) {
+                      cubit.login(
+                        email: cubit.emailController.text,
+                        password: cubit.passwordController.text,
+                      );
+                    }
+                  },
             color: AppColors.blackColor,
             splashColor: AppColors.mainColor,
             shape: RoundedRectangleBorder(

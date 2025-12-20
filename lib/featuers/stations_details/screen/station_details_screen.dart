@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
+import 'package:iti_moqaf/featuers/stations_details/logic/get_one_station_cubit.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/widgets/route_card.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/widgets/station_info.dart';
-
-import 'data/route_data.dart';
 
 class StationDetailsScreen extends StatelessWidget {
   final String stationId;
@@ -19,7 +19,21 @@ class StationDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppColors.whiteColor,
-        title: Text("تفاصيل الموقف"),
+        title: BlocBuilder<GetOneStationCubit, GetOneStationState>(
+          builder: (context, state) {
+            var cubit = context.read<GetOneStationCubit>();
+            if (state is GetOneStationSuccess) {
+              return Text(
+                state.stationModel.data.stationName,
+                style: AppTextStyle.font14GreyRegular.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            }
+
+            return SizedBox.shrink();
+          },
+        ),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
@@ -49,29 +63,56 @@ class StationDetailsScreen extends StatelessWidget {
             padding: EdgeInsets.all(15.h),
             child: Column(
               children: [
-                SizedBox(height: 150.h),
+                SizedBox(height: 10.h),
                 StationInfo(),
-                SizedBox(height: 20.h),
+                SizedBox(height: 90.h),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "المسارات المتاحه",
+                      "الخطوط المتاحه",
                       style: AppTextStyle.font24BlackSemiBold,
                     ),
                   ],
                 ),
                 SizedBox(height: 10.h),
-                Expanded(
-                  child: ListView.separated(
-                    itemBuilder: (BuildContext context, int index) {
-                      return RouteCard(data: routesData[index],);
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(height: 7.h,);
-                    },
-                    itemCount: routesData.length,
-                  ),
+                BlocBuilder<GetOneStationCubit, GetOneStationState>(
+                  builder: (context, state) {
+                    var cubit = context.read<GetOneStationCubit>();
+                    if (state is GetOneStationError) {
+                      return Center(child: Text(state.error));
+                    } else if (state is GetOneStationSuccess &&
+                        state.stationModel.data.lines.isNotEmpty) {
+                      return Expanded(
+                        child: ListView.separated(
+                          itemBuilder: (BuildContext context, int index) {
+                            return RouteCard(
+                              data: state.stationModel.data.lines[index],
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(height: 7.h);
+                          },
+                          itemCount: state.stationModel.data.lines.length,
+                        ),
+                      );
+                    } else if (state is GetOneStationLoading) {
+                      return Expanded(
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    } else {
+                      return Expanded(
+                        child: Center(
+                          child: Text(
+                            "لا يوجد خطوط ف هذه المحطه",
+                            style: AppTextStyle.font24BlackSemiBold.copyWith(
+                              fontSize: 20.sp,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ],
             ),

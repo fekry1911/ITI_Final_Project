@@ -42,7 +42,9 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      cubit.setIndex(0);
+                    },
                     icon: Icon(
                       Icons.location_on_outlined,
                       size: 28.r,

@@ -13,6 +13,7 @@ import 'package:iti_moqaf/featuers/stations_details/data/repo/get_one_station_re
 import 'package:iti_moqaf/featuers/stations_details/logic/get_one_station_cubit.dart';
 
 import '../../featuers/near_stations/data/repo/get_nearby_stations.dart';
+import '../../featuers/near_stations/logic/get_nearby_stations_cubit.dart';
 import '../../featuers/register/data/repo/register_user.dart';
 
 final getIt = GetIt.instance;
@@ -53,6 +54,7 @@ void configureDependencies() {
   getIt.registerFactory<GetAllStationsCubit>(
     () => GetAllStationsCubit(getIt<GetAllStationsRepo>()),
   );
+   getIt.registerFactory<GetNearbyStationsCubit>(() => GetNearbyStationsCubit(getIt<GetNearbyStationsRepo>()));
 
   getIt.registerFactory<GetOneStationCubit>(
     () => GetOneStationCubit(getIt<GetOneStationRepo>()),
