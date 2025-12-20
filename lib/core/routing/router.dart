@@ -4,6 +4,8 @@ import 'package:iti_moqaf/core/di/di.dart';
 import 'package:iti_moqaf/featuers/login/logic/login_cubit.dart';
 import 'package:iti_moqaf/featuers/map/map.dart';
 import 'package:iti_moqaf/featuers/on_boarding/screen/on_boarding_screen.dart';
+import 'package:iti_moqaf/featuers/profile/screens/profile_screen.dart';
+import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
 import 'package:iti_moqaf/featuers/register/screen/register.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/station_details_screen.dart';
 
@@ -81,10 +83,21 @@ class AppRouter {
         return _buildPageRoute(
           settings,
           BlocProvider(
-            create: (context) => getIt<GetOneStationCubit>()..getOneStationById(stationId),
+            create: (context) =>
+                getIt<GetOneStationCubit>()..getOneStationById(stationId),
             child: StationDetailsScreen(stationId: stationId),
           ),
           transition: TransitionType.scale,
+        );
+
+      case profileScreen:
+        return _buildPageRoute(
+          settings,
+          BlocProvider(
+            create: (context) => getIt<ProfileCubit>(),
+            child: const ProfileScreen(),
+          ),
+          transition: TransitionType.slideFromRight,
         );
 
       case mapScreen:

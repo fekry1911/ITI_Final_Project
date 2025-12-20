@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/featuers/home/logic/home_cubit.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -16,14 +17,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-        var cubit=context.read<HomeCubit>();
+        var cubit = context.read<HomeCubit>();
         return Scaffold(
-          appBar:cubit.index==0?null: AppBar(
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-          ),
+          appBar: cubit.index == 0
+              ? null
+              : AppBar(elevation: 0, backgroundColor: Colors.transparent),
           extendBody: true,
-          body:cubit.screens[cubit.index],
+          body: cubit.screens[cubit.index],
           floatingActionButton: Transform.translate(
             offset: Offset(0, 10.h),
             child: ClipRRect(
@@ -54,8 +54,8 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          floatingActionButtonLocation: FloatingActionButtonLocation
-              .centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: Container(
             margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
             height: 60.h,
@@ -101,7 +101,7 @@ class HomeScreen extends StatelessWidget {
                     showUnselectedLabels: false,
                     items: const [
                       BottomNavigationBarItem(
-                        icon:Icon(Iconsax.house),
+                        icon: Icon(Iconsax.house),
                         label: "Home",
                       ),
                       BottomNavigationBarItem(
@@ -118,7 +118,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                     onTap: (index) {
-                      cubit.setIndex(index);
+                      cubit.changeIndex(index);
                     },
                   ),
                 ),

@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:iti_moqaf/core/const/api_const.dart';
+import 'package:iti_moqaf/core/models/user_model.dart';
 import 'package:iti_moqaf/core/networking/api_result.dart';
+import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/featuers/stations_details/data/model/station_model.dart';
 import 'package:iti_moqaf/featuers/login/data/models/user_login_request.dart';
-
+import '../../featuers/login/data/models/user_login_response.dart';
 
 import '../../featuers/register/data/model/user_register_request.dart';
 import '../../featuers/stations/data/model/stations_model.dart';
@@ -24,11 +26,10 @@ class ApiService {
     }
   }
 
-  
-  Future<ApiResult> loginUser(UserLoginRequest user) async {
+  Future<ApiResult<UserLoginResponse>> loginUser(UserLoginRequest user) async {
     try {
       var response = await dio.post(login, data: user.toJson());
-      return ApiSuccess(response);
+      return ApiSuccess(UserLoginResponse.fromJson(response.data));
     } on DioException catch (e) {
       return ApiError(handleDioError(e));
     } catch (e) {
@@ -49,6 +50,7 @@ class ApiService {
       return ApiError(e.toString());
     }
   }
+
   Future<ApiResult<SimpleStationsResponse>> getAllStations({
     required int page,
     required int limit,
@@ -60,14 +62,14 @@ class ApiService {
         options: Options(
           headers: {
             "Authorization":
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NDRiZDk3MjAyYmFlNDkyMmNjYTNlNiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NjE1MTU0OX0.2znGJ_AMWXzlQzoae4g1cQLFQYG_GExNjResKY-BEoA",
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NDRiZDk3MjAyYmFlNDkyMmNjYTNlNiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NjE1MTU0OX0.2znGJ_AMWXzlQzoae4g1cQLFQYG_GExNjResKY-BEoA",
           },
         ),
       );
       print(response.data);
 
-      final SimpleStationsResponse stationsMoedl = SimpleStationsResponse
-          .fromJson(response.data);
+      final SimpleStationsResponse stationsMoedl =
+          SimpleStationsResponse.fromJson(response.data);
       print(stationsMoedl.toString());
       return ApiSuccess<SimpleStationsResponse>(stationsMoedl);
     } on DioException catch (e) {
@@ -80,21 +82,21 @@ class ApiService {
 
   Future<ApiResult<StationModel>> getOneStationDetails(id) async {
     try {
-      final response = await dio.get("${station}/${id}", options: Options(
-        headers: {
-          "Authorization":
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NDRiZDk3MjAyYmFlNDkyMmNjYTNlNiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NjE1MTU0OX0.2znGJ_AMWXzlQzoae4g1cQLFQYG_GExNjResKY-BEoA",
-        },
-      ),
+      final response = await dio.get(
+        "${station}/${id}",
+        options: Options(
+          headers: {
+            "Authorization":
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NDRiZDk3MjAyYmFlNDkyMmNjYTNlNiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NjE1MTU0OX0.2znGJ_AMWXzlQzoae4g1cQLFQYG_GExNjResKY-BEoA",
+          },
+        ),
       );
       print(response.data);
       StationModel stationModel = StationModel.fromJson(response.data);
       return ApiSuccess<StationModel>(stationModel);
-    }
-    on DioException catch (e) {
+    } on DioException catch (e) {
       return ApiError<StationModel>(handleDioError(e));
-    }
-    catch (e) {
+    } catch (e) {
       return ApiError<StationModel>(e.toString());
     }
   }
@@ -106,23 +108,37 @@ class ApiService {
         options: Options(
           headers: {
             "accessToken":
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NDRiZDk3MjAyYmFlNDkyMmNjYTNlNiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NjE1MTU0OX0.2znGJ_AMWXzlQzoae4g1cQLFQYG_GExNjResKY-BEoA",
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NDRiZDk3MjAyYmFlNDkyMmNjYTNlNiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NjE1MTU0OX0.2znGJ_AMWXzlQzoae4g1cQLFQYG_GExNjResKY-BEoA",
           },
         ),
       );
       print(response.data);
-      final SimpleStationsResponse stationsMoedl = SimpleStationsResponse
-          .fromJson(response.data);
+      final SimpleStationsResponse stationsMoedl =
+          SimpleStationsResponse.fromJson(response.data);
       print(stationsMoedl.toString());
       return ApiSuccess<SimpleStationsResponse>(stationsMoedl);
     } on DioException catch (e) {
       print(e.toString());
-      return ApiError<SimpleStationsResponse>(e.response.toString());
-    } catch (e) {
       return ApiError<SimpleStationsResponse>(e.toString());
-    
     }
   }
+
+  Future<ApiResult<User>> getUserDetails(String userId) async {
+    var token = CacheHelper.getString(key: "token");
+    print(token);
+    try {
+      final response = await dio.get(
+        "$getUserById/$userId",
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+      );
+
+      User user = User.fromJson(response.data["data"]["user"]);
+
+      return ApiSuccess<User>(user);
+    } on DioException catch (e) {
+      return ApiError<User>(handleDioError(e));
+    } catch (e) {
+      return ApiError<User>(e.toString());
     }
   }
 }
