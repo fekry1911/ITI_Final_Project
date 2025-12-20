@@ -9,6 +9,7 @@ import 'package:iti_moqaf/featuers/stations/screens/widgets/station_card.dart';
 import '../../../core/theme/color/colors.dart';
 import '../data/model/data/filter_data.dart';
 import '../data/model/data/statuins_data.dart';
+import '../logic/get_all_stations_state.dart';
 
 class StationsScreen extends StatefulWidget {
   const StationsScreen({super.key});
@@ -115,6 +116,7 @@ class _StationsscreenState extends State<StationsScreen> {
                       return StationCard(
                         data: state.stations[index],
                         index: index,
+                        userPosition: state.userPosition,
                       );
                     },
                     separatorBuilder: (BuildContext context, int index) {
