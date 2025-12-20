@@ -1,28 +1,71 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'station_model.g.dart';
 
+/// =======================
+/// Station Root Model
+/// =======================
 @JsonSerializable()
 class StationModel {
-  /// data field
-  final Data data;
+  final StationData data;
 
   const StationModel({
     required this.data,
   });
 
-  factory StationModel.fromJson(Map<String, dynamic> json) => _$StationModelFromJson(json);
+  factory StationModel.fromJson(Map<String, dynamic> json) =>
+      _$StationModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$StationModelToJson(this);
 }
 
+/// =======================
+/// Station Data
+/// =======================
+@JsonSerializable()
+class StationData {
+  final Location location;
+
+  @JsonKey(name: '_id')
+  final String id;
+
+  final String stationName;
+
+  final List<LineModel> lines;
+
+  final String status;
+
+  @JsonKey(name: '__v')
+  final int v;
+
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  const StationData({
+    required this.location,
+    required this.id,
+    required this.stationName,
+    required this.lines,
+    required this.status,
+    required this.v,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory StationData.fromJson(Map<String, dynamic> json) =>
+      _$StationDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StationDataToJson(this);
+}
+
+/// =======================
+/// Location Model
+/// =======================
 @JsonSerializable()
 class Location {
-  /// type field
   final String type;
-  /// coordinates field
+
+  @JsonKey(fromJson: _toDoubleList)
   final List<double> coordinates;
 
   const Location({
@@ -30,45 +73,39 @@ class Location {
     required this.coordinates,
   });
 
-  factory Location.fromJson(Map<String, dynamic> json) => _$LocationFromJson(json);
+  factory Location.fromJson(Map<String, dynamic> json) =>
+      _$LocationFromJson(json);
 
   Map<String, dynamic> toJson() => _$LocationToJson(this);
+
+  static List<double> _toDoubleList(List list) =>
+      list.map((e) => (e as num).toDouble()).toList();
 }
 
+/// =======================
+/// Line Model
+/// =======================
 @JsonSerializable()
-class Data {
-  /// location field
-  final Location location;
-  /// _id field
-  ///
+class LineModel {
   @JsonKey(name: '_id')
   final String id;
-  /// stationName field
-  final String stationName;
-  /// lines field
-  final List<dynamic> lines;
-  /// status field
-  final String status;
-  /// __v field
-  @JsonKey(name: '__v')
-  final int V;
-  /// createdAt field
-  final DateTime createdAt;
-  /// updatedAt field
-  final DateTime updatedAt;
 
-  const Data({
-    required this.location,
+  final String fromStation;
+  final String toStation;
+
+  final num price;
+  final num? distance;
+
+  const LineModel({
     required this.id,
-    required this.stationName,
-    required this.lines,
-    required this.status,
-    required this.V,
-    required this.createdAt,
-    required this.updatedAt,
+    required this.fromStation,
+    required this.toStation,
+    required this.price,
+    this.distance,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
+  factory LineModel.fromJson(Map<String, dynamic> json) =>
+      _$LineModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DataToJson(this);
+  Map<String, dynamic> toJson() => _$LineModelToJson(this);
 }

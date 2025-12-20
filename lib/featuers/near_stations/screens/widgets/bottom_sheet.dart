@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
+import 'package:iti_moqaf/featuers/near_stations/data/model/near_stations_model.dart';
 import 'package:iti_moqaf/featuers/near_stations/screens/widgets/recent_route_card.dart';
 import 'package:iti_moqaf/featuers/near_stations/screens/widgets/search_field.dart';
 
 class HomeBottomSheet extends StatelessWidget {
-  const HomeBottomSheet({super.key});
+  HomeBottomSheet({super.key, required this.data, required this.userPosition});
+
+  List<NearStationModel> data;
+  Position userPosition;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +63,7 @@ class HomeBottomSheet extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "آخر المسارات",
+                    "اقرب المواقف",
                     style: AppTextStyle.font24BlackSemiBold.copyWith(
                       fontSize: 18.sp,
                     ),
@@ -81,56 +86,21 @@ class HomeBottomSheet extends StatelessWidget {
 
               SizedBox(height: 16.h),
 
-              RecentRouteCard(
-                title: "من البيت للشغل",
-                subtitle: "أتوبيس 42 • يتحرك كمان 8 دقايق",
-                statusText: "في المعاد",
-                statusColor: Colors.green,
-                onTap: () {
-                  print("Route tapped");
+              ListView.separated(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return RecentRouteCard(
+                    data: data[index],
+                    userPosition: userPosition,
+                  );
                 },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(height: 10.h);
+                },
+                itemCount: data.length,
               ),
-              SizedBox(height: 10.h),
 
-              RecentRouteCard(
-                title: "من البيت للشغل",
-                subtitle: "أتوبيس 42 • يتحرك كمان 8 دقايق",
-                statusText: "في المعاد",
-                statusColor: Colors.green,
-                onTap: () {
-                  print("Route tapped");
-                },
-              ),
-              SizedBox(height: 10.h),
-              RecentRouteCard(
-                title: "من البيت للشغل",
-                subtitle: "أتوبيس 42 • يتحرك كمان 8 دقايق",
-                statusText: "في المعاد",
-                statusColor: Colors.green,
-                onTap: () {
-                  print("Route tapped");
-                },
-              ),
-              SizedBox(height: 10.h),
-              RecentRouteCard(
-                title: "من البيت للشغل",
-                subtitle: "أتوبيس 42 • يتحرك كمان 8 دقايق",
-                statusText: "في المعاد",
-                statusColor: Colors.green,
-                onTap: () {
-                  print("Route tapped");
-                },
-              ),
-              SizedBox(height: 10.h),
-              RecentRouteCard(
-                title: "من البيت للشغل",
-                subtitle: "أتوبيس 42 • يتحرك كمان 8 دقايق",
-                statusText: "في المعاد",
-                statusColor: Colors.green,
-                onTap: () {
-                  print("Route tapped");
-                },
-              ),
             ],
           ),
         );

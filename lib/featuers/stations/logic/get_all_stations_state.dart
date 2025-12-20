@@ -1,4 +1,8 @@
-part of 'get_all_stations_cubit.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
+
+import '../data/model/stations_model.dart';
 
 @immutable
 sealed class GetAllStationsState extends Equatable {}
@@ -17,13 +21,13 @@ final class GetAllStationsLoading extends GetAllStationsState {
 
 final class GetAllStationsSuccess extends GetAllStationsState {
   final List<SimpleStationData> stations;
+  final Position? userPosition;
 
-
-  GetAllStationsSuccess(this.stations,);
+  GetAllStationsSuccess(this.stations, this.userPosition);
 
   @override
   // TODO: implement props
-  List<Object?> get props => [stations];
+  List<Object?> get props => [stations, userPosition];
 }
 
 final class GetAllStationsError extends GetAllStationsState {
