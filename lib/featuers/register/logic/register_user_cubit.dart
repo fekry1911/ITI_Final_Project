@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:iti_moqaf/core/models/user_model.dart';
 import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/core/networking/api_result.dart';
 import 'package:iti_moqaf/featuers/register/data/repo/register_user.dart';
@@ -58,6 +59,20 @@ class RegisterUserCubit extends Cubit<RegisterUserState> {
           key: "token",
           value: response.data['data']['accessToken'],
         );
+        // Parse user data - Assuming structure similar to Login
+        try {
+          var data = response.data['data'];
+          if (data['user'] != null) {
+            User userObj = User.fromJson(data['user']);
+            await CacheHelper.saveUser(userObj);
+          } else {
+            // Fallback if data itself is user
+            User userObj = User.fromJson(data);
+            await CacheHelper.saveUser(userObj);
+          }
+        } catch (e) {
+          print("Error parsing user data in verifyEmail: $e");
+        }
       } else {
         print("Warning: Access Token not found in response: ${response.data}");
       }

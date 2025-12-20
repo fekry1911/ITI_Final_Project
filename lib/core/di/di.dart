@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:iti_moqaf/core/networking/api_service.dart';
 import 'package:iti_moqaf/core/networking/dio_config.dart';
+import 'package:iti_moqaf/featuers/profile/data/repo/profile_repo.dart';
+import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
 import 'package:iti_moqaf/featuers/login/data/repo/login_request_repo.dart';
 import 'package:iti_moqaf/featuers/login/logic/login_cubit.dart';
 import 'package:iti_moqaf/featuers/register/logic/register_user_cubit.dart';
@@ -22,27 +24,42 @@ void configureDependencies() {
   // api service
   getIt.registerLazySingleton<ApiService>(() => ApiService(getIt<Dio>()));
 
-
   //repos
-  getIt.registerLazySingleton<RegisterUser>(() => RegisterUser(getIt<ApiService>()));
-  getIt.registerLazySingleton<GetAllStationsRepo>(() => GetAllStationsRepo(getIt<ApiService>()));
-  getIt.registerLazySingleton<GetNearbyStationsRepo>(() => GetNearbyStationsRepo(getIt<ApiService>()));
+  getIt.registerLazySingleton<RegisterUser>(
+    () => RegisterUser(getIt<ApiService>()),
+  );
+  getIt.registerLazySingleton<GetAllStationsRepo>(
+    () => GetAllStationsRepo(getIt<ApiService>()),
+  );
+  getIt.registerLazySingleton<GetNearbyStationsRepo>(
+    () => GetNearbyStationsRepo(getIt<ApiService>()),
+  );
 
-  getIt.registerLazySingleton<GetOneStationRepo>(() => GetOneStationRepo(getIt<ApiService>()));
+  getIt.registerLazySingleton<GetOneStationRepo>(
+    () => GetOneStationRepo(getIt<ApiService>()),
+  );
   getIt.registerLazySingleton<LoginRequestRepo>(
     () => LoginRequestRepo(getIt<ApiService>()),
   );
 
-
-  // cubit
-  getIt.registerFactory<RegisterUserCubit>(() => RegisterUserCubit(getIt<RegisterUser>()));
-  getIt.registerFactory<GetAllStationsCubit>(() => GetAllStationsCubit(getIt<GetAllStationsRepo>()));
-  getIt.registerFactory<GetNearbyStationsCubit>(() => GetNearbyStationsCubit(getIt<GetNearbyStationsRepo>()));
-
-  getIt.registerFactory<GetOneStationCubit>(() => GetOneStationCubit(getIt<GetOneStationRepo>()));
-    getIt.registerFactory<LoginCubit>(
-    () => LoginCubit((getIt<LoginRequestRepo>())),
+  getIt.registerLazySingleton<ProfileRepo>(
+    () => ProfileRepo(getIt<ApiService>()),
   );
 
+  // cubit
+  getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt<ProfileRepo>()));
+  getIt.registerFactory<RegisterUserCubit>(
+    () => RegisterUserCubit(getIt<RegisterUser>()),
+  );
+  getIt.registerFactory<GetAllStationsCubit>(
+    () => GetAllStationsCubit(getIt<GetAllStationsRepo>()),
+  );
+   getIt.registerFactory<GetNearbyStationsCubit>(() => GetNearbyStationsCubit(getIt<GetNearbyStationsRepo>()));
 
+  getIt.registerFactory<GetOneStationCubit>(
+    () => GetOneStationCubit(getIt<GetOneStationRepo>()),
+  );
+  getIt.registerFactory<LoginCubit>(
+    () => LoginCubit((getIt<LoginRequestRepo>())),
+  );
 }

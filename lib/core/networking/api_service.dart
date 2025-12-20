@@ -1,9 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:iti_moqaf/core/const/api_const.dart';
+import 'package:iti_moqaf/core/models/user_model.dart';
 import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/featuers/login/data/models/user_login_request.dart';
+import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/featuers/stations_details/data/model/station_model.dart';
+import 'package:iti_moqaf/featuers/login/data/models/user_login_request.dart';
+import '../../featuers/login/data/models/user_login_response.dart';
 import '../../featuers/near_stations/data/model/near_stations_model.dart';
+
+
 import '../../featuers/register/data/model/user_register_request.dart';
 import '../../featuers/stations/data/model/stations_model.dart';
 
@@ -23,14 +28,10 @@ class ApiService {
     }
   }
 
-  Future<ApiResult> loginUser(UserLoginRequest user) async {
+  Future<ApiResult<UserLoginResponse>> loginUser(UserLoginRequest user) async {
     try {
       var response = await dio.post(login, data: user.toJson());
-      print(response.data["data"]);
-      print(response.statusCode);
-      print(user.email);
-      print(user.password);
-      return ApiSuccess(response.data["data"]);
+      return ApiSuccess(UserLoginResponse.fromJson(response.data));
     } on DioException catch (e) {
       print(e.response);
       return ApiError(handleDioError(e));
@@ -101,7 +102,6 @@ class ApiService {
     } on DioException catch (e) {
       return ApiError<StationModel>(handleDioError(e));
     } catch (e) {
-      print(e.toString());
       return ApiError<StationModel>(e.toString());
     }
   }
@@ -127,13 +127,32 @@ class ApiService {
         ),
       );
       print(response.data);
-      StationsResponseModel stationsResponseModel = StationsResponseModel.fromJson(response.data);
+        StationsResponseModel stationsResponseModel = StationsResponseModel.fromJson(response.data);
       return ApiSuccess<StationsResponseModel>(stationsResponseModel);
     } on DioException catch (e) {
       print(e.toString());
       return ApiError<StationsResponseModel>(e.response.toString());
     } catch (e) {
       return ApiError(e.toString());
+    }
+  }
+
+  Future<ApiResult<User>> getUserDetails(String userId) async {
+    var token = CacheHelper.getString(key: "token");
+    print(token);
+    try {
+      final response = await dio.get(
+        "$getUserById/$userId",
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+      );
+
+      User user = User.fromJson(response.data["data"]["user"]);
+
+      return ApiSuccess<User>(user);
+    } on DioException catch (e) {
+      return ApiError<User>(handleDioError(e));
+    } catch (e) {
+      return ApiError<User>(e.toString());
     }
   }
 }
