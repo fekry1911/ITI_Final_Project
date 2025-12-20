@@ -24,7 +24,7 @@ class UserRegisterRequest {
   });
 
   factory UserRegisterRequest.fromJson(Map<String, dynamic> json) =>
-      _$UserFromJson(json);
+      _$UserRegisterRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() => _$UserRegisterRequestToJson(this);
 }

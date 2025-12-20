@@ -25,13 +25,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
     final bool isOnboardingDone =
         CacheHelper.getBoolean(key: "onBoarding_finish") ?? false;
-    final bool isRegistered = CacheHelper.getBoolean(key: "register") ?? false;
+    final String isRegistered = CacheHelper.getString(key: "token") ?? "";
 
     Future.delayed(const Duration(milliseconds: 9000), () {
       if (!mounted) return;
 
       if (isOnboardingDone) {
-        if (isRegistered) {
+        if (isRegistered == "") {
           Navigator.pushReplacementNamed(context, homeScreen);
         } else {
           Navigator.pushReplacementNamed(context, loginScreen);

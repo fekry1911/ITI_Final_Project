@@ -37,7 +37,7 @@ class StationInfo extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   state.stationModel.data!.stationName!,
                                   style: AppTextStyle.font30BlackBold.copyWith(
-                                    fontSize: 20.sp,
+                                    fontSize: 25.sp,
                                   ),
                                 ),
                               ),
@@ -57,8 +57,8 @@ class StationInfo extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5.h),
-                          Row(
+                       //   SizedBox(height: 5.h),
+                        /*  Row(
                             children: [
                               Icon(
                                 Icons.location_on_outlined,
@@ -66,14 +66,14 @@ class StationInfo extends StatelessWidget {
                                 color: AppColors.lightGreen,
                               ),
                               Text(
-                              state.stationModel.data.createdAt.toString(),
+                              state.stationModel.data.location.coordinates.toString(),
                                 style: AppTextStyle.font18GreyRegular.copyWith(
                                     color: AppColors.lightGreen,
                                     fontWeight: FontWeight.bold
                                 ),
                               ),
                             ],
-                          ),
+                          ),*/
                         ],
                       ),
                     ),
@@ -83,7 +83,7 @@ class StationInfo extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "عدد المسارات",
+                      "عدد الخطوط",
                       style: AppTextStyle.font18WhiteMedium.copyWith(
                         color: AppColors.blackColor,
                       ),

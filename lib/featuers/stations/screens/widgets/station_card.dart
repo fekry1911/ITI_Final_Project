@@ -7,11 +7,14 @@ import 'package:iti_moqaf/featuers/stations/data/model/stations_model.dart';
 
 import '../../../../core/theme/color/colors.dart';
 
+import 'package:geolocator/geolocator.dart';
+
 class StationCard extends StatelessWidget {
-  StationCard({super.key, required this.data, required this.index});
+  StationCard({super.key, required this.data, required this.index, this.userPosition});
 
   SimpleStationData data;
   int index;
+  Position? userPosition;
 
   @override
   Widget build(BuildContext context) {
@@ -79,13 +82,39 @@ class StationCard extends StatelessWidget {
                           )
                         : Row(
                             children: [
-                              Text(
-                                " علي بعد} كم ",
-                                style: AppTextStyle.font14BlackRegular.copyWith(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 9.sp,
+                                Builder(
+                                  builder: (context) {
+                                    if (userPosition != null && data.location != null && data.location!.coordinates.length >= 2) {
+                                      double distanceInMeters = Geolocator.distanceBetween(
+                                        userPosition!.latitude,
+                                        userPosition!.longitude,
+                                        data.location!.coordinates[1], // Lat
+                                        data.location!.coordinates[0], // Long
+                                      );
+
+                                      String distanceText;
+                                      if (distanceInMeters < 1000) {
+                                        distanceText = "علي بعد ${distanceInMeters.toStringAsFixed(0)} متر";
+                                      } else {
+                                        distanceText = "علي بعد ${(distanceInMeters / 1000).toStringAsFixed(2)} كم";
+                                      }
+                                      return Text(
+                                        distanceText,
+                                        style: AppTextStyle.font14BlackRegular.copyWith(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 9.sp,
+                                        ),
+                                      );
+                                    }
+                                    return Text(
+                                      "المسافة غير معروفة",
+                                      style: AppTextStyle.font14BlackRegular.copyWith(
+                                        color: Colors.grey.shade600,
+                                        fontSize: 9.sp,
+                                      ),
+                                    );
+                                  }
                                 ),
-                              ),
                               SizedBox(width: 5.w),
                               Icon(
                                 Icons.circle,
@@ -100,7 +129,7 @@ class StationCard extends StatelessWidget {
                                 ),
                                 padding: EdgeInsets.all(3.h),
                                 child: Text(
-                                  " مسارات",
+                                  "${data.lines.length} الخطوط",
                                   style: AppTextStyle.font11BlackRegular
                                       .copyWith(color: AppColors.lightGreen),
                                 ),
