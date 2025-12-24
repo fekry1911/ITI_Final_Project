@@ -74,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                       " عمليه تسجيل دخول ناجحه",
                       "مرحبا بك",
                     );
-                    context.pushNamed(homeScreen);
+                    context.pushAndRemoveUntil(homeScreen);
                   }
                   if (state is LoginError) {
                     errorToast(context, " عمليه تسجيل دخول فاشله", state.error);

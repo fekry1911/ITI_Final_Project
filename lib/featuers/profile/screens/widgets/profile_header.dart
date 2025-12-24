@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/models/user_model.dart';
 
+import '../../../../core/theme/text_theme/text_theme.dart';
+
 class ProfileHeader extends StatelessWidget {
   final User? user;
-  const ProfileHeader({super.key, this.user});
+   ProfileHeader({super.key, this.user,required this.id});
+  String id;
 
   @override
   Widget build(BuildContext context) {
@@ -43,21 +48,34 @@ class ProfileHeader extends StatelessWidget {
           style: const TextStyle(color: AppColors.subtitle),
         ),
         const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(.1),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: const Text(
-            "مستخدم",
-            style: TextStyle(
-              fontSize: 12,
-              color: AppColors.primary,
-              fontWeight: FontWeight.w600,
+       if(id != CacheHelper.getString(key: "userId"))
+         Center(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(30.r)),
+              boxShadow:[
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 10,
+
+                )
+              ],
+            ),
+            width: 100.w,
+            height: 30.h,
+            child: MaterialButton(
+              onPressed:(){},
+              color: AppColors.whiteColor,
+              splashColor: AppColors.mainColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.r),
+              ),
+              child: Text("مراسله", style: AppTextStyle.font13BlackSemiMedium),
             ),
           ),
         ),
+
       ],
     );
   }

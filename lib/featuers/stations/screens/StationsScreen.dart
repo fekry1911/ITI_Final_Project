@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/shared_widgets/shared_text_form_field.dart';
+import 'package:iti_moqaf/featuers/stations/data/model/stations_model.dart';
 import 'package:iti_moqaf/featuers/stations/logic/get_all_stations_cubit.dart';
 import 'package:iti_moqaf/featuers/stations/screens/widgets/filter_widget.dart';
 import 'package:iti_moqaf/featuers/stations/screens/widgets/station_card.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../core/shared_widgets/error_page.dart';
 import '../../../core/theme/color/colors.dart';
 import '../data/model/data/filter_data.dart';
 import '../data/model/data/statuins_data.dart';
@@ -107,27 +110,62 @@ class _StationsscreenState extends State<StationsScreen> {
             builder: (BuildContext context, state) {
               var cubit = context.read<GetAllStationsCubit>();
               if (state is GetAllStationsError) {
-                return Center(child: Text(state.error));
+                return NetWorkError(onPressed: () {
+                  cubit.getAllStations();
+                },);
               }
-              if (state is GetAllStationsSuccess) {
-                return Expanded(
-                  child: ListView.separated(
-                    itemBuilder: (BuildContext context, int index) {
-                      return StationCard(
-                        data: state.stations[index],
-                        index: index,
-                        userPosition: state.userPosition,
-                      );
+
+              List<SimpleStationData> data = state is GetAllStationsLoading
+                  ? [
+                SimpleStationData(
+                  stationName: "stationName",
+                  lines: [],
+                  status: "status",
+                ),
+                SimpleStationData(
+                  stationName: "stationName",
+                  lines: [],
+                  status: "status",
+                ),
+                SimpleStationData(
+                  stationName: "stationName",
+                  lines: [],
+                  status: "status",
+                ),
+
+              ]
+                  : state is GetAllStationsSuccess
+                  ? state.stations
+                  : [];
+
+              return Expanded(
+                child: Skeletonizer(
+                  ignoreContainers: true,
+                  ignorePointers: true,
+                  enabled: state is GetAllStationsLoading,
+                  child: RefreshIndicator(
+
+                    onRefresh: () {
+                      cubit.getAllStations();
+                      return Future.delayed(Duration(seconds: 1));
                     },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(height: 5.h);
-                    },
-                    itemCount: state.stations.length,
+                    child: ListView.separated(
+
+
+                      itemBuilder: (BuildContext context, int index) {
+                        return StationCard(
+                          data: data[index],
+                          index: index,
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(height: 5.h);
+                      },
+                      itemCount: data.length,
+                    ),
                   ),
-                );
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
+                ),
+              );
             },
             listener: (BuildContext context, state) {},
           ),

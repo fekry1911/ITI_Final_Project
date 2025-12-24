@@ -17,10 +17,8 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   User? currentUser;
 
-  void loadProfile() async {
+  void loadProfile(userId) async {
     emit(ProfileLoading());
-    final userId = CacheHelper.getString(key: 'userId');
-    if (userId != null) {
       final result = await profileRepo.getUserDetails(userId);
       if (result is ApiSuccess<User>) {
         currentUser = result.data;
@@ -29,10 +27,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       } else if (result is ApiError<User>) {
         print("Profile Error: ${result.message}");
         emit(ProfileError(result.message));
-      }
-    } else {
-      print("User ID not found in cache");
-      emit(ProfileError("User ID not found in cache. Please login again."));
+
     }
   }
 

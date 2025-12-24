@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:iti_moqaf/core/helpers/cach_helper.dart';
+import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import 'package:iti_moqaf/featuers/stations_details/data/model/station_model.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/widgets/route_details.dart';
@@ -17,11 +19,10 @@ class RouteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        dynamic token = CacheHelper.getString(key: "token");
-        print(token);
-
-        CacheHelper.removeString(key: "token");
-        print(token);
+        context.pushNamed(lineScreen,arguments: {
+          "lineId":data.id,
+          "stationId":data.fromStation,
+        });
       },
       child: Card(
         elevation: 1,
@@ -60,7 +61,7 @@ class RouteCard extends StatelessWidget {
                       SizedBox(height: 8.h),
                       RouteDetails(
                         distance: data.distance.toString()+"  كم ",
-                        duration: ((data.distance)!*.6).toString()+" دقيقه  ",
+                        duration: (((data.distance)!*.6).toInt()).toString()+" دقيقه  ",
                       ),
                     ],
                   ),

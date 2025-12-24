@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:iti_moqaf/core/const/api_const.dart';
 
+import 'app_interceptor.dart';
+
 class DioConfig {
   // https://auth-api-2-jz52.onrender.com
 
@@ -10,5 +12,7 @@ class DioConfig {
   Dio dio = Dio()
     ..options.baseUrl = apiBaseURL
     ..options.connectTimeout = const Duration(seconds: 10)
-    ..options.receiveTimeout = const Duration(seconds: 10);
+    ..options.receiveTimeout = const Duration(seconds: 10)..interceptors.add(AppInterceptor());
+
+
 }

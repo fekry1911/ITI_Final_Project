@@ -1,4 +1,4 @@
-const String apiBaseURL = "http://10.0.2.2:5000";
+const String apiBaseURL = "https://mawqaf-api.onrender.com";
 const String register = "/api/auth/register";
 const String login = "/api/auth/login";
 const String station = "/api/station";
@@ -6,4 +6,5 @@ const String lines = "lines";
 const String near = "/api/station/near";
 const String vichels = "vichels";
 const String verifyEmailEndpoint = "/api/auth/verify-email";
+const String posts="/api/community/posts";
 const String getUserById = "/api/auth/user";
