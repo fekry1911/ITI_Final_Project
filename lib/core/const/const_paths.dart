@@ -8,3 +8,7 @@ const stationDetailsScreen = "/stationDetailsScreen";
 const mapScreen = "/mapScreen";
 const String verifyEmailScreen = "/verifyEmailScreen";
 const profileScreen = "/profile";
+const lineScreen = "/line";
+const addPost = "/addPost";
+
+

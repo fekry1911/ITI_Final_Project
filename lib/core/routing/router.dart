@@ -1,23 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iti_moqaf/core/di/di.dart';
+import 'package:iti_moqaf/core/helpers/cach_helper.dart';
+import 'package:iti_moqaf/featuers/community/logic/like_post_cubit.dart';
+import 'package:iti_moqaf/featuers/create_post/screens/add_post.dart';
+import 'package:iti_moqaf/featuers/line_details/logic/get_details_of_line_cubit.dart';
+import 'package:iti_moqaf/featuers/line_details/screen/line_details.dart';
 import 'package:iti_moqaf/featuers/login/logic/login_cubit.dart';
 import 'package:iti_moqaf/featuers/map/map.dart';
 import 'package:iti_moqaf/featuers/on_boarding/screen/on_boarding_screen.dart';
-import 'package:iti_moqaf/featuers/profile/screens/profile_screen.dart';
 import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
+import 'package:iti_moqaf/featuers/profile/screens/profile_screen.dart';
 import 'package:iti_moqaf/featuers/register/screen/register.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/station_details_screen.dart';
 
-import '../../featuers/home/logic/home_cubit.dart';
-import '../../featuers/home/screens/home_screen.dart';
-import '../../featuers/login/screen/login_screen.dart';
-import '../../featuers/register/logic/register_user_cubit.dart';
-import '../../featuers/register/screen/verify_email_screen.dart';
-import '../../featuers/splash/screen/splash_screen.dart';
-import '../../featuers/stations/screens/StationsScreen.dart';
-import '../../featuers/stations_details/logic/get_one_station_cubit.dart';
-import '../const/const_paths.dart';
+import 'package:iti_moqaf/featuers/community/logic/get_all_posts_cubit.dart';
+import 'package:iti_moqaf/featuers/create_post/logic/create_post_cubit.dart';
+import 'package:iti_moqaf/featuers/home/logic/home_cubit.dart';
+import 'package:iti_moqaf/featuers/home/screens/home_screen.dart';
+import 'package:iti_moqaf/featuers/login/screen/login_screen.dart';
+import 'package:iti_moqaf/featuers/profile/logic/posts_cubit.dart';
+import 'package:iti_moqaf/featuers/register/logic/register_user_cubit.dart';
+import 'package:iti_moqaf/featuers/register/screen/verify_email_screen.dart';
+import 'package:iti_moqaf/featuers/splash/screen/splash_screen.dart';
+import 'package:iti_moqaf/featuers/stations/logic/get_all_stations_cubit.dart';
+import 'package:iti_moqaf/featuers/stations/screens/StationsScreen.dart';
+import 'package:iti_moqaf/featuers/stations_details/logic/get_one_station_cubit.dart';
+import 'package:iti_moqaf/core/const/const_paths.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -56,9 +65,33 @@ class AppRouter {
           transition: TransitionType.scale,
         );
       case homeScreen:
+        String id = CacheHelper.getString(key: "userId") ?? '';
         return _buildPageRoute(
           settings,
-          BlocProvider(create: (context) => HomeCubit(), child: HomeScreen()),
+          MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => HomeCubit()),
+
+              BlocProvider(create: (context) => getIt<RegisterUserCubit>()),
+              if (id.isNotEmpty)
+                BlocProvider(
+                  create: (_) => getIt<ProfileCubit>()..loadProfile(id),
+                ),
+              BlocProvider(
+                create: (_) => getIt<GetAllStationsCubit>()..getAllStations(),
+              ),
+              BlocProvider(
+                create: (_) => getIt<GetAllPostsCubit>()..getAllPosts(),
+              ),
+              BlocProvider(create: (_) => getIt<LikePostCubit>()),
+              if (id.isNotEmpty)
+                BlocProvider(
+                  create: (_) => getIt<PostsCubit>()..getAllPostsOfUser(id),
+                ),
+              BlocProvider(create: (_) => getIt<LikePostCubit>()),
+            ],
+            child: HomeScreen(),
+          ),
           transition: TransitionType.scale,
         );
       case verifyEmailScreen:
@@ -84,18 +117,29 @@ class AppRouter {
           BlocProvider(
             create: (context) =>
                 getIt<GetOneStationCubit>()..getOneStationById(stationId),
-            child: StationDetailsScreen(stationId: stationId),
+            child: StationDetailsScreen(),
           ),
           transition: TransitionType.scale,
         );
 
       case profileScreen:
+        String id = settings.arguments as String;
         return _buildPageRoute(
           settings,
-          BlocProvider(
-            create: (context) => getIt<ProfileCubit>(),
-            child: const ProfileScreen(),
+          MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => getIt<ProfileCubit>()..loadProfile(id),
+              ),
+              BlocProvider(
+                create: (_) => getIt<PostsCubit>()..getAllPostsOfUser(id),
+              ),
+              BlocProvider(create: (_) => getIt<GetAllPostsCubit>()),
+              BlocProvider(create: (_) => getIt<LikePostCubit>()),
+            ],
+            child: ProfileScreen(id: id),
           ),
+
           transition: TransitionType.slideFromRight,
         );
 
@@ -103,6 +147,37 @@ class AppRouter {
         return _buildPageRoute(
           settings,
           MapSample(),
+          transition: TransitionType.scale,
+        );
+
+      case addPost:
+        final args = settings.arguments as Map<String, dynamic>;
+        return _buildPageRoute(
+          settings,
+          MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => getIt<CreatePostCubit>()),
+              BlocProvider.value(value: args["allPosts"] as GetAllPostsCubit),
+              BlocProvider.value(value: args["profilePosts"] as PostsCubit),
+
+            ],
+            child: AddPost(),
+          ),
+          transition: TransitionType.scale,
+        );
+
+      case lineScreen:
+        final args = settings.arguments as Map<String, String>;
+        final lineId = args['lineId']!;
+        final stationId = args['stationId']!;
+        return _buildPageRoute(
+          settings,
+          BlocProvider(
+            create: (context) =>
+                getIt<GetDetailsOfLineCubit>()
+                  ..getLineDetails(lineId, stationId),
+            child: LineDetails(),
+          ),
           transition: TransitionType.scale,
         );
 

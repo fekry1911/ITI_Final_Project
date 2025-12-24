@@ -1,29 +1,37 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:iti_moqaf/core/helpers/cach_helper.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iti_moqaf/core/const/const_paths.dart';
+import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/featuers/home/logic/home_cubit.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+
+import 'package:iti_moqaf/core/helpers/cach_helper.dart';
+import 'package:iti_moqaf/featuers/community/screens/community.dart';
+import 'package:iti_moqaf/featuers/near_stations/screens/screen.dart';
+import 'package:iti_moqaf/featuers/profile/screens/profile_screen.dart';
+import 'package:iti_moqaf/featuers/stations/screens/StationsScreen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  List<Widget> screens = [
+    NearStations(),
+    StationsScreen(),
+    Community(),
+    ProfileScreen(id: CacheHelper.getString(key: "userId"),),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-        var cubit = context.read<HomeCubit>();
+        var cubit = context.watch<HomeCubit>();
         return Scaffold(
-          appBar: cubit.index == 0
-              ? null
-              : AppBar(elevation: 0, backgroundColor: Colors.transparent),
           extendBody: true,
-          body: cubit.screens[cubit.index],
+          body: IndexedStack(index: cubit.index, children: screens),
           floatingActionButton: Transform.translate(
             offset: Offset(0, 10.h),
             child: ClipRRect(
@@ -43,10 +51,10 @@ class HomeScreen extends StatelessWidget {
                   ),
                   child: IconButton(
                     onPressed: () {
-                      cubit.setIndex(0);
+                      context.pushNamed(homeScreen);
                     },
-                    icon: Icon(
-                      Icons.location_on_outlined,
+                    icon: FaIcon(
+                      FontAwesomeIcons.refresh,
                       size: 28.r,
                       color: Colors.black,
                     ),
@@ -103,20 +111,21 @@ class HomeScreen extends StatelessWidget {
                     showUnselectedLabels: false,
                     items: const [
                       BottomNavigationBarItem(
-                        icon: Icon(Iconsax.house),
+                        icon: FaIcon(FontAwesomeIcons.house),
                         label: "Home",
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.transfer_within_a_station),
+                        icon: FaIcon(FontAwesomeIcons.bus),
                         label: "Search",
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.social_distance),
+                        icon: FaIcon(FontAwesomeIcons.comments),
+
                         label: "Community",
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.person),
-                        label: "Settings",
+                        icon: FaIcon(FontAwesomeIcons.person),
+                        label: "Profile",
                       ),
                     ],
                     onTap: (index) {

@@ -70,7 +70,7 @@ class RegisterScreen extends StatelessWidget {
                   if (state is RegisterUserSuccess) {
                     sucssesToast(
                       context,
-                      "   برجاء تاكيد حسابك ",
+                      "برجاء تاكيد حسابك ",
                       "تم ارسال رسالة الي حسابك بنجاح",
                     );
                     context.pushNamed(

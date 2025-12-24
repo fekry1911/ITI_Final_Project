@@ -17,9 +17,9 @@ class ApiError<T> extends ApiResult<T>{
 String handleDioError(DioException e) {
   switch (e.type) {
     case DioExceptionType.connectionTimeout:
-      return "Connection timed out. Check your internet.";
+      return " وفت اتصال كبير راجع شبكتك";
     case DioExceptionType.receiveTimeout:
-      return "Server took too long to respond.";
+      return "هناك مشكله ف الخادم";
     case DioExceptionType.badResponse:
       print("RAW SERVER RESPONSE: ${e.response?.data}");
       final statusCode = e.response?.statusCode;

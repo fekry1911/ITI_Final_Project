@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class AppColors {
@@ -23,4 +21,6 @@ class AppColors {
   static const card = Colors.white;
   static const subtitle = Color(0xFF8E8E93);
   static const danger = Color(0xFFFFEAEA);
+  static const postCardColor = Color(0xffE6EEFA);
+  static const greyText = Color(0xffB7B7B8);
 }

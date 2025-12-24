@@ -115,4 +115,16 @@ class AppTextStyle {
     fontSize: 14.sp,
     letterSpacing: 0.7,
   );
+  static TextStyle font13BlackSemiMedium = GoogleFonts.cairo(
+    color: AppColors.blackColor,
+    fontWeight: FontWeightHelper.semiBold,
+    fontSize: 13.sp,
+    letterSpacing: 0.7,
+  );
+  static TextStyle font13MainColorMedium = GoogleFonts.cairo(
+    color: AppColors.mainColor,
+    fontWeight: FontWeightHelper.medium,
+    fontSize: 13.sp,
+    letterSpacing: 0.7,
+  );
 }
