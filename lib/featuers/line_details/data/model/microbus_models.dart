@@ -41,7 +41,7 @@ class Microbus {
   final LineData line;
   @JsonKey(name: '__v')
   final int version;
-  final List<dynamic> bookedUsers;
+  final List<BookedUser> bookedUsers;
   final int availableSeats;
 
   Microbus({
@@ -73,7 +73,7 @@ class Microbus {
     String? currentStatus,
     LineData? line,
     int? version,
-    List<dynamic>? bookedUsers,
+    List<BookedUser>? bookedUsers,
     int? availableSeats,
   }) {
     return Microbus(
@@ -105,7 +105,8 @@ class LineData {
     required this.toStation,
   });
 
-  factory LineData.fromJson(Map<String, dynamic> json) => _$LineDataFromJson(json);
+  factory LineData.fromJson(Map<String, dynamic> json) =>
+      _$LineDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$LineDataToJson(this);
 
@@ -147,4 +148,51 @@ class StationData {
       stationName: stationName ?? this.stationName,
     );
   }
+}
+
+@JsonSerializable()
+class BookedUser {
+  @JsonKey(name: '_id')
+  final String id;
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String bookingStatus;
+  final String bookingId;
+  final DateTime bookedAt;
+
+  BookedUser({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.bookingStatus,
+    required this.bookingId,
+    required this.bookedAt,
+  });
+
+  BookedUser copyWith({
+    String? id,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? bookingStatus,
+    String? bookingId,
+    DateTime? bookedAt,
+  }) {
+    return BookedUser(
+      id: id ?? this.id,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      email: email ?? this.email,
+      bookingStatus: bookingStatus ?? this.bookingStatus,
+      bookingId: bookingId ?? this.bookingId,
+      bookedAt: bookedAt ?? this.bookedAt,
+    );
+  }
+
+  factory BookedUser.fromJson(Map<String, dynamic> json) =>
+      _$BookedUserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BookedUserToJson(this);
 }

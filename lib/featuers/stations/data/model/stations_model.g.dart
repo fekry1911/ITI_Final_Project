@@ -35,12 +35,14 @@ SimpleStationsResponse _$SimpleStationsResponseFromJson(
   data: (json['data'] as List<dynamic>)
       .map((e) => SimpleStationData.fromJson(e as Map<String, dynamic>))
       .toList(),
+  lastPage: (json['lastPage'] as num).toInt(),
 );
 
 Map<String, dynamic> _$SimpleStationsResponseToJson(
   SimpleStationsResponse instance,
 ) => <String, dynamic>{
   'count': instance.count,
+  'lastPage': instance.lastPage,
   'page': instance.page,
   'limit': instance.limit,
   'data': instance.data,

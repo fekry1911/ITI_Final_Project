@@ -61,6 +61,7 @@ String handleDioError(DioException e) {
     case DioExceptionType.cancel:
       return "Request cancelled";
     default:
-      return "Network error: ${e.message}";
+      final errorType = e.type.toString().split('.').last;
+      return "Network error ($errorType): ${e.message ?? e.error ?? 'Unknown error'}";
   }
 }

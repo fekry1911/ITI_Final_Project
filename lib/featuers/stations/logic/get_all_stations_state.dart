@@ -22,8 +22,10 @@ final class GetAllStationsLoading extends GetAllStationsState {
 final class GetAllStationsSuccess extends GetAllStationsState {
   final List<SimpleStationData> stations;
   final Position? userPosition;
+  final bool hasMore;
 
-  GetAllStationsSuccess(this.stations, this.userPosition);
+
+  GetAllStationsSuccess(this.stations, this.userPosition, this.hasMore);
 
   @override
   // TODO: implement props

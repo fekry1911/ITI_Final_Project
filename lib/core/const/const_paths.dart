@@ -10,5 +10,8 @@ const String verifyEmailScreen = "/verifyEmailScreen";
 const profileScreen = "/profile";
 const lineScreen = "/line";
 const addPost = "/addPost";
+const chatScreen = "/chatScreen";
+const allChatsScreen = "/allChatsScreen";
+
 
 

@@ -2,29 +2,61 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:iti_moqaf/core/networking/api_result.dart';
 import 'package:iti_moqaf/featuers/community/data/model/post_model.dart';
-import 'package:iti_moqaf/featuers/community/data/repo/like_post_repo.dart';
-import 'package:meta/meta.dart';
-
 import 'package:iti_moqaf/featuers/community/data/repo/get_all_posts_repo.dart';
+import 'package:meta/meta.dart';
 
 part 'get_all_posts_state.dart';
 
 class GetAllPostsCubit extends Cubit<GetAllPostsState> {
   final GetAllPostsRepo getAllPostsRepo;
+
   GetAllPostsCubit(this.getAllPostsRepo) : super(GetAllPostsInitial());
 
+  List<PostModel> posts = [];
+  bool isFetching = false;
+  bool hasMore = true;
+  int page = 1;
+  int lastPage = 0;
+
   Future<void> getAllPosts() async {
-    emit(GetAllPostsLoading());
-    final result = await getAllPostsRepo.getAllPostsRepo();
-    if(result is ApiSuccess<List<PostModel>>){
-      emit(GetAllPostsSuccess(result.data));
+    print("pagin");
+    if (isFetching || !hasMore) return;
+
+    isFetching = true;
+
+    if (page == 1) {
+      emit(GetAllPostsLoading());
     }
-    if(result is ApiError<List<PostModel>>){
+
+    final result = await getAllPostsRepo.getAllPostsRepo(page: page);
+
+    if (result is ApiSuccess<PostsResponse>) {
+      lastPage = result.data.lastPage;
+      final newPosts = result.data.data;
+
+      if (newPosts.isEmpty) {
+        hasMore = false;
+      } else {
+        page++;
+        posts.addAll(newPosts);
+
+      }
+
+
+      emit(GetAllPostsSuccess(List.from(posts), hasMore));
+    } else if (result is ApiError<PostsResponse>) {
       emit(GetAllPostsError(result.message));
     }
+
+    isFetching = false;
   }
 
-  void updatePostLocal(String postId, {int? likesCount, bool? isLiked, int? commentsCount}) {
+  void updatePostLocal(
+    String postId, {
+    int? likesCount,
+    bool? isLiked,
+    int? commentsCount,
+  }) {
     if (state is GetAllPostsSuccess) {
       final currentPosts = (state as GetAllPostsSuccess).postModel;
       final updatedPosts = currentPosts.map((post) {
@@ -37,18 +69,20 @@ class GetAllPostsCubit extends Cubit<GetAllPostsState> {
         }
         return post;
       }).toList();
-      emit(GetAllPostsSuccess(updatedPosts));
+      emit(GetAllPostsSuccess(updatedPosts, hasMore));
     }
   }
 
   void addNewPost(PostModel newPost) {
-    print("GetAllPostsCubit(${identityHashCode(this)}): Adding new post locally.");
+    print(
+      "GetAllPostsCubit(${identityHashCode(this)}): Adding new post locally.",
+    );
     if (state is GetAllPostsSuccess) {
       final currentPosts = (state as GetAllPostsSuccess).postModel;
       final updatedPosts = [newPost, ...currentPosts];
-      emit(GetAllPostsSuccess(updatedPosts));
+      emit(GetAllPostsSuccess(updatedPosts, hasMore));
     } else {
-      emit(GetAllPostsSuccess([newPost]));
+      emit(GetAllPostsSuccess([newPost], hasMore));
     }
   }
 }

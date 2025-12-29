@@ -7,7 +7,7 @@ class GetNearbyStationsRepo{
   ApiService apiService;
   GetNearbyStationsRepo(this.apiService);
 
-  Future<ApiResult<StationsResponseModel>> fetNearpyStations(double lat,double long ,double distance){
-    return apiService.getAllNearbyStations(lat, long, distance);
+  Future<ApiResult<StationsResponseModel>> fetNearpyStations(double lat,double long ,double distance) async {
+    return await apiService.getAllNearbyStations(lat, long, distance);
   }
 }

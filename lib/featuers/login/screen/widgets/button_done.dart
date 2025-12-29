@@ -13,10 +13,24 @@ class ButtonDone extends StatelessWidget {
     return BlocBuilder<LoginCubit, LoginStates>(
       builder: (context, state) {
         var cubit = context.read<LoginCubit>();
-        return SizedBox(
-          width: 230.w,
-          height: 40.h,
-
+        return Container(
+          width: double.infinity,
+          height: 54.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.r),
+            gradient: LinearGradient(
+              colors: [AppColors.primary, AppColors.primaryDark],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withOpacity(0.35),
+                blurRadius: 15,
+                offset: Offset(0, 8),
+              ),
+            ],
+          ),
           child: MaterialButton(
             onPressed: state is LoginLoading
                 ? null
@@ -28,16 +42,25 @@ class ButtonDone extends StatelessWidget {
                       );
                     }
                   },
-            color: AppColors.blackColor,
-            splashColor: AppColors.mainColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.r),
+              borderRadius: BorderRadius.circular(16.r),
             ),
             child: state is LoginLoading
-                ? CircularProgressIndicator()
-                : Text("تأكيد", style: AppTextStyle.font18WhiteMedium),
+                ? SizedBox(
+                    height: 24.h,
+                    width: 24.h,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : Text(
+                    "تسجيل الدخول",
+                    style: AppTextStyle.font18WhiteBold,
+                  ),
           ),
         );
+
       },
     );
   }

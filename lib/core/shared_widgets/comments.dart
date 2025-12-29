@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iti_moqaf/core/const/const_paths.dart';
+import 'package:iti_moqaf/core/di/di.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
+import 'package:iti_moqaf/core/logic/comment_cubit/comments_cubit.dart';
 import 'package:iti_moqaf/core/models/comments_response_model.dart';
+import 'package:iti_moqaf/core/models/user_model.dart';
 import 'package:iti_moqaf/core/shared_widgets/error_page.dart';
+import 'package:iti_moqaf/core/theme/color/colors.dart';
+import 'package:iti_moqaf/featuers/community/logic/get_all_posts_cubit.dart';
 import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import 'package:iti_moqaf/featuers/community/logic/get_all_posts_cubit.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
-import 'package:iti_moqaf/core/di/di.dart';
-import 'package:iti_moqaf/core/logic/comment_cubit/comments_cubit.dart';
-import 'package:iti_moqaf/core/models/user_model.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
+import '../../featuers/community/logic/like_post_cubit.dart';
 
 void showFacebookCommentsSheet(
   BuildContext context,
@@ -40,7 +41,9 @@ void showFacebookCommentsSheet(
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(25.r)),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(25.r),
+                  ),
                 ),
                 child: Column(
                   children: [
@@ -59,8 +62,11 @@ void showFacebookCommentsSheet(
                       child: BlocBuilder<CommentsCubit, CommentsState>(
                         builder: (context, state) {
                           var cubit = context.read<CommentsCubit>();
-                          bool isLoading = state.status == CommentsStatus.loading;
-                          final comments = isLoading ? fakeCommentsList : state.comments;
+                          bool isLoading =
+                              state.status == CommentsStatus.loading;
+                          final comments = isLoading
+                              ? fakeCommentsList
+                              : state.comments;
 
                           if (state.status == CommentsStatus.error) {
                             return Center(
@@ -70,7 +76,8 @@ void showFacebookCommentsSheet(
                             );
                           }
 
-                          if (state.status == CommentsStatus.success && comments.isEmpty) {
+                          if (state.status == CommentsStatus.success &&
+                              comments.isEmpty) {
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -94,13 +101,26 @@ void showFacebookCommentsSheet(
                                 child: ListTile(
                                   leading: GestureDetector(
                                     onTap: () {
-                                      context.pushNamed(profileScreen, arguments: comments[index].user.id);
+                                      context.pushNamed(
+                                        profileScreen,
+                                        arguments: {
+                                          "id": comments[index].user.id,
+                                          "getAllPostsCubit": context
+                                              .read<GetAllPostsCubit>(),
+                                          "likePost": context
+                                              .read<LikePostCubit>(),
+                                        },
+                                      );
                                     },
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage(comments[index].user.avatarUrl),
+                                      backgroundImage: NetworkImage(
+                                        comments[index].user.avatarUrl,
+                                      ),
                                     ),
                                   ),
-                                  title: Text('${comments[index].user.firstName} ${comments[index].user.lastName}'),
+                                  title: Text(
+                                    '${comments[index].user.firstName} ${comments[index].user.lastName}',
+                                  ),
                                   subtitle: Text(comments[index].content),
                                 ),
                               );
@@ -130,48 +150,70 @@ void showFacebookCommentsSheet(
                               ),
                               decoration: InputDecoration(
                                 hintText: "$name علق باسم ",
-                                contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.r)),
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 15.w,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20.r),
-                                  borderSide: BorderSide(color: AppColors.mainColor, width: 2.w),
+                                  borderSide: BorderSide(
+                                    color: AppColors.mainColor,
+                                    width: 2.w,
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20.r),
-                                  borderSide: BorderSide(color: AppColors.mainColor, width: 2.w),
+                                  borderSide: BorderSide(
+                                    color: AppColors.mainColor,
+                                    width: 2.w,
+                                  ),
                                 ),
-                                suffixIcon: BlocConsumer<CommentsCubit, CommentsState>(
-                                  listener: (context, state) {
-                                    if (state.status == CommentsStatus.addSuccess) {
-                                      commentController.clear();
-                                      getAllPostsCubit.updatePostLocal(
-                                        postID,
-                                        commentsCount: state.comments.length,
-                                      );
-                                    }
-                                  },
-                                  builder: (context, state) {
-                                    return IconButton(
-                                      onPressed: () {
-                                        final content = commentController.text.trim();
-                                        if (content.isNotEmpty) {
-                                          context.read<CommentsCubit>().addComment(postID, content);
+                                suffixIcon:
+                                    BlocConsumer<CommentsCubit, CommentsState>(
+                                      listener: (context, state) {
+                                        if (state.status ==
+                                            CommentsStatus.addSuccess) {
+                                          commentController.clear();
+                                          getAllPostsCubit.updatePostLocal(
+                                            postID,
+                                            commentsCount:
+                                                state.comments.length,
+                                          );
                                         }
                                       },
-                                      icon: state.status == CommentsStatus.adding
-                                          ? SizedBox(
-                                              width: 15.r,
-                                              height: 15.r,
-                                              child: const CircularProgressIndicator(strokeWidth: 2),
-                                            )
-                                          : FaIcon(
-                                              FontAwesomeIcons.share,
-                                              color: AppColors.mainColor,
-                                              size: 20.r,
-                                            ),
-                                    );
-                                  },
-                                ),
+                                      builder: (context, state) {
+                                        return IconButton(
+                                          onPressed: () {
+                                            final content = commentController
+                                                .text
+                                                .trim();
+                                            if (content.isNotEmpty) {
+                                              context
+                                                  .read<CommentsCubit>()
+                                                  .addComment(postID, content);
+                                            }
+                                          },
+                                          icon:
+                                              state.status ==
+                                                  CommentsStatus.adding
+                                              ? SizedBox(
+                                                  width: 15.r,
+                                                  height: 15.r,
+                                                  child:
+                                                      const CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                      ),
+                                                )
+                                              : FaIcon(
+                                                  FontAwesomeIcons.share,
+                                                  color: AppColors.mainColor,
+                                                  size: 20.r,
+                                                ),
+                                        );
+                                      },
+                                    ),
                               ),
                             ),
                           ),

@@ -9,13 +9,10 @@ class GetAllStationsRepo {
 
   Future<ApiResult<SimpleStationsResponse>> getAllStations({
     required int page,
-    required int limit,
-  }) {
-   var reponse = apiService.getAllStations(
+  }) async {
+   var reponse = await apiService.getAllStations(
       page: page,
-      limit: limit,
     );
-   print(reponse.toString());
    return reponse;
   }
 }

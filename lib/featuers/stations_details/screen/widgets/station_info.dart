@@ -5,6 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import 'package:iti_moqaf/featuers/stations_details/logic/get_one_station_cubit.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
+import '../../data/model/station_model.dart';
 
 class StationInfo extends StatelessWidget {
   const StationInfo({super.key});
@@ -13,94 +16,130 @@ class StationInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GetOneStationCubit, GetOneStationState>(
       builder: (context, state) {
-        var cubit = context.read<GetOneStationCubit>();
-        return state is GetOneStationError ? Center(child: Text(state.error,style: AppTextStyle.font24BlackSemiBold,)) : state is GetOneStationSuccess? Card(
-          elevation: 4,
-          borderOnForeground: true,
-          color: Colors.white,
-          child: Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+        StationModel stationModel = state is GetOneStationSuccess
+            ? state.stationModel
+            : StationModel(
+                data: StationData(
+                  id: '3',
+                  stationName: 'Station C',
+                  location: Location(
+                    type: 'Point',
+                    coordinates: [31.240, 30.046],
+                  ),
+                  lines: [
+                    LineModel(
+                      id: 'l4',
+                      fromStation: 'Station C',
+                      toStation: 'Station A',
+                      price: 8,
+                      distance: 3.5,
+                    ),
+                  ],
+                  status: 'Open',
+                  v: 0,
+                  createdAt: DateTime.now().subtract(const Duration(days: 5)),
+                  updatedAt: DateTime.now(),
+                ),
+              );
 
-                              Flexible(
-                                child: Text(
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  state.stationModel.data!.stationName!,
-                                  style: AppTextStyle.font30BlackBold.copyWith(
-                                    fontSize: 25.sp,
+        return state is GetOneStationError
+            ? Center(
+                child: Text(
+                  state.error,
+                  style: AppTextStyle.font24BlackSemiBold,
+                ),
+              )
+            : Skeletonizer(
+                enabled: state is GetOneStationLoading,
+                child: Card(
+                  elevation: 4,
+                  borderOnForeground: true,
+                  color: Colors.white,
+                  child: Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          stationModel.data!.stationName!,
+                                          style: AppTextStyle.font30BlackBold
+                                              .copyWith(fontSize: 25.sp),
+                                        ),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius: BorderRadius.circular(
+                                            20.r,
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.all(6.h),
+                                        child: Text(
+                                          stationModel.data.status,
+                                          style: AppTextStyle.font11BlackRegular
+                                              .copyWith(
+                                                color: AppColors.whiteColor,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  //   SizedBox(height: 5.h),
+                                  /*  Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on_outlined,
+                                  size: 15.r,
+                                  color: AppColors.lightGreen,
+                                ),
+                                Text(
+                                state.stationModel.data.location.coordinates.toString(),
+                                  style: AppTextStyle.font18GreyRegular.copyWith(
+                                      color: AppColors.lightGreen,
+                                      fontWeight: FontWeight.bold
                                   ),
                                 ),
+                              ],
+                            ),*/
+                                ],
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(20.r),
-                                ),
-                                padding: EdgeInsets.all(6.h),
-                                child: Text(
-                                  state.stationModel.data.status,
-                                  style: AppTextStyle.font11BlackRegular
-                                      .copyWith(
-                                      color: AppColors.whiteColor
-                                  ),
-                                ),
+                            ),
+                          ],
+                        ),
+                        Divider(color: AppColors.mainColor, thickness: 1.3),
+                        Row(
+                          children: [
+                            Text(
+                              "عدد الخطوط",
+                              style: AppTextStyle.font18WhiteMedium.copyWith(
+                                color: AppColors.blackColor,
                               ),
-                            ],
-                          ),
-                       //   SizedBox(height: 5.h),
-                        /*  Row(
-                            children: [
-                              Icon(
-                                Icons.location_on_outlined,
-                                size: 15.r,
-                                color: AppColors.lightGreen,
+                            ),
+                            Spacer(),
+                            Text(
+                              stationModel.data.lines.length.toString(),
+                              style: AppTextStyle.font14BlackRegular.copyWith(
+                                color: AppColors.mainColor,
                               ),
-                              Text(
-                              state.stationModel.data.location.coordinates.toString(),
-                                style: AppTextStyle.font18GreyRegular.copyWith(
-                                    color: AppColors.lightGreen,
-                                    fontWeight: FontWeight.bold
-                                ),
-                              ),
-                            ],
-                          ),*/
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                Divider(color: AppColors.mainColor, thickness: 1.3),
-                Row(
-                  children: [
-                    Text(
-                      "عدد الخطوط",
-                      style: AppTextStyle.font18WhiteMedium.copyWith(
-                        color: AppColors.blackColor,
-                      ),
-                    ),
-                    Spacer(),
-                    Text(
-                      state.stationModel.data.lines.length.toString(),
-                      style: AppTextStyle.font14BlackRegular.copyWith(
-                        color: AppColors.mainColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ).animate().shimmer(duration: 2000.ms):Center(child: CircularProgressIndicator());
+                  ),
+                ).animate().shimmer(duration: 2000.ms),
+              );
       },
     );
   }

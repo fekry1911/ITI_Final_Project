@@ -65,6 +65,7 @@ class RegisterScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(height: 20.h),
               BlocListener<RegisterUserCubit, RegisterUserState>(
                 listener: (BuildContext context, state) {
                   if (state is RegisterUserSuccess) {

@@ -17,14 +17,14 @@ class PostItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 0.5,
-      margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 10.w),
+      elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.r),
+        borderRadius: BorderRadius.circular(20.r),
+        side: BorderSide(color: AppColors.primary.withOpacity(0.05)),
       ),
-      color: AppColors.whiteColor,
+     // color: AppColors.surface,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 12.h),
+        padding: EdgeInsets.symmetric(vertical: 16.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -35,12 +35,20 @@ class PostItem extends StatelessWidget {
               SizedBox(height: 12.h),
               PostMedia(mediaUrl: post.media),
             ],
-            SizedBox(height: 8.h),
-            const Divider(height: 1, thickness: 0.5),
+            SizedBox(height: 12.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Divider(
+                height: 1,
+                thickness: 1,
+                color: AppColors.primaryLight,
+              ),
+            ),
             LikesAndComments(post: post),
           ],
         ),
       ),
     ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1, end: 0);
+
   }
 }

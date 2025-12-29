@@ -55,12 +55,24 @@ dependencies:
   crystal_navigation_bar: ^1.1.0
   flutter_iconly: ^1.0.2
   phosphor_flutter: ^2.1.0
+  material_symbols_icons: ^4.2892.0
+  lucide_icons_flutter: ^3.1.9
+  remix_icons_flutter: ^4.7.0
+  heroicons: ^0.11.0
   iconsax: ^0.0.8
   lucide_icons: ^0.257.0
   pin_code_fields: ^8.0.1
   image_picker: ^1.2.1
   font_awesome_flutter: ^10.8.0
   skeletonizer: ^2.1.0+1
+  socket_io_client: ^3.0.0
+  firebase_core: ^4.3.0
+  flutter_svg: ^2.2.3
+  hugeicons: ^1.1.4
+  svg_icon_widget: ^0.0.1+1
+  icon_broken: ^1.1.0
+  collection: ^1.18.0
+
 
 
 dev_dependencies:
@@ -91,6 +103,8 @@ flutter:
     - assets/animation/
     - assets/images/
     - assets/lottie/
+    - assets/svg_icons/
+    - assets/map/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

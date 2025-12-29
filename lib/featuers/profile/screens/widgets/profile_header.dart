@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/helpers/cach_helper.dart';
+import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/models/user_model.dart';
 
+import '../../../../core/const/const_paths.dart';
 import '../../../../core/theme/text_theme/text_theme.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -47,8 +49,8 @@ class ProfileHeader extends StatelessWidget {
           user?.email ?? "",
           style: const TextStyle(color: AppColors.subtitle),
         ),
-        const SizedBox(height: 8),
-       if(id != CacheHelper.getString(key: "userId"))
+        SizedBox(height: 8),
+      if(id != CacheHelper.getString(key: "userId"))
          Center(
           child: Container(
             decoration: BoxDecoration(
@@ -65,7 +67,17 @@ class ProfileHeader extends StatelessWidget {
             width: 100.w,
             height: 30.h,
             child: MaterialButton(
-              onPressed:(){},
+              onPressed:(){
+                context.pushNamed(
+                  chatScreen,
+                  arguments: {
+                    "userId": CacheHelper.getString(key: "userId"),
+                    "chatPartnerId": id,
+                    "chatPartnerName": "${user?.firstName ?? ''} ${user?.lastName ?? ''}",
+                    "chatPartnerAvatar": user?.avatarUrl ?? '',
+                  },
+                );
+              },
               color: AppColors.whiteColor,
               splashColor: AppColors.mainColor,
               shape: RoundedRectangleBorder(

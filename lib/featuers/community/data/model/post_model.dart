@@ -63,3 +63,27 @@ class PostModel {
   Map<String, dynamic> toJson() => _$PostModelToJson(this);
 }
 
+@JsonSerializable()
+class PostsResponse {
+  final int totalCount;
+  final int lastPage;
+  final int count;
+  final int page;
+  final int limit;
+  final List<PostModel> data;
+
+  PostsResponse({
+    required this.totalCount,
+    required this.lastPage,
+    required this.count,
+    required this.page,
+    required this.limit,
+    required this.data,
+  });
+
+  factory PostsResponse.fromJson(Map<String, dynamic> json) =>
+      _$PostsResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PostsResponseToJson(this);
+}
+

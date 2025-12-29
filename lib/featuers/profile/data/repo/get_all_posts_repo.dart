@@ -8,6 +8,6 @@ class GetAllPostsOfUserRepo {
 
   GetAllPostsOfUserRepo(this.apiService);
 
-  Future<ApiResult<List<PostModel>>> getAllPostsOfUser(String id ) async =>
-      apiService.getAllPostsOfUser(id: id);
+  Future<ApiResult<PostsResponse>> getAllPostsOfUser(String id,{required int page} ) async =>
+      apiService.getAllPostsOfUser(id: id,page: page);
 }

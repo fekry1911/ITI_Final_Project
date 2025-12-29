@@ -7,6 +7,6 @@ class GetAllPostsRepo {
 
   GetAllPostsRepo(this.apiService);
 
-  Future<ApiResult<List<PostModel>>> getAllPostsRepo() async =>
-      await apiService.getAllPosts();
+  Future<ApiResult<PostsResponse>> getAllPostsRepo({required int page}) async =>
+      await apiService.getAllPosts(page: page);
 }

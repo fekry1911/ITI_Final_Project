@@ -1,36 +1,35 @@
 part of 'get_details_of_line_cubit.dart';
 
 @immutable
-sealed class GetDetailsOfLineState extends Equatable {}
+abstract class GetDetailsOfLineState extends Equatable {
+  const GetDetailsOfLineState();
 
-final class GetDetailsOfLineInitial extends GetDetailsOfLineState {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 }
 
-final class GetDetailsOfLineSuccess extends GetDetailsOfLineState {
-  final List<Microbus> results;
+class GetDetailsOfLineInitial extends GetDetailsOfLineState {}
 
-  GetDetailsOfLineSuccess(this.results);
+class GetDetailsOfLineLoading extends GetDetailsOfLineState {}
 
-  @override
-  // TODO: implement props
-  List<Object?> get props => [results];
-}
-
-final class GetDetailsOfLineLoading extends GetDetailsOfLineState {
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
-}
-
-final class GetDetailsOfLineError extends GetDetailsOfLineState {
+class GetDetailsOfLineError extends GetDetailsOfLineState {
   final String message;
 
-  GetDetailsOfLineError(this.message);
+  const GetDetailsOfLineError(this.message);
 
   @override
-  // TODO: implement props
   List<Object?> get props => [message];
+}
+
+class GetDetailsOfLineSuccess extends GetDetailsOfLineState {
+  final List<Microbus> results;
+  final int version; // 🔥 مفتاح التحديث اللحظي
+
+  const GetDetailsOfLineSuccess(
+      this.results, {
+        this.version = 0,
+      });
+
+  @override
+  List<Object?> get props => [results, version];
 }

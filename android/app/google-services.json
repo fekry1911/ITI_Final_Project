@@ -1,0 +1,135 @@
+{
+  "project_info": {
+    "project_number": "546106504523",
+    "firebase_url": "https://wasalni-68a0d-default-rtdb.firebaseio.com",
+    "project_id": "wasalni-68a0d",
+    "storage_bucket": "wasalni-68a0d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:546106504523:android:0b2ff0d3ec44d144ae24ce",
+        "android_client_info": {
+          "package_name": "com.example.final_task"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "546106504523-13ctcomndmu11ev9j47mi1db6s3u1bjj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.final_task",
+            "certificate_hash": "9edff932b648efcbcb98fcfc186ae16c315a59b7"
+          }
+        },
+        {
+          "client_id": "546106504523-omb2b86j6irsp0vvi3de59v1qpeglnbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMfVD8KC5Y_bojCeuPza0nW645foWrANs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "546106504523-omb2b86j6irsp0vvi3de59v1qpeglnbn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "546106504523-cscedd2sfrm8fu9esbf8n6ij7mcpoisv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.wasalni1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:546106504523:android:3bf52f1c44dae253ae24ce",
+        "android_client_info": {
+          "package_name": "com.example.iti_moqaf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "546106504523-omb2b86j6irsp0vvi3de59v1qpeglnbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMfVD8KC5Y_bojCeuPza0nW645foWrANs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "546106504523-omb2b86j6irsp0vvi3de59v1qpeglnbn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "546106504523-cscedd2sfrm8fu9esbf8n6ij7mcpoisv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.wasalni1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:546106504523:android:ab55c6ad713719f3ae24ce",
+        "android_client_info": {
+          "package_name": "com.example.wasalni1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "546106504523-adgvlil20s96t3hbnlk04bto3id7v33g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wasalni1",
+            "certificate_hash": "9edff932b648efcbcb98fcfc186ae16c315a59b7"
+          }
+        },
+        {
+          "client_id": "546106504523-omb2b86j6irsp0vvi3de59v1qpeglnbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMfVD8KC5Y_bojCeuPza0nW645foWrANs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "546106504523-omb2b86j6irsp0vvi3de59v1qpeglnbn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "546106504523-cscedd2sfrm8fu9esbf8n6ij7mcpoisv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.wasalni1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

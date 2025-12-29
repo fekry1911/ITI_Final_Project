@@ -20,22 +20,16 @@ class Header extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              child: Icon(Icons.person, size: 24, color: AppColors.blackColor),
+              child: Icon(Icons.directions_bus, size: 24, color: AppColors.blackColor),
               radius: 24,
               backgroundColor: AppColors.mainColor.withOpacity(0.1),
             ),
             SizedBox(width: 12.w),
 
-            Text("أحمد طارق", style: AppTextStyle.font18BlackBold),
-            Spacer(),
-            CircleAvatar(
-              radius: 24,
-              backgroundColor: Colors.transparent,
-              child: Icon(
-                Icons.notifications_active,
-                color: Colors.black,
-                size: 26,
-              ),
+            Expanded(
+              child: Text(" اضغط لعرض اقرب المحطات", style: AppTextStyle.font18BlackBold.copyWith(
+                fontSize: 14.sp
+              )),
             ),
           ],
         ),

@@ -1,13 +1,18 @@
+
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
-import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/near_stations/logic/get_nearby_stations_cubit.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:iti_moqaf/featuers/near_stations/screens/widgets/recent_route_card.dart';
 import 'package:iti_moqaf/featuers/near_stations/screens/widgets/search_field.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
+import '../../../../core/theme/color/colors.dart';
+import '../../../../core/theme/text_theme/text_theme.dart';
+import '../../data/model/near_stations_model.dart';
+import '../../logic/get_nearby_stations_cubit.dart';
 
 class HomeBottomSheet extends StatelessWidget {
   HomeBottomSheet({super.key});
@@ -65,43 +70,16 @@ class HomeBottomSheet extends StatelessWidget {
                       fontSize: 18.sp,
                     ),
                   ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {
-                      context.pushNamed(stationsScreen);
-                    },
-                    child: Text(
-                      "عرض الكل",
-                      style: AppTextStyle.font18GreyRegular.copyWith(
-                        color: AppColors.mainColor,
-                        fontSize: 11.sp,
-                      ),
-                    ),
-                  ),
                 ],
               ),
 
               SizedBox(height: 16.h),
 
-             BlocBuilder<GetNearbyStationsCubit, GetNearbyStationsState>(
+              BlocBuilder<GetNearbyStationsCubit, GetNearbyStationsState>(
                 builder: (context, state) {
                   var cubit = context.read<GetNearbyStationsCubit>();
-                  if (state is GetNearbyStationsSuccess) {
-                    return ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return RecentRouteCard(
-                          data: state.data[index],
-                          userPosition: state.userPosition,
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(height: 10.h);
-                      },
-                      itemCount: state.data.length,
-                    );
-                  } else if (state is GetNearbyStationsError) {
+
+                  if (state is GetNearbyStationsError) {
                     return Center(
                       child: Column(
                         children: [
@@ -110,14 +88,52 @@ class HomeBottomSheet extends StatelessWidget {
                             onPressed: () {
                               cubit.getNearbyStations();
                             },
-                            child: Text("حاول مره اخري"),
+                            child: const Text("حاول مره اخري"),
                           ),
                         ],
                       ),
                     );
-                  } else {
-                    return Center(child: CircularProgressIndicator());
                   }
+
+                  List<NearStationModel> stations = [];
+                  Position userPosition = Position(
+                    latitude: 30.0444,
+                    longitude: 31.2357,
+                    timestamp: DateTime.now(),
+                    accuracy: 0,
+                    altitude: 0,
+                    heading: 0,
+                    speed: 0,
+                    speedAccuracy: 0,
+                    altitudeAccuracy: 20,
+                    headingAccuracy: 20,
+                  );
+
+                  if (state is GetNearbyStationsLoading) {
+                    stations = fakeStations;
+                    // userPosition يبقى default
+                  } else if (state is GetNearbyStationsSuccess) {
+                    stations = state.data;
+                    userPosition = state.userPosition ?? userPosition;
+                  }
+
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Skeletonizer(
+                        enabled: state is GetNearbyStationsLoading,
+                        child: RecentRouteCard(
+                          data: stations[index],
+                          userPosition: userPosition,
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(height: 10.h);
+                    },
+                    itemCount: stations.length,
+                  );
                 },
               ),
             ],
@@ -139,3 +155,36 @@ class HomeBottomSheet extends StatelessWidget {
     );
   }
 }
+final List<NearStationModel> fakeStations = [
+  NearStationModel(
+    id: '1',
+    stationName: 'Station A',
+    lines: ['Line 1', 'Line 2'],
+    status: 'Open',
+    location: StationLocationModel(
+      type: 'Point',
+      coordinates: [31.2357, 30.0444], // [lng, lat]
+    ),
+  ),
+  NearStationModel(
+    id: '2',
+    stationName: 'Station B',
+    lines: ['Line 2'],
+    status: 'Closed',
+    location: StationLocationModel(
+      type: 'Point',
+      coordinates: [31.238, 30.045],
+    ),
+  ),
+  NearStationModel(
+    id: '3',
+    stationName: 'Station C',
+    lines: ['Line 3'],
+    status: 'Open',
+    location: StationLocationModel(
+      type: 'Point',
+      coordinates: [31.240, 30.046],
+    ),
+  ),
+];
+

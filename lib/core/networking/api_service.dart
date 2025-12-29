@@ -1,21 +1,25 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:iti_moqaf/core/const/api_const.dart';
 import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/core/models/comments_response_model.dart';
 import 'package:iti_moqaf/core/models/user_model.dart';
 import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/featuers/community/data/model/post_model.dart';
-import 'package:iti_moqaf/featuers/login/data/models/user_login_request.dart';
-import 'package:iti_moqaf/featuers/stations_details/data/model/station_model.dart';
-
+import 'package:iti_moqaf/featuers/chat/data/model/chat_models.dart';
 import 'package:iti_moqaf/featuers/community/data/model/like_resonse_model.dart';
+import 'package:iti_moqaf/featuers/community/data/model/post_model.dart';
 import 'package:iti_moqaf/featuers/create_post/data/creatr_post_model.dart';
 import 'package:iti_moqaf/featuers/line_details/data/model/microbus_models.dart';
+import 'package:iti_moqaf/featuers/login/data/models/user_login_request.dart';
 import 'package:iti_moqaf/featuers/login/data/models/user_login_response.dart';
 import 'package:iti_moqaf/featuers/near_stations/data/model/near_stations_model.dart';
 import 'package:iti_moqaf/featuers/register/data/model/user_register_request.dart';
 import 'package:iti_moqaf/featuers/stations/data/model/stations_model.dart';
+import 'package:iti_moqaf/featuers/stations_details/data/model/station_model.dart';
+
+import '../../featuers/alllChats/data/all_chats_response.dart';
+import '../../featuers/line_details/data/model/book_response_model.dart';
 
 class ApiService {
   Dio dio;
@@ -62,19 +66,9 @@ class ApiService {
 
   Future<ApiResult<SimpleStationsResponse>> getAllStations({
     required int page,
-    required int limit,
   }) async {
     try {
-      final response = await dio.get(
-        station,
-        queryParameters: {'page': page, 'limit': limit},
-        options: Options(
-          headers: {
-            "Authorization":
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NDRiZDk3MjAyYmFlNDkyMmNjYTNlNiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NjE1MTU0OX0.2znGJ_AMWXzlQzoae4g1cQLFQYG_GExNjResKY-BEoA",
-          },
-        ),
-      );
+      final response = await dio.get(station, queryParameters: {'page': page});
       print(response.data);
 
       final SimpleStationsResponse stationsMoedl =
@@ -91,15 +85,7 @@ class ApiService {
 
   Future<ApiResult<StationModel>> getOneStationDetails(id) async {
     try {
-      final response = await dio.get(
-        "${station}/${id}",
-        options: Options(
-          headers: {
-            "Authorization":
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NDRiZDk3MjAyYmFlNDkyMmNjYTNlNiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NjE1MTU0OX0.2znGJ_AMWXzlQzoae4g1cQLFQYG_GExNjResKY-BEoA",
-          },
-        ),
-      );
+      final response = await dio.get("${station}/${id}");
       print(response.data);
       StationModel stationModel = StationModel.fromJson(response.data);
       return ApiSuccess<StationModel>(stationModel);
@@ -118,13 +104,7 @@ class ApiService {
     try {
       final response = await dio.get(
         near,
-        data: {"lat": lat, "lng": long, "distance": distance},
-        options: Options(
-          headers: {
-            "Authorization":
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NDRiZDk3MjAyYmFlNDkyMmNjYTNlNiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NjE1MTU0OX0.2znGJ_AMWXzlQzoae4g1cQLFQYG_GExNjResKY-BEoA",
-          },
-        ),
+        queryParameters: {"lat": lat, "lng": long, "distance": distance},
       );
       print(response.data);
       StationsResponseModel stationsResponseModel =
@@ -142,10 +122,7 @@ class ApiService {
     var token = CacheHelper.getString(key: "token");
     print(token);
     try {
-      final response = await dio.get(
-        "$getUserById/$userId",
-        options: Options(headers: {"Authorization": "Bearer $token"}),
-      );
+      final response = await dio.get("$getUserById/$userId");
 
       User user = User.fromJson(response.data["data"]["user"]);
 
@@ -165,7 +142,9 @@ class ApiService {
       var response = await dio.get(
         "$station/$stationId/$lines/$lineId/$vichels",
       );
-      MicrobusResponse microbusResponse = MicrobusResponse.fromJson(response.data);
+      MicrobusResponse microbusResponse = MicrobusResponse.fromJson(
+        response.data,
+      );
       return ApiSuccess<MicrobusResponse>(microbusResponse);
     } on DioException catch (e) {
       return ApiError<MicrobusResponse>(handleDioError(e));
@@ -174,24 +153,20 @@ class ApiService {
     }
   }
 
-  Future<ApiResult<List<PostModel>>> getAllPosts() async {
+  Future<ApiResult<PostsResponse>> getAllPosts({required int page}) async {
     try {
       Response response;
 
-      response = await dio.get(posts);
+      response = await dio.get(posts, queryParameters: {"page": page});
       print(response.data);
 
       // Explicitly cast response.data as List
-      List<PostModel> postModel = (response.data as List)
-          .map((e) => PostModel.fromJson(e as Map<String, dynamic>))
-          .toList();
-
-      print(postModel.toString());
-      return ApiSuccess<List<PostModel>>(postModel);
+      PostsResponse postsResponse = PostsResponse.fromJson(response.data);
+      return ApiSuccess<PostsResponse>(postsResponse);
     } on DioException catch (e) {
-      return ApiError<List<PostModel>>(handleDioError(e));
+      return ApiError<PostsResponse>(handleDioError(e));
     } catch (e) {
-      return ApiError<List<PostModel>>(e.toString());
+      return ApiError<PostsResponse>(e.toString());
     }
   }
 
@@ -203,10 +178,10 @@ class ApiService {
         posts,
         data: await createPostModel.toFormData(),
       );
-      
+
       var responseData = response.data;
-      
-      // If Dio didn't parse it automatically (e.g. missing Content-Type header)
+
+      // If Dio didn't parse it automatically
       if (responseData is String) {
         responseData = jsonDecode(responseData);
       }
@@ -214,36 +189,15 @@ class ApiService {
       Map<String, dynamic> json;
       if (responseData is Map) {
         final map = Map<String, dynamic>.from(responseData);
-        if (map.containsKey('data') && map['data'] is Map) {
-          json = Map<String, dynamic>.from(map['data']);
-        } else {
-          json = map;
-        }
-        
-        // Handle case where 'user' is just an ID (String) instead of an object (Map)
-        if (json.containsKey('user') && json['user'] is String) {
-          json['user'] = {'_id': json['user']};
-        }
-
-        // Inject defaults for fields often missing in 'Create' responses
-        json['likesCount'] ??= 0;
-        json['commentsCount'] ??= 0;
-        json['isLiked'] ??= false;
-        json['mediaType'] ??= (json['media'] != null ? 'IMAGE' : 'NONE');
-        json['__v'] ??= 0;
-        json['createdAt'] ??= DateTime.now().toIso8601String();
-        json['updatedAt'] ??= DateTime.now().toIso8601String();
-        
-        // Final safety check for bool types (sometimes they come as null even with ??=)
-        json['isLiked'] = json['isLiked'] ?? false;
+        json = map.containsKey('data') && map['data'] is Map
+            ? Map<String, dynamic>.from(map['data'])
+            : map;
       } else {
         throw "Expected Map but got ${responseData.runtimeType}: $responseData";
       }
 
-      print("ApiService: Final JSON for parsing: $json");
-      print("ApiService: Parsing PostModel...");
+      print("ApiService: Parsing PostModel with ID: ${json['_id']}");
       PostModel postModel = PostModel.fromJson(json);
-      print("ApiService: PostModel parsed successfully. ID: ${postModel.id}");
       return ApiSuccess<PostModel>(postModel);
     } on DioException catch (e) {
       return ApiError<PostModel>(handleDioError(e));
@@ -267,23 +221,26 @@ class ApiService {
     }
   }
 
-  Future<ApiResult<List<PostModel>>> getAllPostsOfUser({String id = ""}) async {
+  Future<ApiResult<PostsResponse>> getAllPostsOfUser({
+    String id = "",
+    required int page,
+  }) async {
     try {
       Response response;
-      response = await dio.get("/api/community/users/${id}/posts");
+      response = await dio.get(
+        "/api/community/users/${id}/posts",
+        queryParameters: {"page": page},
+      );
       print(response.data);
 
       // Explicitly cast response.data as List
-      List<PostModel> postModel = (response.data as List)
-          .map((e) => PostModel.fromJson(e as Map<String, dynamic>))
-          .toList();
+      PostsResponse postModel = PostsResponse.fromJson(response.data);
 
-      print(postModel.toString());
-      return ApiSuccess<List<PostModel>>(postModel);
+      return ApiSuccess<PostsResponse>(postModel);
     } on DioException catch (e) {
-      return ApiError<List<PostModel>>(handleDioError(e));
+      return ApiError<PostsResponse>(handleDioError(e));
     } catch (e) {
-      return ApiError<List<PostModel>>(e.toString());
+      return ApiError<PostsResponse>(e.toString());
     }
   }
 
@@ -298,7 +255,8 @@ class ApiService {
 
       final responseData = response.data;
       Map<String, dynamic> json;
-      if (responseData is Map<String, dynamic> && responseData.containsKey('data')) {
+      if (responseData is Map<String, dynamic> &&
+          responseData.containsKey('data')) {
         json = responseData['data'] as Map<String, dynamic>;
       } else {
         json = responseData as Map<String, dynamic>;
@@ -331,6 +289,159 @@ class ApiService {
       return ApiError<List<CommentModel>>(handleDioError(e));
     } catch (e) {
       return ApiError<List<CommentModel>>(e.toString());
+    }
+  }
+
+  Future<ApiResult<List<ConversationModel>>> getConversations(
+    String userId,
+  ) async {
+    try {
+      final response = await dio.get("$conversations/$userId");
+      final List<ConversationModel> conversationList =
+          (response.data['data'] as List)
+              .map((e) => ConversationModel.fromJson(e as Map<String, dynamic>))
+              .toList();
+      return ApiSuccess<List<ConversationModel>>(conversationList);
+    } on DioException catch (e) {
+      return ApiError<List<ConversationModel>>(handleDioError(e));
+    } catch (e) {
+      return ApiError<List<ConversationModel>>(e.toString());
+    }
+  }
+
+  Future<ApiResult<List<MessageModel>>> getMessages(
+    String conversationId,
+  ) async {
+    try {
+      final response = await dio.get("$messages/$conversationId");
+      final List<MessageModel> messageList = (response.data['data'] as List)
+          .map((e) => MessageModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+      return ApiSuccess<List<MessageModel>>(messageList);
+    } on DioException catch (e) {
+      return ApiError<List<MessageModel>>(handleDioError(e));
+    } catch (e) {
+      return ApiError<List<MessageModel>>(e.toString());
+    }
+  }
+
+  Future<ApiResult<ConversationModel>> createConversation(
+    String senderId,
+    String receiverId,
+  ) async {
+    try {
+      final response = await dio.post(
+        conversations,
+        data: {"senderId": senderId, "receiverId": receiverId},
+      );
+      return ApiSuccess<ConversationModel>(
+        ConversationModel.fromJson(response.data['data']),
+      );
+    } on DioException catch (e) {
+      return ApiError<ConversationModel>(handleDioError(e));
+    } catch (e) {
+      return ApiError<ConversationModel>(e.toString());
+    }
+  }
+
+  Future<ApiResult<MessageModel>> sendMessage(
+    String conversationId,
+    String senderId,
+    String text,
+  ) async {
+    try {
+      final response = await dio.post(
+        messages,
+        data: {
+          "conversationId": conversationId,
+          "senderId": senderId,
+          "text": text,
+        },
+      );
+      return ApiSuccess<MessageModel>(
+        MessageModel.fromJson(response.data['data']),
+      );
+    } on DioException catch (e) {
+      return ApiError<MessageModel>(handleDioError(e));
+    } catch (e) {
+      return ApiError<MessageModel>(e.toString());
+    }
+  }
+
+  Future<ApiResult<ChatResponse>> getAllChats(String id) async {
+    try {
+      var response = await dio.get("$conversations/$id");
+      ChatResponse chatResponse = ChatResponse.fromJson(response.data);
+      return ApiSuccess<ChatResponse>(chatResponse);
+    } on DioException catch (e) {
+      return ApiError<ChatResponse>(handleDioError(e));
+    } catch (e) {
+      return ApiError<ChatResponse>(e.toString());
+    }
+  }
+
+  Future<ApiResult<SeatBookingResponse>> bookSeatInVehicle({
+    required String vehicleId,
+    required String lineId,
+    required String stationId,
+  }) async {
+    try {
+      var response = await dio.post(
+        "$station/${stationId}/${lines}/${lineId}/${vichels}/${vehicleId}/book",
+      );
+      SeatBookingResponse seatBookingResponse = SeatBookingResponse.fromJson(
+        response.data,
+      );
+      return ApiSuccess<SeatBookingResponse>(seatBookingResponse);
+    } on DioException catch (e) {
+      return ApiError<SeatBookingResponse>(handleDioError(e));
+    } catch (e) {
+      return ApiError<SeatBookingResponse>(e.toString());
+    }
+  }
+
+  Future<ApiResult<SeatBookingResponse>> cancelBookSeatInVehicle({
+    required String vehicleId,
+    required String lineId,
+    required String stationId,
+  }) async {
+    try {
+      var response = await dio.delete(
+        "$station/${stationId}/${lines}/${lineId}/${vichels}/${vehicleId}/book",
+      );
+      SeatBookingResponse seatBookingResponse = SeatBookingResponse.fromJson(
+        response.data,
+      );
+      return ApiSuccess<SeatBookingResponse>(seatBookingResponse);
+    } on DioException catch (e) {
+      return ApiError<SeatBookingResponse>(handleDioError(e));
+    } catch (e) {
+      return ApiError<SeatBookingResponse>(e.toString());
+    }
+  }
+
+  Future<ApiResult<String>> confirmBook({
+    required String vehicleId,
+    required String lineId,
+    required String stationId,
+    required String bookingId,
+  }) async {
+    try {
+      var response = await dio.post(
+        "$station/${stationId}/${lines}/${lineId}/${vichels}/${vehicleId}/book/${bookingId}/confirm",
+      );
+      var data = response.data;
+      String message = "";
+      if (data is Map<String, dynamic>) {
+         message = data['message']?.toString() ?? data.toString();
+      } else {
+         message = data.toString();
+      }
+      return ApiSuccess<String>(message);
+    } on DioException catch (e) {
+      return ApiError<String>(handleDioError(e));
+    } catch (e) {
+      return ApiError<String>(e.toString());
     }
   }
 }

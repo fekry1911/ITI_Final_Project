@@ -28,6 +28,7 @@ class SimpleStationData {
 @JsonSerializable()
 class SimpleStationsResponse {
   final int count;
+  final int lastPage;
   final int page;
   final int limit;
   final List<SimpleStationData> data;
@@ -37,10 +38,12 @@ class SimpleStationsResponse {
     required this.page,
     required this.limit,
     required this.data,
+    required this.lastPage,
   });
 
   factory SimpleStationsResponse.fromJson(Map<String, dynamic> json) {
     return SimpleStationsResponse(
+      lastPage: int.tryParse(json['lastPage'].toString()) ?? 0,
       count: int.tryParse(json['count'].toString()) ?? 0,
       page: int.tryParse(json['page'].toString()) ?? 0,
       limit: int.tryParse(json['limit'].toString()) ?? 0,

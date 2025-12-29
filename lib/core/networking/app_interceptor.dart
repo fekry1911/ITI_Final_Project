@@ -5,8 +5,10 @@ import '../helpers/cach_helper.dart';
 class AppInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    String token = CacheHelper.getString(key: "token");
-    options.headers['Authorization'] = 'Bearer ${token}';
+    String? token = CacheHelper.getString(key: "token");
+    if (token != null && token.isNotEmpty) {
+      options.headers['Authorization'] = 'Bearer $token';
+    }
     print('➡️ REQUEST');
     print('${options.method} ${options.uri}');
     print('Headers: ${options.headers}');

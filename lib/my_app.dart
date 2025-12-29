@@ -6,6 +6,7 @@ import 'package:iti_moqaf/core/theme/color/colors.dart';
 
 
 import 'core/routing/router.dart';
+import 'core/theme/text_theme/text_theme.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key, required this.appRouter});
@@ -43,12 +44,61 @@ class MyApp extends StatelessWidget {
           initialRoute:splashScreen,
 
           theme: ThemeData(
-            primaryColor: AppColors.mainColor,
-            scaffoldBackgroundColor: AppColors.scaffoldColor,
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColors.primary,
+              primary: AppColors.primary,
+              secondary: AppColors.secondary,
+              surface: AppColors.surface,
+              error: AppColors.error,
+              onPrimary: Colors.white,
+              onSurface: AppColors.textPrimary,
+            ),
+            scaffoldBackgroundColor: AppColors.background,
             appBarTheme: AppBarTheme(
-              backgroundColor: AppColors.scaffoldColor
-            )
+              backgroundColor: AppColors.background,
+              elevation: 0,
+              centerTitle: true,
+              titleTextStyle: AppTextStyle.font18BlackBold.copyWith(
+                color: AppColors.textPrimary,
+              ),
+              iconTheme: IconThemeData(color: AppColors.textPrimary),
+            ),
+            cardTheme: CardThemeData(
+              color: AppColors.surface,
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+            ),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 24.w),
+              ),
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              filled: true,
+              fillColor: AppColors.surface,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+                borderSide: BorderSide(color: AppColors.lightGrey),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+                borderSide: BorderSide(color: AppColors.lightGrey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12.r),
+                borderSide: BorderSide(color: AppColors.primary, width: 2),
+              ),
+            ),
           ),
+
         );
       },
     );

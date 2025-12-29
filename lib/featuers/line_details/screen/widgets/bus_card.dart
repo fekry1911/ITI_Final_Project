@@ -1,209 +1,391 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iti_moqaf/core/helpers/cach_helper.dart';
+import 'package:iti_moqaf/core/models/user_model.dart';
+import 'package:iti_moqaf/core/shared_widgets/toast.dart';
+import 'package:iti_moqaf/core/theme/color/colors.dart';
+import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
+import 'package:iti_moqaf/featuers/line_details/logic/manage_book_seat_cubit.dart';
+
 import '../../data/model/microbus_models.dart';
+import '../../logic/get_details_of_line_cubit.dart';
 
 class BusCard extends StatelessWidget {
   final Microbus bus;
+  final String stationId;
+  final String lineId;
 
-  const BusCard({super.key, required this.bus});
+  const BusCard({
+    super.key,
+    required this.bus,
+    required this.stationId,
+    required this.lineId,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Derived/Mocked properties for UI matching
-    final bool isFull = bus.availableSeats == 0;
-    final bool isBusy = bus.availableSeats < (bus.capacity * 0.2); // generic logic
-    
-    // Status visual mapping
-    String statusText = "Running";
-    Color statusColor = const Color(0xFFE8F5E9); // Light Green
-    Color statusTextColor = const Color(0xFF43A047); // Green
-    
-    if (isFull) {
-      statusText = "FULL";
-      statusColor = const Color(0xFFFFEBEE); 
-      statusTextColor = const Color(0xFFE53935);
-    } else if (isBusy) {
-      statusText = "Busy";
-      statusColor = const Color(0xFFFFF3E0);
-      statusTextColor = const Color(0xFFFB8C00);
-    }
+    final userId = CacheHelper.getString(key: "userId");
+    final user = CacheHelper.getUser();
 
-    // Capacity progress
-    final int booked = bus.capacity - bus.availableSeats;
-    final double capacityProgress = bus.capacity > 0 ? booked / bus.capacity : 0.0;
-    
-    Color progressColor = const Color(0xFF2962FF);
-    if (isFull) progressColor = const Color(0xFFE53935);
-    else if (isBusy) progressColor = const Color(0xFFFB8C00);
+    return BlocListener<ManageBookSeatCubit, ManageBookSeatState>(
+      listenWhen: (previous, current) {
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
+        print("previous: $previous, current: $current");
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            offset: const Offset(0, 4),
-            blurRadius: 12,
-          )
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header: Status + Time
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: statusColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    statusText,
-                    style: TextStyle(
-                      color: statusTextColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  ),
+
+        if (current is ManageBookSeatLoaded) {
+          return current.seatBookingResponse.data!.vehicle.id == bus.id;
+        }
+        if (current is ManageCancelBookSeatLoaded) {
+          return current.seatBookingResponse.data!.vehicle.id == bus.id;
+        }
+        if (current is ConfirmBookSeatLoaded) {
+
+
+          return current.vehicleId == bus.id;
+        }
+        return false;
+      },
+      listener: (context, state) {
+        final cubitLines = context.read<GetDetailsOfLineCubit>();
+
+        if (state is ManageBookSeatLoaded) {
+          final booking = state.seatBookingResponse.data;
+
+          sucssesToast(
+            context,
+            "عملية حجز ناجحة",
+            "يرجى تأكيد الحجز خلال 10 دقائق",
+          );
+
+          cubitLines.updateVehicleAfterBooking(
+            vehicleId: bus.id,
+            newBookedUser: BookedUser(
+              id: booking!.user.id,
+              firstName: booking.user.firstName,
+              lastName: booking.user.lastName,
+              email: booking.user.email,
+              bookingStatus: booking.status,
+              bookingId: booking.id,
+              bookedAt: booking.createdAt,
+            ),
+          );
+        }
+
+        if (state is ManageCancelBookSeatLoaded) {
+
+
+          sucssesToast(
+            context,
+            "تم إلغاء الحجز",
+            "تم إلغاء الحجز بنجاح",
+          );
+
+          cubitLines.updateVehicleAfterCancel(
+            vehicleId: bus.id,
+            userId: userId,
+          );
+        }
+
+        if (state is ConfirmBookSeatLoaded) {
+          sucssesToast(
+            context,
+            "تم تأكيد الحجز",
+            "تم تأكيد الحجز بنجاح",
+          );
+
+          cubitLines.updateStatusOfBooking(
+            vehicleId: bus.id,
+            userId: userId,
+            status: "confirmed",
+          );
+        }
+      },
+      child: BlocBuilder<GetDetailsOfLineCubit, GetDetailsOfLineState>(
+        builder: (context, lineState) {
+          Microbus currentBus = bus;
+
+          if (lineState is GetDetailsOfLineSuccess) {
+            currentBus = lineState.results.firstWhere(
+                  (b) => b.id == bus.id,
+              orElse: () => bus,
+            );
+          }
+
+          final bookedUser = currentBus.bookedUsers
+              .firstWhereOrNull((u) => u.id == userId);
+
+          final bookingStatus = bookedUser?.bookingStatus;
+
+          final isFull = currentBus.availableSeats == 0;
+          final isBusy =
+              currentBus.availableSeats < (currentBus.capacity * 0.2);
+
+          String statusText = "Running";
+          Color statusColor = const Color(0xFFE8F5E9);
+          Color statusTextColor = const Color(0xFF43A047);
+
+          if (isFull) {
+            statusText = "FULL";
+            statusColor = const Color(0xFFFFEBEE);
+            statusTextColor = const Color(0xFFE53935);
+          } else if (isBusy) {
+            statusText = "Busy";
+            statusColor = const Color(0xFFFFF3E0);
+            statusTextColor = const Color(0xFFFB8C00);
+          }
+
+          final manageCubit = context.read<ManageBookSeatCubit>();
+
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
                 ),
-                Expanded(
-                  child: Text(
-                    " • ${bus.isAirConditioned ? "AC" : "Non-AC"} • On Time", // Placeholder for time
-                    style: TextStyle(color: Colors.grey[500], fontSize: 12),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.end,
-                  ),
-                ),
-                const SizedBox(width: 4),
-                Icon(Icons.chevron_right, color: Colors.grey[300], size: 16),
               ],
             ),
-            const SizedBox(height: 12),
-
-            // Bus Name & Route
-            Row(
-              children: [
-                Text(
-                  "Bus ${bus.plateNumber}", // Using plate as Bus Number
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    "${bus.line.fromStation.stationName} - ${bus.line.toStation.stationName}",
-                    style: TextStyle(color: Colors.grey[500]),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Capacity Bar
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Capacity", style: TextStyle(color: Colors.grey[500], fontSize: 12)),
-                Text(
-                  "$booked / ${bus.capacity}",
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(
-                value: capacityProgress,
-                backgroundColor: Colors.grey[100],
-                color: progressColor,
-                minHeight: 6,
-              ),
-            ),
-             // Alert line if max capacity or close to it
-            if (isFull)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.warning_amber_rounded, size: 16, color: const Color(0xFFE53935)),
-                    const SizedBox(width: 4),
-                    Text(
-                      "Max Capacity Reached",
-                      style: TextStyle(color: const Color(0xFFE53935), fontSize: 12),
-                    ),
-                  ],
-                ),
-              ),
-
-            const SizedBox(height: 16),
-            const Divider(),
-            const SizedBox(height: 16),
-
-            // Driver & Location
-            Row(
-              children: [
-                // Avatar
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(12),
-                    image: const DecorationImage(
-                      image: NetworkImage("https://cdn-icons-png.flaticon.com/512/3135/3135715.png"), // Generic avatar
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Header
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "DRIVER",
-                        style: TextStyle(color: Colors.grey[400], fontSize: 10, letterSpacing: 1),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: statusColor,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          statusText,
+                          style: TextStyle(
+                            color: statusTextColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
-                      Text(
-                        bus.driverName,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                      Expanded(
+                        child: Text(
+                          "• ${currentBus.isAirConditioned ? "AC" : "Non-AC"} • On Time",
+                          textAlign: TextAlign.end,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.grey[500],
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Icon(Icons.location_on, size: 18, color: const Color(0xFF2962FF)),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    bus.currentStatus.isNotEmpty ? bus.currentStatus : "In Transit",
-                    style: TextStyle(color: Colors.blueGrey[700], fontSize: 13),
+
+                  const SizedBox(height: 12),
+
+                  /// Bus Info
+                  Row(
+                    children: [
+                      Text(
+                        "Bus ${currentBus.plateNumber}",
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          "${currentBus.line.fromStation.stationName} - ${currentBus.line.toStation.stationName}",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: Colors.grey[500]),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+
+                  const SizedBox(height: 16),
+
+                  /// Capacity
+                  Text(
+                    "${currentBus.capacity - currentBus.availableSeats} / ${currentBus.capacity}",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 6),
+                  LinearProgressIndicator(
+                    value: (currentBus.capacity - currentBus.availableSeats) /
+                        currentBus.capacity,
+                    backgroundColor: Colors.grey[200],
+                  ),
+
+                  const SizedBox(height: 16),
+                  const Divider(),
+                  const SizedBox(height: 16),
+
+                  /// Actions
+                  Row(
+                    children: [
+                      const Spacer(),
+                      if (bookingStatus == null)
+                        _buildButton(
+                          text: "أحجز",
+                          color: AppColors.mainColor,
+                          onTap: () {
+                            // تحديث فوري (Optimistic Update)
+                            if (user != null && userId != null) {
+                              final cubitLines = context.read<GetDetailsOfLineCubit>();
+                              cubitLines.updateVehicleAfterBooking(
+                                vehicleId: currentBus.id,
+                                newBookedUser: BookedUser(
+                                  id: userId,
+                                  firstName: user.firstName ?? '',
+                                  lastName: user.lastName ?? '',
+                                  email: user.email ?? '',
+                                  bookingStatus: "pending",
+                                  bookingId: "temp_${DateTime.now().millisecondsSinceEpoch}",
+                                  bookedAt: DateTime.now(),
+                                ),
+                              );
+                            }
+                            // استدعاء API في الخلفية
+                            manageCubit.bookSeat(
+                              vehicleId: currentBus.id,
+                              lineId: lineId,
+                              stationId: stationId,
+                            );
+                          },
+                        )
+                      else if (bookingStatus == "pending")
+                        Row(
+                          children: [
+                            _buildButton(
+                              text: "إلغاء",
+                              color: AppColors.redColor,
+                              onTap: () {
+                                // تحديث فوري (Optimistic Update)
+                                if (userId != null) {
+                                  final cubitLines = context.read<GetDetailsOfLineCubit>();
+                                  cubitLines.updateVehicleAfterCancel(
+                                    vehicleId: currentBus.id,
+                                    userId: userId,
+                                  );
+                                }
+                                // استدعاء API في الخلفية
+                                manageCubit.cancelBookSeat(
+                                  vehicleId: currentBus.id,
+                                  lineId: lineId,
+                                  stationId: stationId,
+                                );
+                              },
+                            ),
+                            SizedBox(width: 6.w),
+                            _buildButton(
+                              text: "تأكيد",
+                              color: Colors.grey,
+                              onTap: () {
+                                if (userId != null) {
+                                  final cubitLines = context.read<GetDetailsOfLineCubit>();
+                                  cubitLines.updateStatusOfBooking(
+                                    vehicleId: currentBus.id,
+                                    userId: userId,
+                                    status: "active",
+                                  );
+                                }
+                                manageCubit.confirmBookSeat(
+                                  vehicleId: currentBus.id,
+                                  lineId: lineId,
+                                  stationId: stationId,
+                                  bookingId: bookedUser!.bookingId,
+                                );
+                              },
+                            ),
+                          ],
+                        )
+                      else
+                        Row(
+                          children: [
+                            _buildButton(
+                              text: "إلغاء",
+                              color: AppColors.redColor,
+                              onTap: () {
+                                if (userId != null) {
+                                  final cubitLines = context.read<GetDetailsOfLineCubit>();
+                                  cubitLines.updateVehicleAfterCancel(
+                                    vehicleId: currentBus.id,
+                                    userId: userId,
+                                  );
+                                }
+                                manageCubit.cancelBookSeat(
+                                  vehicleId: currentBus.id,
+                                  lineId: lineId,
+                                  stationId: stationId,
+                                );
+                              },
+                            ),
+                            SizedBox(width: 6.w),
+                            _buildButton(
+                              text: "نشطة",
+                              color: Colors.green,
+                              onTap: () {},
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildButton({
+    required String text,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return ElevatedButton(
+      onPressed: onTap,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.r),
+        ),
+      ),
+      child: Text(
+        text,
+        style: AppTextStyle.font11RedMedium.copyWith(
+          color: Colors.white,
+          fontSize: 9.sp,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

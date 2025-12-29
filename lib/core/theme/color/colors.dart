@@ -1,26 +1,41 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static Color mainColor = Color(0xff1B737E);
-  static Color secondColor = Color(0xff97dfe8);
-  static Color greyColor = Color(0xff757575);
-  static Color blackColor = Color(0xff000000);
-  static Color whiteColor = Color(0xffFFFFFF);
-  static Color darkBBlack = Color(0xff242424);
-  static Color redColor = Color(0xffcd0000);
-  static Color strongGrey = Color(0xffA9B2B9);
-  static Color formGreyColor = Color(0xffE6E6E6);
-  static Color scaffoldColor = Color(0xffF6F8F8);
-  static Color lightGrey = Color(0xffD1D5DB);
-  static Color lightGreen = Color(0xff638488);
-  static Color badgeColor = Color(0xffF3F4F6);
+  // Modern Indigo Design System
+  static const Color primary = Color(0xFF1B737E); // Teal 500 (Original mainColor)
+  static const Color primaryDark = Color(0xFF12565E); // Teal 600
+  static const Color primaryLight = Color(0xFFEAF4F5); // Teal 50
 
-  /////////////////
-  static const primary = Color(0xFF0D5C63);
-  static const background = Color(0xFFF7F9F9);
-  static const card = Colors.white;
-  static const subtitle = Color(0xFF8E8E93);
-  static const danger = Color(0xFFFFEAEA);
-  static const postCardColor = Color(0xffE6EEFA);
-  static const greyText = Color(0xffB7B7B8);
+
+  static const Color secondary = Color(0xFF10B981); // Emerald 500
+  static const Color accent = Color(0xFFF59E0B); // Amber 500
+
+  static const Color background = Color(0xFFF8FAFC); // Slate 50
+  static const Color surface = Color(0xFFFFFFFF);
+  static const Color error = Color(0xFFEF4444); // Red 500
+
+  static const Color textPrimary = Color(0xFF0F172A); // Slate 900
+  static const Color textSecondary = Color(0xFF64748B); // Slate 500
+  static const Color greyText = Color(0xFF94A3B8); // Slate 400
+
+  // Legacy mappings for compatibility (to be phased out)
+  static Color mainColor = primary;
+  static Color secondColor = Color(0xff97dfe8); // Keeping for now if used specifically
+  static Color greyColor = textSecondary;
+  static Color blackColor = textPrimary;
+  static Color whiteColor = surface;
+  static Color darkBBlack = Color(0xff1E293B); // Slate 800
+  static Color redColor = error;
+  static Color strongGrey = Color(0xffA9B2B9);
+  static Color formGreyColor = Color(0xffE2E8F0); // Slate 200
+  static Color scaffoldColor = background;
+  static Color lightGrey = Color(0xffCBD5E1); // Slate 300
+  static Color lightGreen = Color(0xff638488);
+  static Color badgeColor = Color(0xffF1F5F9); // Slate 100
+  
+  static const card = surface;
+  static const subtitle = textSecondary;
+  static const danger = Color(0xFFFEE2E2); // Red 100
+  static const postCardColor = Color(0xFFF1F5F9); // Slate 100
 }
+

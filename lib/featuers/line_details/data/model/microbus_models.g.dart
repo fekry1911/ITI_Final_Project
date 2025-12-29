@@ -27,7 +27,9 @@ Microbus _$MicrobusFromJson(Map<String, dynamic> json) => Microbus(
   currentStatus: json['currentStatus'] as String,
   line: LineData.fromJson(json['line'] as Map<String, dynamic>),
   version: (json['__v'] as num).toInt(),
-  bookedUsers: json['bookedUsers'] as List<dynamic>,
+  bookedUsers: (json['bookedUsers'] as List<dynamic>)
+      .map((e) => BookedUser.fromJson(e as Map<String, dynamic>))
+      .toList(),
   availableSeats: (json['availableSeats'] as num).toInt(),
 );
 
@@ -66,3 +68,24 @@ StationData _$StationDataFromJson(Map<String, dynamic> json) => StationData(
 
 Map<String, dynamic> _$StationDataToJson(StationData instance) =>
     <String, dynamic>{'_id': instance.id, 'stationName': instance.stationName};
+
+BookedUser _$BookedUserFromJson(Map<String, dynamic> json) => BookedUser(
+  id: json['_id'] as String,
+  firstName: json['firstName'] as String,
+  lastName: json['lastName'] as String,
+  email: json['email'] as String,
+  bookingStatus: json['bookingStatus'] as String,
+  bookingId: json['bookingId'] as String,
+  bookedAt: DateTime.parse(json['bookedAt'] as String),
+);
+
+Map<String, dynamic> _$BookedUserToJson(BookedUser instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
+      'email': instance.email,
+      'bookingStatus': instance.bookingStatus,
+      'bookingId': instance.bookingId,
+      'bookedAt': instance.bookedAt.toIso8601String(),
+    };

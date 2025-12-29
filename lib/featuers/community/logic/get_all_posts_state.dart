@@ -17,8 +17,10 @@ final class GetAllPostsLoading extends GetAllPostsState {
 
 final class GetAllPostsSuccess extends GetAllPostsState {
   final List<PostModel> postModel;
+  final bool hasMore;
 
-  GetAllPostsSuccess(this.postModel);
+
+  GetAllPostsSuccess(this.postModel, this.hasMore);
 
   @override
   // TODO: implement props

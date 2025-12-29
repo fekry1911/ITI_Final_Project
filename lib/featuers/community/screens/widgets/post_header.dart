@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
+import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
 import '../../../../core/theme/color/colors.dart';
 import '../../../../core/theme/text_theme/text_theme.dart';
 import '../../data/model/post_model.dart';
+import '../../logic/get_all_posts_cubit.dart';
+import '../../logic/like_post_cubit.dart';
 
 class PostHeader extends StatelessWidget {
   final PostModel post;
@@ -21,7 +25,13 @@ class PostHeader extends StatelessWidget {
             onTap: () {
               context.pushNamed(
                 profileScreen,
-                arguments: post.user.id,
+                arguments: {
+                  "id": post.user.id,
+                  "getAllPostsCubit": context
+                      .read<GetAllPostsCubit>(),
+                  "likePost": context
+                      .read<LikePostCubit>(),
+                },
               );
             },
             child: CircleAvatar(

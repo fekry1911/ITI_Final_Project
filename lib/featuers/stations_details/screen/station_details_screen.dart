@@ -7,6 +7,9 @@ import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import 'package:iti_moqaf/featuers/stations_details/logic/get_one_station_cubit.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/widgets/route_card.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/widgets/station_info.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
+import '../data/model/station_model.dart';
 
 class StationDetailsScreen extends StatelessWidget {
 
@@ -20,7 +23,6 @@ class StationDetailsScreen extends StatelessWidget {
         backgroundColor: AppColors.whiteColor,
         title: BlocBuilder<GetOneStationCubit, GetOneStationState>(
           builder: (context, state) {
-            var cubit = context.read<GetOneStationCubit>();
             if (state is GetOneStationSuccess) {
               return Text(
                 state.stationModel.data.stationName,
@@ -77,29 +79,10 @@ class StationDetailsScreen extends StatelessWidget {
                 SizedBox(height: 10.h),
                 BlocBuilder<GetOneStationCubit, GetOneStationState>(
                   builder: (context, state) {
-                    var cubit = context.read<GetOneStationCubit>();
                     if (state is GetOneStationError) {
                       return Center(child: Text(state.error));
                     } else if (state is GetOneStationSuccess &&
-                        state.stationModel.data.lines.isNotEmpty) {
-                      return Expanded(
-                        child: ListView.separated(
-                          itemBuilder: (BuildContext context, int index) {
-                            return RouteCard(
-                              data: state.stationModel.data.lines[index],
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(height: 7.h);
-                          },
-                          itemCount: state.stationModel.data.lines.length,
-                        ),
-                      );
-                    } else if (state is GetOneStationLoading) {
-                      return Expanded(
-                        child: Center(child: CircularProgressIndicator()),
-                      );
-                    } else {
+                        state.stationModel.data.lines.isEmpty) {
                       return Expanded(
                         child: Center(
                           child: Text(
@@ -111,6 +94,25 @@ class StationDetailsScreen extends StatelessWidget {
                         ),
                       );
                     }
+                    StationModel stationModel = state is GetOneStationSuccess?state.stationModel:fakeStations[0];
+                    return Expanded(
+                      child: ListView.separated(
+                        itemBuilder: (BuildContext context, int index) {
+                          return Skeletonizer(
+                            enabled:  state is GetOneStationLoading,
+                            child: RouteCard(
+                              data: stationModel.data.lines[index],
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return SizedBox(height: 7.h);
+                        },
+                        itemCount: stationModel.data.lines.length,
+                      ),
+                    );
+
+
                   },
                 ),
               ],
@@ -121,3 +123,82 @@ class StationDetailsScreen extends StatelessWidget {
     );
   }
 }
+
+final List<StationModel> fakeStations = [
+  StationModel(
+    data: StationData(
+      id: '1',
+      stationName: 'Station A',
+      location: Location(
+        type: 'Point',
+        coordinates: [31.2357, 30.0444], // [lng, lat]
+      ),
+      lines: [
+        LineModel(
+          id: 'l1',
+          fromStation: 'Station A',
+          toStation: 'Station B',
+          price: 5,
+          distance: 2.5,
+        ),
+        LineModel(
+          id: 'l2',
+          fromStation: 'Station A',
+          toStation: 'Station C',
+          price: 7,
+          distance: 3.2,
+        ),
+      ],
+      status: 'Open',
+      v: 0,
+      createdAt: DateTime.now().subtract(const Duration(days: 10)),
+      updatedAt: DateTime.now(),
+    ),
+  ),
+  StationModel(
+    data: StationData(
+      id: '2',
+      stationName: 'Station B',
+      location: Location(
+        type: 'Point',
+        coordinates: [31.238, 30.045],
+      ),
+      lines: [
+        LineModel(
+          id: 'l3',
+          fromStation: 'Station B',
+          toStation: 'Station D',
+          price: 6,
+          distance: 4.0,
+        ),
+      ],
+      status: 'Closed',
+      v: 0,
+      createdAt: DateTime.now().subtract(const Duration(days: 15)),
+      updatedAt: DateTime.now(),
+    ),
+  ),
+  StationModel(
+    data: StationData(
+      id: '3',
+      stationName: 'Station C',
+      location: Location(
+        type: 'Point',
+        coordinates: [31.240, 30.046],
+      ),
+      lines: [
+        LineModel(
+          id: 'l4',
+          fromStation: 'Station C',
+          toStation: 'Station A',
+          price: 8,
+          distance: 3.5,
+        ),
+      ],
+      status: 'Open',
+      v: 0,
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
+      updatedAt: DateTime.now(),
+    ),
+  ),
+];

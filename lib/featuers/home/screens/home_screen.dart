@@ -3,16 +3,18 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iti_moqaf/core/const/const_paths.dart';
-import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/featuers/home/logic/home_cubit.dart';
-
 import 'package:iti_moqaf/core/helpers/cach_helper.dart';
+import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/featuers/community/screens/community.dart';
+import 'package:iti_moqaf/featuers/home/logic/home_cubit.dart';
 import 'package:iti_moqaf/featuers/near_stations/screens/screen.dart';
 import 'package:iti_moqaf/featuers/profile/screens/profile_screen.dart';
 import 'package:iti_moqaf/featuers/stations/screens/StationsScreen.dart';
+
+import '../../../core/theme/color/colors.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -21,7 +23,7 @@ class HomeScreen extends StatelessWidget {
     NearStations(),
     StationsScreen(),
     Community(),
-    ProfileScreen(id: CacheHelper.getString(key: "userId"),),
+    ProfileScreen(id: CacheHelper.getString(key: "userId") ?? ""),
   ];
 
   @override
@@ -29,36 +31,65 @@ class HomeScreen extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         var cubit = context.watch<HomeCubit>();
+        int index = cubit.index;
         return Scaffold(
           extendBody: true,
+          appBar: index == 0 || index == 3
+              ? null
+              : AppBar(
+                  actions: index == 2
+                      ? [
+                          IconButton(
+                            onPressed: () {
+                              context.pushNamed(
+                                allChatsScreen,
+                                arguments:
+                                    CacheHelper.getString(key: "userId") ?? "",
+                              );
+                            },
+                            icon: SvgPicture.asset(
+                              "assets/svg_icons/send.svg",
+                              color: AppColors.mainColor,
+                            ),
+                            color: AppColors.primary,
+                          ),
+                        ]
+                      : [],
+                  title: Text(
+                    index == 1 ? "جميع المحطات" : "شارك بمساعده او مشكلتك",
+                  ),
+                  centerTitle: false,
+                ),
+
           body: IndexedStack(index: cubit.index, children: screens),
           floatingActionButton: Transform.translate(
             offset: Offset(0, 10.h),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                child: Container(
-                  height: 56.r,
-                  width: 56.r,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white.withOpacity(0.35),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.4),
-                      width: 0.6,
-                    ),
+            child: Container(
+              height: 64.r,
+              width: 64.r,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [AppColors.primary, AppColors.primaryDark],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primary.withOpacity(0.3),
+                    blurRadius: 12,
+                    offset: Offset(0, 6),
                   ),
-                  child: IconButton(
-                    onPressed: () {
-                      context.pushNamed(homeScreen);
-                    },
-                    icon: FaIcon(
-                      FontAwesomeIcons.refresh,
-                      size: 28.r,
-                      color: Colors.black,
-                    ),
-                  ),
+                ],
+              ),
+              child: IconButton(
+                onPressed: () {
+                  context.pushAndRemoveUntil(homeScreen);
+                },
+                icon: FaIcon(
+                  FontAwesomeIcons.rotate,
+                  size: 24.r,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -106,25 +137,57 @@ class HomeScreen extends StatelessWidget {
                     elevation: 0,
                     type: BottomNavigationBarType.fixed,
                     currentIndex: cubit.index,
-                    selectedItemColor: Colors.black,
-                    unselectedItemColor: Colors.black.withOpacity(0.5),
+                    selectedItemColor: AppColors.primary,
+                    unselectedItemColor: AppColors.textSecondary.withOpacity(
+                      0.5,
+                    ),
                     showUnselectedLabels: false,
-                    items: const [
+                    selectedIconTheme: IconThemeData(size: 24.r),
+                    unselectedIconTheme: IconThemeData(size: 22.r),
+                    items: [
                       BottomNavigationBarItem(
-                        icon: FaIcon(FontAwesomeIcons.house),
+                        activeIcon: SvgPicture.asset(
+                          'assets/svg_icons/solid_home.svg',
+                          color: AppColors.primary,
+                          width: 24,
+                        ),
+                        icon: SvgPicture.asset(
+                          'assets/svg_icons/stroke_home.svg',
+                          color: AppColors.greyText,
+
+                          width: 24,
+                        ),
                         label: "Home",
                       ),
-                      BottomNavigationBarItem(
-                        icon: FaIcon(FontAwesomeIcons.bus),
-                        label: "Search",
+                      const BottomNavigationBarItem(
+                        icon: FaIcon(FontAwesomeIcons.busSimple),
+                        label: "Stations",
                       ),
                       BottomNavigationBarItem(
-                        icon: FaIcon(FontAwesomeIcons.comments),
+                        activeIcon: SvgPicture.asset(
+                          'assets/svg_icons/community.svg',
+                          color: AppColors.primary,
+                          width: 35,
+                        ),
+                        icon: SvgPicture.asset(
+                          'assets/svg_icons/community.svg',
+                          color: AppColors.greyText,
 
-                        label: "Community",
+                          width: 30,
+                        ),
+                        label: "Feeds",
                       ),
                       BottomNavigationBarItem(
-                        icon: FaIcon(FontAwesomeIcons.person),
+                        activeIcon: SvgPicture.asset(
+                          'assets/svg_icons/solid_profile.svg',
+                          color: AppColors.primary,
+                          width: 30,
+                        ),
+                        icon: SvgPicture.asset(
+                          'assets/svg_icons/stroke_profile.svg',
+                          color: AppColors.greyText,
+                          width: 24,
+                        ),
                         label: "Profile",
                       ),
                     ],

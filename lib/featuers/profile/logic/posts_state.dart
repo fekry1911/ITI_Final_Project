@@ -17,8 +17,9 @@ final class PostsLoading extends PostsState {
 
 final class PostsLoaded extends PostsState {
   final List<PostModel> posts;
+  final bool hasMore;
 
-  PostsLoaded(this.posts);
+  PostsLoaded(this.posts, this.hasMore);
 
   @override
   // TODO: implement props

@@ -7,11 +7,9 @@ import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import 'package:iti_moqaf/featuers/login/logic/login_cubit.dart';
 import 'package:iti_moqaf/featuers/login/screen/widgets/button_done.dart';
 import 'package:iti_moqaf/featuers/login/screen/widgets/email_password.dart';
-import 'package:iti_moqaf/featuers/login/screen/widgets/social_media_auth.dart';
-
 import '../../../core/const/const_paths.dart';
-import '../../../core/shared_widgets/container_stack.dart';
 import '../../../core/shared_widgets/image_messsage.dart';
+import '../../../core/theme/color/colors.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -32,40 +30,44 @@ class LoginScreen extends StatelessWidget {
                 title: 'مرحبا بعودتك',
                 desc: 'قم بتسجيل الدخول للوصول لحسابك',
               ),
-              SizedBox(height: 30.h),
+              SizedBox(height: 40.h),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0.w),
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Column(
                   children: [
                     EmailAndPassword(),
-                    SizedBox(height: 15.h),
-                    SocialMediaAuth(),
-                    SizedBox(height: 15.h),
+                    SizedBox(height: 24.h),
                     ButtonDone(),
-                    SizedBox(height: 15.h),
+                    SizedBox(height: 24.h),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           "ليس لديك حساب؟",
-                          style: AppTextStyle.font11BlackRegular,
+                          style: AppTextStyle.font11BlackRegular.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
                         ),
-                        SizedBox(width: 3.w),
+                        SizedBox(width: 4.w),
                         GestureDetector(
                           onTap: () {
                             context.pushNamed(registerScreen);
                           },
                           child: Text(
                             "سجّل الآن",
-                            style: AppTextStyle.font11RedMedium,
+                            style: AppTextStyle.font11RedMedium.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ],
                     ),
+                    SizedBox(height: 30.h,),
                   ],
                 ),
               ),
+
               BlocListener<LoginCubit, LoginStates>(
                 listener: (BuildContext context, state) {
                   if (state is LoginSuccess) {

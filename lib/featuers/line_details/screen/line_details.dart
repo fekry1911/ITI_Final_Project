@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iti_moqaf/featuers/line_details/logic/get_details_of_line_cubit.dart';
 import 'package:iti_moqaf/featuers/line_details/data/model/microbus_models.dart';
+import 'package:iti_moqaf/featuers/line_details/logic/get_details_of_line_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'widgets/status_chip.dart';
+
 import 'widgets/bus_card.dart';
 
 class LineDetails extends StatelessWidget {
-  const LineDetails({super.key});
+  String stationId;
+  String lineId;
+
+  LineDetails({required this.stationId, required this.lineId});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,11 @@ class LineDetails extends StatelessWidget {
         ),
         title: const Text(
           "Live Routes",
-          style: TextStyle( color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
         ),
         centerTitle: true,
         actions: [
@@ -68,72 +75,31 @@ class LineDetails extends StatelessWidget {
           }
 
           int active = isLoading ? 14 : buses.length;
-          int onTime = isLoading ? 10 : buses.where((b) => b.currentStatus != 'Delayed').length;
-          int delayed = isLoading ? 2 : buses.where((b) => b.currentStatus == 'Delayed').length;
+          int onTime = isLoading
+              ? 10
+              : buses.where((b) => b.currentStatus != 'Delayed').length;
+          int delayed = isLoading
+              ? 2
+              : buses.where((b) => b.currentStatus == 'Delayed').length;
 
           return Skeletonizer(
             enabled: isLoading,
             child: Column(
               children: [
-                // Search Bar
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Search by bus number or route...",
-                      hintStyle: TextStyle(color: Colors.grey[400]),
-                      prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
-                      suffixIcon: Icon(Icons.tune, color: Colors.grey[400]),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                    ),
-                  ),
-                ),
-
-                // Status Filters
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  child: Row(
-                    children: [
-                      StatusChip(
-                        icon: Icons.directions_bus,
-                        label: "$active Active",
-                        color: const Color(0xFFE3F2FD), // Light Blue
-                        textColor: const Color(0xFF1E88E5), // Blue
-                      ),
-                      const SizedBox(width: 12),
-                      StatusChip(
-                        icon: Icons.check_circle,
-                        label: "$onTime On Time",
-                        color: const Color(0xFFE8F5E9), // Light Green
-                        textColor: const Color(0xFF43A047), // Green
-                      ),
-                      const SizedBox(width: 12),
-                      StatusChip(
-                        icon: Icons.warning,
-                        label: "$delayed Delayed",
-                        color: const Color(0xFFFFEBEE), // Light Red
-                        textColor: const Color(0xFFE53935), // Red
-                      ),
-                    ],
-                  ),
-                ),
-
                 // Bus List
                 Expanded(
                   child: ListView.separated(
                     padding: const EdgeInsets.all(16),
                     itemCount: buses.length,
-                    separatorBuilder: (context, index) => const SizedBox(height: 16),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 16),
                     itemBuilder: (context, index) {
                       final bus = buses[index];
-                      return BusCard(bus: bus);
+                      return BusCard(
+                        bus: bus,
+                        stationId: stationId,
+                        lineId: lineId,
+                      );
                     },
                   ),
                 ),
@@ -141,11 +107,6 @@ class LineDetails extends StatelessWidget {
             ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: const Color(0xFF2962FF), // Bright Blue
-        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

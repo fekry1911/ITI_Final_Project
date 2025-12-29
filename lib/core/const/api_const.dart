@@ -8,3 +8,6 @@ const String vichels = "vichels";
 const String verifyEmailEndpoint = "/api/auth/verify-email";
 const String posts="/api/community/posts";
 const String getUserById = "/api/auth/user";
+const String conversations = "/api/conversations";
+const String messages = "/api/messages";
+

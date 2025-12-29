@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-
+import 'package:flutter_svg/svg.dart';
 import 'package:iti_moqaf/core/shared_widgets/comments.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
@@ -20,7 +18,7 @@ class LikesAndComments extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 8.h),
+      padding: EdgeInsets.only(left: 15.w, right: 15.w,top: 8.h),
       child: BlocBuilder<LikePostCubit, LikePostState>(
         buildWhen: (prev, curr) {
           if (curr is LikePostLoading) return curr.postId == post.id;
@@ -52,7 +50,10 @@ class LikesAndComments extends StatelessWidget {
           return Row(
             children: [
               _ActionButton(
-                icon: isLiked ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
+                asset: isLiked
+                    ? 'assets/svg_icons/favorite.svg'
+                    : 'assets/svg_icons/stroke_fav.svg',
+
                 color: isLiked ? AppColors.redColor : AppColors.greyText,
                 label: "$likes",
                 onTap: () {
@@ -67,7 +68,8 @@ class LikesAndComments extends StatelessWidget {
               SizedBox(width: 20.w),
               BlocBuilder<GetAllPostsCubit, GetAllPostsState>(
                 buildWhen: (prev, curr) {
-                  if (curr is GetAllPostsSuccess && prev is GetAllPostsSuccess) {
+                  if (curr is GetAllPostsSuccess &&
+                      prev is GetAllPostsSuccess) {
                     final prevPost = prev.postModel.firstWhere(
                       (p) => p.id == post.id,
                       orElse: () => post,
@@ -91,7 +93,7 @@ class LikesAndComments extends StatelessWidget {
                   }
 
                   return _ActionButton(
-                    icon: FontAwesomeIcons.solidComment,
+                    asset: 'assets/svg_icons/comment.svg',
                     color: AppColors.greyText,
                     label: "$comments",
                     onTap: () {
@@ -114,14 +116,14 @@ class LikesAndComments extends StatelessWidget {
 }
 
 class _ActionButton extends StatelessWidget {
-  final IconData icon;
+  final String asset;
   final Color color;
   final String label;
   final VoidCallback onTap;
   final bool animateIcon;
 
   const _ActionButton({
-    required this.icon,
+    required this.asset,
     required this.color,
     required this.label,
     required this.onTap,
@@ -137,11 +139,19 @@ class _ActionButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
         child: Row(
           children: [
-            FaIcon(icon, color: color, size: 18.r)
+            SvgPicture.asset(asset, color: color,width: 20,)
                 .animate(target: animateIcon ? 1 : 0)
-                .scale(begin: const Offset(1, 1), end: const Offset(1.2, 1.2), duration: 200.ms)
+                .scale(
+                  begin: const Offset(1, 1),
+                  end: const Offset(1.2, 1.2),
+                  duration: 200.ms,
+                )
                 .then()
-                .scale(begin: const Offset(1.2, 1.2), end: const Offset(1, 1), duration: 200.ms),
+                .scale(
+                  begin: const Offset(1.2, 1.2),
+                  end: const Offset(1, 1),
+                  duration: 200.ms,
+                ),
             SizedBox(width: 6.w),
             Text(
               label,
@@ -156,4 +166,3 @@ class _ActionButton extends StatelessWidget {
     );
   }
 }
-

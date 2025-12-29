@@ -23,7 +23,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Future<void> finishOnboarding() async {
     CacheHelper.putBoolean(key: "onBoarding_finish", value: true);
     if (!mounted) return;
-    Navigator.pushNamed(context, loginScreen);
+    Navigator.pushNamed(context, homeScreen);
   }
 
   void nextPage() {

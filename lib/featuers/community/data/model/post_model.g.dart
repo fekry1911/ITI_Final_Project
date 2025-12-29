@@ -35,3 +35,25 @@ Map<String, dynamic> _$PostModelToJson(PostModel instance) => <String, dynamic>{
   '__v': instance.version,
   'isLiked': instance.isLiked,
 };
+
+PostsResponse _$PostsResponseFromJson(Map<String, dynamic> json) =>
+    PostsResponse(
+      totalCount: (json['totalCount'] as num).toInt(),
+      lastPage: (json['lastPage'] as num).toInt(),
+      count: (json['count'] as num).toInt(),
+      page: (json['page'] as num).toInt(),
+      limit: (json['limit'] as num).toInt(),
+      data: (json['data'] as List<dynamic>)
+          .map((e) => PostModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$PostsResponseToJson(PostsResponse instance) =>
+    <String, dynamic>{
+      'totalCount': instance.totalCount,
+      'lastPage': instance.lastPage,
+      'count': instance.count,
+      'page': instance.page,
+      'limit': instance.limit,
+      'data': instance.data,
+    };

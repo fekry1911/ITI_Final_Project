@@ -26,11 +26,29 @@ class _StationsscreenState extends State<StationsScreen> {
   String fillter = filters[0]["label"]!;
   String valueFillter = filters[0]["value"]!;
   List? currentStations;
+  ScrollController controllerScroll = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    currentStations = stationsData;
+    if (context.read<GetAllStationsCubit>().lastPage !=
+        context.read<GetAllStationsCubit>().page) {
+      controllerScroll.addListener(() => _getMore());
+    }
+  }
+
+  void _getMore() {
+    if (controllerScroll.position.pixels >=
+        controllerScroll.position.maxScrollExtent - 200) {
+      context.read<GetAllStationsCubit>().getAllStations();
+    }
+  }
+
+  @override
+  void dispose() {
+    controllerScroll.dispose();
+    controllerScroll.removeListener(()=>_getMore());
+    super.dispose();
   }
 
   @override
@@ -42,67 +60,21 @@ class _StationsscreenState extends State<StationsScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
 
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:4, vertical: 8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: "ابحث عن محطه",
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
                 ),
-              ],
-            ),
-            child: SharedTextFormField(
-              controller: controller,
-              hintText: "ابحث عن محطه",
-              validator: (x) {
-                return null;
-              },
-              boderRaduis: 30.r,
-              fillColor: AppColors.whiteColor,
-              prefixIcon: Icon(Icons.search),
-            ),
-          ),
-          SizedBox(height: 10.h),
-          SizedBox(
-            height: 40.h,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: filters.length,
-              separatorBuilder: (context, index) => SizedBox(width: 10.w),
-              itemBuilder: (context, index) {
-                String label = filters[index]["label"]!;
-                String value = filters[index]["value"]!;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      fillter = label;
-                      valueFillter = value;
-
-                      if (valueFillter == "All") {
-                        currentStations = stationsData;
-                      } else {
-                        currentStations = stationsData
-                            .where(
-                              (station) => station["status"] == valueFillter,
-                            )
-                            .toList();
-                      }
-                    });
-                  },
-                  child: FilterWidget(
-                    text: label,
-                    backColor: fillter == label
-                        ? AppColors.mainColor.withOpacity(.7)
-                        : AppColors.whiteColor,
-                    textColor: fillter == label
-                        ? AppColors.whiteColor
-                        : AppColors.blackColor,
-                  ),
-                );
-              },
+                contentPadding: const EdgeInsets.symmetric(vertical: 0),
+              ),
             ),
           ),
           SizedBox(height: 10.h),
@@ -110,30 +82,31 @@ class _StationsscreenState extends State<StationsScreen> {
             builder: (BuildContext context, state) {
               var cubit = context.read<GetAllStationsCubit>();
               if (state is GetAllStationsError) {
-                return NetWorkError(onPressed: () {
-                  cubit.getAllStations();
-                },);
+                return NetWorkError(
+                  onPressed: () {
+                    cubit.getAllStations();
+                  },
+                );
               }
 
               List<SimpleStationData> data = state is GetAllStationsLoading
                   ? [
-                SimpleStationData(
-                  stationName: "stationName",
-                  lines: [],
-                  status: "status",
-                ),
-                SimpleStationData(
-                  stationName: "stationName",
-                  lines: [],
-                  status: "status",
-                ),
-                SimpleStationData(
-                  stationName: "stationName",
-                  lines: [],
-                  status: "status",
-                ),
-
-              ]
+                      SimpleStationData(
+                        stationName: "stationName",
+                        lines: [],
+                        status: "status",
+                      ),
+                      SimpleStationData(
+                        stationName: "stationName",
+                        lines: [],
+                        status: "status",
+                      ),
+                      SimpleStationData(
+                        stationName: "stationName",
+                        lines: [],
+                        status: "status",
+                      ),
+                    ]
                   : state is GetAllStationsSuccess
                   ? state.stations
                   : [];
@@ -144,19 +117,14 @@ class _StationsscreenState extends State<StationsScreen> {
                   ignorePointers: true,
                   enabled: state is GetAllStationsLoading,
                   child: RefreshIndicator(
-
                     onRefresh: () {
                       cubit.getAllStations();
                       return Future.delayed(Duration(seconds: 1));
                     },
                     child: ListView.separated(
-
-
+                      controller: controllerScroll,
                       itemBuilder: (BuildContext context, int index) {
-                        return StationCard(
-                          data: data[index],
-                          index: index,
-                        );
+                        return StationCard(data: data[index], index: index);
                       },
                       separatorBuilder: (BuildContext context, int index) {
                         return SizedBox(height: 5.h);
