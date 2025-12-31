@@ -24,6 +24,7 @@ import 'package:iti_moqaf/featuers/profile/screens/profile_screen.dart';
 import 'package:iti_moqaf/featuers/register/logic/register_user_cubit.dart';
 import 'package:iti_moqaf/featuers/register/screen/register.dart';
 import 'package:iti_moqaf/featuers/register/screen/verify_email_screen.dart';
+import 'package:iti_moqaf/featuers/reset_password/screens/code_screen.dart';
 import 'package:iti_moqaf/featuers/splash/screen/splash_screen.dart';
 import 'package:iti_moqaf/featuers/stations/logic/get_all_stations_cubit.dart';
 import 'package:iti_moqaf/featuers/stations/screens/StationsScreen.dart';
@@ -32,6 +33,10 @@ import 'package:iti_moqaf/featuers/stations_details/screen/station_details_scree
 
 import '../../featuers/alllChats/screen/chat_screen.dart';
 import '../../featuers/line_details/logic/manage_book_seat_cubit.dart';
+import '../../featuers/line_details/screen/widgets/payment_view.dart';
+import '../../featuers/reset_password/logic/reset_password_cubit.dart';
+import '../../featuers/reset_password/screens/email_screen.dart';
+import '../../featuers/reset_password/screens/new_password_creen.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -199,7 +204,10 @@ class AppRouter {
           settings,
           BlocProvider(
             create: (context) => getIt<ChatCubit>(param1: args),
-            child: ChatScreen(name: args["chatPartnerName"],avatar: args["chatPartnerAvatar"],),
+            child: ChatScreen(
+              name: args["chatPartnerName"],
+              avatar: args["chatPartnerAvatar"],
+            ),
           ),
         );
       case allChatsScreen:
@@ -211,6 +219,49 @@ class AppRouter {
             child: AllChatsScreen(),
           ),
           transition: TransitionType.scale,
+        );
+      case webViewScreen:
+        final url = settings.arguments as String;
+        return _buildPageRoute(
+          settings,
+          WebViewScreen(url: url),
+          transition: TransitionType.scale,
+          // مهم: خلي ال-route ترجع قيمة عند Navigator.pop
+        );
+
+      case emailScreen:
+        return _buildPageRoute(
+          settings,
+          BlocProvider(
+            create: (context) => getIt<ResetPasswordCubit>(),
+            child: EnterEmail(),
+          ),
+          transition: TransitionType.scale,
+          // مهم: خلي ال-route ترجع قيمة عند Navigator.pop
+        );
+
+      case codeScreen:
+        final email = settings.arguments as String;
+        return _buildPageRoute(
+          settings,
+          BlocProvider(
+            create: (context) => getIt<ResetPasswordCubit>(),
+            child: CodeScreen(email: email,),
+          ),
+          transition: TransitionType.scale,
+          // مهم: خلي ال-route ترجع قيمة عند Navigator.pop
+        );
+
+      case newPasswordScreen:
+        final token = settings.arguments as String;
+        return _buildPageRoute(
+          settings,
+          BlocProvider(
+            create: (context) => getIt<ResetPasswordCubit>(),
+            child: NewPasswordScreen(token: token,),
+          ),
+          transition: TransitionType.scale,
+          // مهم: خلي ال-route ترجع قيمة عند Navigator.pop
         );
 
       default:

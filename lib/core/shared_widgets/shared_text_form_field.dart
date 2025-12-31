@@ -5,66 +5,80 @@ import '../theme/color/colors.dart';
 import '../theme/text_theme/text_theme.dart';
 
 class SharedTextFormField extends StatelessWidget {
-  SharedTextFormField({
+  const SharedTextFormField({
     super.key,
     required this.controller,
     required this.hintText,
-    required this.validator,
+    this.validator,
     this.obscureText = false,
-    this.onTap,
-    this.shown = false,
-    this.suffixIcon = const SizedBox.shrink(),
-    this.prefixIcon = const SizedBox.shrink(),
+    this.keyboardType,
+    this.textInputAction = TextInputAction.next,
+    this.suffixIcon,
+    this.prefixIcon,
     this.fillColor,
-    this.boderRaduis,
+    this.borderRadius = 16,
+    this.onTap,
+    this.onChanged,
   });
 
-  String hintText;
-  String? Function(String?)? validator;
-  bool obscureText;
-  void Function()? onTap;
-  bool shown;
-  TextEditingController controller;
-  Widget suffixIcon;
-  Widget prefixIcon;
-  Color? fillColor;
-  double? boderRaduis;
+  final TextEditingController controller;
+  final String hintText;
+  final String? Function(String?)? validator;
+  final bool obscureText;
+  final TextInputType? keyboardType;
+  final TextInputAction textInputAction;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final Color? fillColor;
+  final double borderRadius;
+  final VoidCallback? onTap;
+  final void Function(String)? onChanged;
+
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      obscureText: obscureText,
+      onChanged: onChanged,
       validator: validator,
+      obscureText: obscureText,
+      obscuringCharacter: "●",
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
       cursorColor: AppColors.redColor,
-      style: AppTextStyle.font15GreyRegular,
-      keyboardType: TextInputType.emailAddress,
-      textInputAction: TextInputAction.next,
+      onTap: onTap,
+      style: AppTextStyle.font15GreyRegular.copyWith(
+        letterSpacing: obscureText ? 2.5 : null,
+        fontWeight: FontWeight.w600,
+      ),
       decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: TextStyle(color: Colors.grey[400]),
+        filled: true,
+        fillColor: fillColor ?? Colors.white,
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        errorMaxLines: 2,
+        errorStyle: TextStyle(
+          color: AppColors.redColor,
+          fontSize: 12.sp,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius.r),
+          borderSide: BorderSide(color: Colors.grey.shade100),
+        ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(borderRadius.r),
           borderSide: BorderSide(color: AppColors.blackColor),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(borderRadius.r),
           borderSide: BorderSide(color: AppColors.redColor),
         ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.r),
-            borderSide: BorderSide(color: AppColors.blackColor),
-          ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius.r),
           borderSide: BorderSide(color: AppColors.blackColor),
         ),
-        errorStyle: TextStyle(color: AppColors.redColor, fontSize: 12.sp),
-        errorMaxLines: 2,
-        suffixIcon: suffixIcon,
-        prefixIcon: prefixIcon,
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
-        hintText: hintText,
-        fillColor: fillColor ?? AppColors.formGreyColor,
-        filled: true,
-        enabled: true,
       ),
     );
   }

@@ -32,17 +32,7 @@ class BookAndCancelRepo {
     );
   }
 
-  Future<ApiResult<String>> confirmBookRepo({
-    required String vehicleId,
-    required String lineId,
-    required String stationId,
-    required String bookingId,
-  }) async {
-    return apiService.confirmBook(
-      vehicleId: vehicleId,
-      lineId: lineId,
-      stationId: stationId,
-      bookingId: bookingId,
-    );
+  Future<ApiResult<String>> confirmBookRepo({required String sessionId}) async {
+    return apiService.confirmBook(sessionId: sessionId);
   }
 }

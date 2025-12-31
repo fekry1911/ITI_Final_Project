@@ -21,6 +21,11 @@ class AddPost extends StatelessWidget {
     var cubit = context.read<CreatePostCubit>();
     final allPostsCubit = context.read<GetAllPostsCubit>();
     final postsCubit = context.read<PostsCubit>();
+    final Map<String, String> postTypeMap = {
+      'DISCUSSION': 'نقاش',
+      'CAR_BOOKING': 'حجز سيارة',
+      'OPINION': 'رأي',
+    };
 
     return BlocListener<CreatePostCubit, CreatePostState>(
       listener: (context, state) {
@@ -55,17 +60,53 @@ class AddPost extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            "انشاء منشور",
-            style: AppTextStyle.font18GreyRegular.copyWith(fontSize: 12.sp),
-          ),
           actions: [
+            BlocBuilder<CreatePostCubit, CreatePostState>(
+              buildWhen: (prev, curr) => curr is CreatePostTypeChanged,
+              builder: (context, state) {
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.scaffoldColor,
+                    borderRadius: BorderRadius.circular(12.r),
+                    border: Border.all(
+                      color: AppColors.mainColor.withOpacity(0.3),
+                    ),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: cubit.selectedType,
+                      icon: Icon(
+                        Icons.keyboard_arrow_down,
+                        color: AppColors.mainColor,
+                      ),
+                      borderRadius: BorderRadius.circular(12.r),
+                      style: AppTextStyle.font18GreyRegular.copyWith(
+                        fontSize: 14.sp,
+                        color: Colors.black87,
+                      ),
+                      items: postTypeMap.entries.map((entry) {
+                        return DropdownMenuItem<String>(
+                          value: entry.key,
+                          child: Text(entry.value),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          cubit.changePostType(value);
+                        }
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+
             BlocSelector<CreatePostCubit, CreatePostState, bool>(
               selector: (state) {
                 if (state is CreatePostContentChanged) {
                   return state.canPost;
                 }
-
                 return cubit.postContent.text.trim().isNotEmpty ||
                     cubit.pickedImage != null;
               },
@@ -73,47 +114,49 @@ class AddPost extends StatelessWidget {
                 return BlocBuilder<CreatePostCubit, CreatePostState>(
                   builder: (context, state) {
                     final isLoading = state is CreatePostLoading;
-                    return MaterialButton(
-                      disabledColor: AppColors.greyText,
-                      onPressed: (canPost && !isLoading)
-                          ? () {
-                              final model = CreatePostModel(
-                                content: cubit.postContent.text,
-                                category: "OPINION",
-                                media: cubit.pickedImage != null
-                                    ? File(cubit.pickedImage!.path)
-                                    : null,
-                              );
-                              cubit.createPost(model);
-                            }
-                          : null,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.r),
+
+                    return Padding(
+                      padding: EdgeInsets.only(right: 8.w),
+                      child: MaterialButton(
+                        disabledColor: AppColors.greyText,
+                        onPressed: (canPost && !isLoading)
+                            ? () {
+                                final model = CreatePostModel(
+                                  content: cubit.postContent.text,
+                                  category: cubit.selectedType,
+                                  media: cubit.pickedImage != null
+                                      ? File(cubit.pickedImage!.path)
+                                      : null,
+                                );
+                                cubit.createPost(model);
+                              }
+                            : null,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        color: AppColors.mainColor,
+                        child: isLoading
+                            ? SizedBox(
+                                width: 20.r,
+                                height: 20.r,
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(
+                                "إنشاء",
+                                style: AppTextStyle.font18GreyRegular.copyWith(
+                                  fontSize: 14.sp,
+                                  color: AppColors.whiteColor,
+                                ),
+                              ),
                       ),
-                      color: AppColors.mainColor,
-                      child: isLoading
-                          ? SizedBox(
-                              width: 20.r,
-                              height: 20.r,
-                              child: const CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : Text(
-                              "انشاء",
-                              style: AppTextStyle.font18GreyRegular.copyWith(
-                                fontSize: 14.sp,
-                                color: AppColors.whiteColor,
-                              ),
-                            ),
                     );
                   },
                 );
               },
             ),
-            SizedBox(width: 10.w),
-            SizedBox.shrink(),
           ],
         ),
         body: Padding(
@@ -135,13 +178,23 @@ class AddPost extends StatelessWidget {
                           fontSize: 16.sp,
                           color: Colors.black87,
                         ),
+
                         decoration: InputDecoration(
-                          border: InputBorder.none,
+                          fillColor: AppColors.scaffoldColor,
+                          filled: true,
                           hintText: "ماذا يدور في بالك؟",
                           hintStyle: AppTextStyle.font18GreyRegular.copyWith(
                             fontSize: 16.sp,
                             color: Colors.grey,
                           ),
+
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          focusedErrorBorder: InputBorder.none,
+
+                          contentPadding: EdgeInsets.zero,
                         ),
                       ),
                       BlocBuilder<CreatePostCubit, CreatePostState>(

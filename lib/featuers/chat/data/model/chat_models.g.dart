@@ -20,9 +20,7 @@ Map<String, dynamic> _$ChatResponseModelToJson(ChatResponseModel instance) =>
 ConversationModel _$ConversationModelFromJson(Map<String, dynamic> json) =>
     ConversationModel(
       id: json['_id'] as String?,
-      members: (json['members'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
+      members: _parseMembers(json['members']),
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),

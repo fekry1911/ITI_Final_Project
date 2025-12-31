@@ -14,7 +14,9 @@ class EmailAndPasswordRegister extends StatefulWidget {
 }
 
 class _EmailAndPasswordState extends State<EmailAndPasswordRegister> {
-  bool erm = false;
+  ValueNotifier<bool> showPassword = ValueNotifier(false);
+
+  ValueNotifier<bool> checkTerms = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
@@ -63,28 +65,40 @@ class _EmailAndPasswordState extends State<EmailAndPasswordRegister> {
               ),
 
               SizedBox(height: 10.h),
-              SharedTextFormField(
-                controller: cubit.passwordController,
-                hintText: "كلمه المرور",
-                validator: (string) {
-                  if(string!.isEmpty){
-                    return "Password Require";
-                  }
-                  return null;
+              ValueListenableBuilder(
+                valueListenable: showPassword,
+                builder: (BuildContext context, value, Widget? child) {
+                  return SharedTextFormField(
+                    controller: cubit.passwordController,
+                    hintText: "كلمه المرور",
+                    validator: (string) {
+                      if(string!.isEmpty){
+                        return "Password Require";
+                      }
+                      return null;
+                    },
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        showPassword.value = !showPassword.value;
+                      },
+                      icon: Icon(showPassword.value?Icons.visibility: Icons.visibility_off),
+                    ),                  );
                 },
-                suffixIcon: Icon(Icons.visibility_off),
               ),
               SizedBox(height: 7.h),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Checkbox(
-                    value: erm,
-                    onChanged: (s) {
-                      setState(() {
-                        erm = s!;
-                      });
+                  ValueListenableBuilder(
+                    valueListenable: checkTerms,
+                    builder: (BuildContext context, value, Widget? child) {
+                      return Checkbox(
+                        value:checkTerms.value,
+                        onChanged: (s) {
+                          checkTerms.value =!checkTerms.value;
+                        },
+                      );
                     },
                   ),
                   Expanded(

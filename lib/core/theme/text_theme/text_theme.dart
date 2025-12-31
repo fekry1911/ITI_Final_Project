@@ -127,4 +127,33 @@ class AppTextStyle {
     fontSize: 13.sp,
     letterSpacing: 0.7,
   );
+
+  static TextStyle font20BlackColorSemiBold = GoogleFonts.cairo(
+    color: AppColors.blackColor,
+    fontWeight: FontWeightHelper.semiBold,
+    fontSize: 17.sp,
+    letterSpacing: 0.7,
+  );
+
+
+  static TextStyle font18GreyColorSemiBold = GoogleFonts.cairo(
+    color: AppColors.greyText,
+    fontWeight: FontWeightHelper.semiBold,
+    fontSize: 15.sp,
+    letterSpacing: 0.7,
+  );
+
+  static TextStyle font18BlackColorSemiBold = GoogleFonts.cairo(
+    color: AppColors.blackColor,
+    fontWeight: FontWeightHelper.semiBold,
+    fontSize: 15.sp,
+    letterSpacing: 0.7,
+  );
+
+  static TextStyle font18WhiteColorBold = GoogleFonts.cairo(
+    color: AppColors.whiteColor,
+    fontWeight: FontWeightHelper.bold,
+    fontSize: 15.sp,
+    letterSpacing: 0.7,
+  );
 }

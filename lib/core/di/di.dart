@@ -13,6 +13,7 @@ import 'package:iti_moqaf/featuers/community/logic/get_all_posts_cubit.dart';
 import 'package:iti_moqaf/featuers/community/logic/like_post_cubit.dart';
 import 'package:iti_moqaf/featuers/create_post/data/create_post_repo.dart';
 import 'package:iti_moqaf/featuers/create_post/logic/create_post_cubit.dart';
+import 'package:iti_moqaf/featuers/line_details/data/repo/check_out_payment.dart';
 import 'package:iti_moqaf/featuers/line_details/data/repo/get_line_details_repo.dart';
 import 'package:iti_moqaf/featuers/line_details/logic/get_details_of_line_cubit.dart';
 import 'package:iti_moqaf/featuers/login/data/repo/login_request_repo.dart';
@@ -25,6 +26,9 @@ import 'package:iti_moqaf/featuers/profile/logic/posts_cubit.dart';
 import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
 import 'package:iti_moqaf/featuers/register/data/repo/register_user.dart';
 import 'package:iti_moqaf/featuers/register/logic/register_user_cubit.dart';
+import 'package:iti_moqaf/featuers/reset_password/data/repo/reset_password.dart';
+import 'package:iti_moqaf/featuers/reset_password/data/repo/verify_code.dart';
+import 'package:iti_moqaf/featuers/reset_password/logic/reset_password_cubit.dart';
 import 'package:iti_moqaf/featuers/stations/data/model/repo/get_all_stations-repo.dart';
 import 'package:iti_moqaf/featuers/stations/logic/get_all_stations_cubit.dart';
 import 'package:iti_moqaf/featuers/stations_details/data/repo/get_one_station_repo.dart';
@@ -33,6 +37,7 @@ import 'package:iti_moqaf/featuers/stations_details/logic/get_one_station_cubit.
 import '../../featuers/chat/logic/chat_cubit.dart';
 import '../../featuers/line_details/data/repo/book_cancel_repo.dart';
 import '../../featuers/line_details/logic/manage_book_seat_cubit.dart';
+import '../../featuers/reset_password/data/repo/send_code_repo.dart';
 import '../networking/socket_service.dart';
 
 final getIt = GetIt.instance;
@@ -44,8 +49,6 @@ void configureDependencies() {
   // api service
   getIt.registerLazySingleton<ApiService>(() => ApiService(getIt<Dio>()));
   getIt.registerLazySingleton<SocketService>(() => SocketService());
-
-
 
   //repos
   getIt.registerLazySingleton<RegisterUser>(
@@ -95,8 +98,21 @@ void configureDependencies() {
   getIt.registerLazySingleton<BookAndCancelRepo>(
     () => BookAndCancelRepo(getIt<ApiService>()),
   );
+  getIt.registerLazySingleton<CheckOutPaymentRepo>(
+    () => CheckOutPaymentRepo(getIt<ApiService>()),
+  );
 
+  getIt.registerLazySingleton<SendCodeOfVerificationRepo>(
+    () => SendCodeOfVerificationRepo(getIt<ApiService>()),
+  );
 
+  getIt.registerLazySingleton<VerifyCodeOfVerification>(
+    () => VerifyCodeOfVerification(getIt<ApiService>()),
+  );
+
+  getIt.registerLazySingleton<ResetPasswordRepo>(
+    () => ResetPasswordRepo(getIt<ApiService>()),
+  );
 
   // cubit
   getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt<ProfileRepo>()));
@@ -152,6 +168,17 @@ void configureDependencies() {
   );
 
   getIt.registerFactory<ManageBookSeatCubit>(
-    () => ManageBookSeatCubit(getIt<BookAndCancelRepo>()),
+    () => ManageBookSeatCubit(
+      getIt<BookAndCancelRepo>(),
+      getIt<CheckOutPaymentRepo>(),
+    ),
+  );
+
+  getIt.registerFactory<ResetPasswordCubit>(
+    () => ResetPasswordCubit(
+      getIt<SendCodeOfVerificationRepo>(),
+      getIt<VerifyCodeOfVerification>(),
+      getIt<ResetPasswordRepo>(),
+    ),
   );
 }

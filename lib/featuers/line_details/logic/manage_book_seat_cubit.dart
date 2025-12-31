@@ -1,6 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:iti_moqaf/featuers/line_details/data/model/stripe_checkout_response.dart';
+import 'package:iti_moqaf/featuers/line_details/data/repo/check_out_payment.dart';
+
 import '../../../core/networking/api_result.dart';
 import '../data/model/book_response_model.dart';
 import '../data/repo/book_cancel_repo.dart';
@@ -9,14 +12,16 @@ part 'manage_book_seat_state.dart';
 
 class ManageBookSeatCubit extends Cubit<ManageBookSeatState> {
   final BookAndCancelRepo bookCancelRepo;
+  final CheckOutPaymentRepo checkOutPaymentRepo;
 
-  ManageBookSeatCubit(this.bookCancelRepo)
-      : super(ManageBookSeatInitial());
+  ManageBookSeatCubit(this.bookCancelRepo, this.checkOutPaymentRepo)
+    : super(ManageBookSeatInitial());
 
   bool get _isBusy =>
       state is ManageBookSeatLoading ||
-          state is ManageCancelBookSeatLoading ||
-          state is ConfirmBookSeatLoading;
+      state is ManageCancelBookSeatLoading ||
+      state is ConfirmCheckPaymentLoading ||
+      state is ConfirmBookSeatLoading;
 
   Future<void> bookSeat({
     required String vehicleId,
@@ -63,26 +68,34 @@ class ManageBookSeatCubit extends Cubit<ManageBookSeatState> {
   }
 
   Future<void> confirmBookSeat({
+    required String sessionId,
     required String vehicleId,
-    required String lineId,
-    required String stationId,
-    required String bookingId,
   }) async {
     if (_isBusy) return;
 
     emit(ConfirmBookSeatLoading());
 
     final response = await bookCancelRepo.confirmBookRepo(
-      vehicleId: vehicleId,
-      lineId: lineId,
-      stationId: stationId,
-      bookingId: bookingId,
+      sessionId: sessionId,
     );
 
     if (response is ApiSuccess<String>) {
       emit(ConfirmBookSeatLoaded(response.data, vehicleId));
     } else if (response is ApiError<String>) {
       emit(ConfirmBookSeatError(response.message));
+    }
+  }
+
+  Future<void> handleCheckoutPayment({required String bookingId, required String vehicleId}) async {
+    if (_isBusy) return;
+    emit(ConfirmCheckPaymentLoading());
+    final response = await checkOutPaymentRepo.handleCheckoutPayment(
+      bookingId: bookingId,
+    );
+    if (response is ApiSuccess<StripeCheckoutResponse>) {
+      emit(ConfirmCheckPaymentLoaded(response.data, vehicleId));
+    } else if (response is ApiError<StripeCheckoutResponse>) {
+      emit(ConfirmCheckPaymentError(response.message));
     }
   }
 }

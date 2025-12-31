@@ -82,3 +82,25 @@ final class Done extends ManageBookSeatState {
   // TODO: implement props
   List<Object?> get props => [];
 }
+final class ConfirmCheckPaymentLoading extends ManageBookSeatState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+final class ConfirmCheckPaymentLoaded extends ManageBookSeatState {
+  final StripeCheckoutResponse data;
+  final String vehicleId;
+  ConfirmCheckPaymentLoaded(this.data,this.vehicleId);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [data,vehicleId];
+}
+
+final class ConfirmCheckPaymentError extends ManageBookSeatState {
+  final String meesage;
+  ConfirmCheckPaymentError(this.meesage);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [meesage];
+}

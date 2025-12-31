@@ -72,6 +72,8 @@ dependencies:
   svg_icon_widget: ^0.0.1+1
   icon_broken: ^1.1.0
   collection: ^1.18.0
+  flutter_stripe: ^9.5.0
+  webview_flutter: ^4.7.0
 
 
 

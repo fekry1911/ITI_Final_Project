@@ -46,3 +46,11 @@ final class CreatePostImageRemoved extends CreatePostState {
   @override
   List<Object?> get props => [];
 }
+
+final class CreatePostTypeChanged extends CreatePostState {
+  final String type;
+  CreatePostTypeChanged(this.type);
+
+  @override
+  List<Object?> get props => [type];
+}

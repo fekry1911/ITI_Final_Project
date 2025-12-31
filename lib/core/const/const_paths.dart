@@ -12,6 +12,14 @@ const lineScreen = "/line";
 const addPost = "/addPost";
 const chatScreen = "/chatScreen";
 const allChatsScreen = "/allChatsScreen";
+const webViewScreen="/webViewScreen";
+const emailScreen="/emailScreen";
+const codeScreen="/codeScreen";
+const newPasswordScreen="/newPasswordScreen";
+
+
+
+
 
 
 

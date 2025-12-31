@@ -44,6 +44,12 @@ class CreatePostCubit extends Cubit<CreatePostState> {
     emit(CreatePostContentChanged(false));
   }
 
+  String selectedType = 'OPINION';
+
+  void changePostType(String type) {
+    selectedType = type;
+    emit(CreatePostTypeChanged(type));
+  }
   Future<void> createPost(CreatePostModel model) async {
     emit(CreatePostLoading());
     try {

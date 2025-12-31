@@ -1,4 +1,4 @@
-const String apiBaseURL = "https://mawqaf-api.onrender.com";
+const String apiBaseURL = "https://auth-api-4-h4v4.onrender.com";
 const String register = "/api/auth/register";
 const String login = "/api/auth/login";
 const String station = "/api/station";
@@ -10,4 +10,7 @@ const String posts="/api/community/posts";
 const String getUserById = "/api/auth/user";
 const String conversations = "/api/conversations";
 const String messages = "/api/messages";
-
+const String checkOut= "/api/payment";
+const String sendVerificationPassword = "/api/auth/send-verification-password";
+const String verifyPassword = "/api/auth/verify-password";
+const String resetPassword= "/api/auth/reset-password";

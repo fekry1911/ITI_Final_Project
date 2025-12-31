@@ -11,6 +11,7 @@ import 'package:iti_moqaf/featuers/community/data/model/like_resonse_model.dart'
 import 'package:iti_moqaf/featuers/community/data/model/post_model.dart';
 import 'package:iti_moqaf/featuers/create_post/data/creatr_post_model.dart';
 import 'package:iti_moqaf/featuers/line_details/data/model/microbus_models.dart';
+import 'package:iti_moqaf/featuers/line_details/data/model/stripe_checkout_response.dart';
 import 'package:iti_moqaf/featuers/login/data/models/user_login_request.dart';
 import 'package:iti_moqaf/featuers/login/data/models/user_login_response.dart';
 import 'package:iti_moqaf/featuers/near_stations/data/model/near_stations_model.dart';
@@ -420,24 +421,88 @@ class ApiService {
     }
   }
 
-  Future<ApiResult<String>> confirmBook({
-    required String vehicleId,
-    required String lineId,
-    required String stationId,
-    required String bookingId,
-  }) async {
+  Future<ApiResult<String>> confirmBook({required String sessionId}) async {
     try {
       var response = await dio.post(
-        "$station/${stationId}/${lines}/${lineId}/${vichels}/${vehicleId}/book/${bookingId}/confirm",
+        "${checkOut}/confirm-payment",
+        data: {"sessionId": sessionId},
       );
       var data = response.data;
       String message = "";
       if (data is Map<String, dynamic>) {
-         message = data['message']?.toString() ?? data.toString();
+        message = data['message']?.toString() ?? data.toString();
       } else {
-         message = data.toString();
+        message = data.toString();
       }
       return ApiSuccess<String>(message);
+    } on DioException catch (e) {
+      return ApiError<String>(handleDioError(e));
+    } catch (e) {
+      return ApiError<String>(e.toString());
+    }
+  }
+
+  Future<ApiResult<StripeCheckoutResponse>> handleCheckoutPayment({
+    required String bookingId,
+  }) async {
+    try {
+      var response = await dio.post(
+        "${checkOut}/checkout-session",
+        data: {"bookingId": bookingId},
+      );
+      StripeCheckoutResponse stripeCheckoutResponse =
+          StripeCheckoutResponse.fromJson(response.data);
+      return ApiSuccess<StripeCheckoutResponse>(stripeCheckoutResponse);
+    } on DioException catch (e) {
+      return ApiError<StripeCheckoutResponse>(handleDioError(e));
+    } catch (e) {
+      return ApiError<StripeCheckoutResponse>(e.toString());
+    }
+  }
+
+  Future<ApiResult<String>> sendVerificationCode({
+    required String email,
+  }) async {
+    try {
+      var response = await dio.post(
+        sendVerificationPassword,
+        data: {"email ": email},
+      );
+      return ApiSuccess<String>(response.data["data"]["message"]);
+    } on DioException catch (e) {
+      return ApiError<String>(handleDioError(e));
+    } catch (e) {
+      return ApiError<String>(e.toString());
+    }
+  }
+
+  Future<ApiResult<String>> verifyVerificationCode({
+    required String code,
+  }) async {
+    try {
+      var response = await dio.post(
+        verifyPassword,
+        data: {"verificationCode ": code},
+      );
+      return ApiSuccess<String>(response.data["data"]["resetToken"]);
+    } on DioException catch (e) {
+      return ApiError<String>(handleDioError(e));
+    } catch (e) {
+      return ApiError<String>(e.toString());
+    }
+  }
+
+  Future<ApiResult<String>> resetNewPassword({
+    required String newPassword,
+    required String confirmPassword,
+    required String token ,
+  }) async {
+    try {
+      var response = await dio.post(
+        "$resetPassword/$token",
+        data: {"newPassword ": newPassword,"confirmPassword":confirmPassword},
+      );
+      return ApiSuccess<String>(response.data["data"]["message"]);
     } on DioException catch (e) {
       return ApiError<String>(handleDioError(e));
     } catch (e) {
