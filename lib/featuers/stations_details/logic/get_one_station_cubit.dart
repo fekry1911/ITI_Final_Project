@@ -20,6 +20,7 @@ class GetOneStationCubit extends Cubit<GetOneStationState> {
     if (result is ApiSuccess<StationModel>) {
       emit(GetOneStationSuccess(result.data));
     } else if (result is ApiError<StationModel>) {
+      print(result.message);
       emit(GetOneStationError(result.message));
     }
   }

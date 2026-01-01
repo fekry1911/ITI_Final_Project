@@ -41,6 +41,35 @@ class BusCard extends StatelessWidget {
           return current.seatBookingResponse.data!.vehicle.id == bus.id;
         }
         if (current is ManageCancelBookSeatLoaded) {
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
+
           return current.seatBookingResponse.data!.vehicle.id == bus.id;
         }
         if (current is ConfirmBookSeatLoaded) {
@@ -76,7 +105,6 @@ class BusCard extends StatelessWidget {
         }
         if (state is ManageCancelBookSeatLoaded) {
           sucssesToast(context, "تم إلغاء الحجز", "تم إلغاء الحجز بنجاح");
-
           cubitLines.updateVehicleAfterCancel(
             vehicleId: bus.id,
             userId: userId,
@@ -218,24 +246,28 @@ class BusCard extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Spacer(),
-                          Expanded(
-                            child: Text(
-                              "${currentBus.model}",
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(color: Colors.grey[500]),
-                            ),
-                          ),
+
                         ],
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        "${currentBus.line.fromStation
-                            .stationName} - ${currentBus.line.toStation
+                        "${currentBus.lines[0].fromStation
+                            .stationName} - ${currentBus.lines[0].toStation
                             .stationName}",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: Colors.grey[500]),
                       ),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on,size: 15.r,color:Colors.green,),
+                      Text(
+                        "${currentBus.currentStation.stationName}",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.grey[500]),
+                      ),
+                    ],
+                  ),
+
 
 
                   const SizedBox(height: 16),

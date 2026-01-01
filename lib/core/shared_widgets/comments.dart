@@ -71,6 +71,7 @@ void showFacebookCommentsSheet(
                           if (state.status == CommentsStatus.error) {
                             return Center(
                               child: NetWorkError(
+                                error: state.status.name,
                                 onPressed: () => cubit.getComments(postID),
                               ),
                             );

@@ -1,6 +1,9 @@
 const String apiBaseURL = "https://auth-api-4-h4v4.onrender.com";
+//final String apiBaseURL = 'http://192.168.1.4:5000';
+
 const String register = "/api/auth/register";
 const String login = "/api/auth/login";
+const String updateProfile = "/api/auth/update-profile";
 const String station = "/api/station";
 const String lines = "lines";
 const String near = "/api/station/near";

@@ -74,6 +74,13 @@ dependencies:
   collection: ^1.18.0
   flutter_stripe: ^9.5.0
   webview_flutter: ^4.7.0
+  dio_cache_interceptor: ^3.5.0
+  dio_cache_interceptor_hive_store: ^4.0.0
+  path_provider: ^2.1.5
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  rename: ^3.1.0
+
 
 
 

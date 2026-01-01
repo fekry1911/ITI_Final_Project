@@ -38,7 +38,10 @@ class Microbus {
   final int capacity;
   final bool isAirConditioned;
   final String currentStatus;
-  final LineData line;
+  final List<LineData> lines;
+  final StationData currentStation;
+  final DateTime createdAt;
+  final DateTime updatedAt;
   @JsonKey(name: '__v')
   final int version;
   final List<BookedUser> bookedUsers;
@@ -52,7 +55,10 @@ class Microbus {
     required this.capacity,
     required this.isAirConditioned,
     required this.currentStatus,
-    required this.line,
+    required this.lines,
+    required this.currentStation,
+    required this.createdAt,
+    required this.updatedAt,
     required this.version,
     required this.bookedUsers,
     required this.availableSeats,
@@ -71,7 +77,10 @@ class Microbus {
     int? capacity,
     bool? isAirConditioned,
     String? currentStatus,
-    LineData? line,
+    List<LineData>? lines,
+    StationData? currentStation,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     int? version,
     List<BookedUser>? bookedUsers,
     int? availableSeats,
@@ -84,7 +93,10 @@ class Microbus {
       capacity: capacity ?? this.capacity,
       isAirConditioned: isAirConditioned ?? this.isAirConditioned,
       currentStatus: currentStatus ?? this.currentStatus,
-      line: line ?? this.line,
+      lines: lines ?? this.lines,
+      currentStation: currentStation ?? this.currentStation,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
       version: version ?? this.version,
       bookedUsers: bookedUsers ?? this.bookedUsers,
       availableSeats: availableSeats ?? this.availableSeats,

@@ -2,31 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/const/const_paths.dart';
-import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
+import 'package:iti_moqaf/core/theme/color/colors.dart';
 import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import 'package:iti_moqaf/featuers/stations_details/data/model/station_model.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/widgets/route_details.dart';
 
-import '../../../../core/theme/color/colors.dart';
-
 class RouteCard extends StatelessWidget {
-  RouteCard({super.key, required this.data});
+  final LineModel data;
 
-  LineModel data;
+  const RouteCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
+    // Safety checks for nullable fields
+    final toStationName = data.toStation?.stationName ?? "غير محدد";
+    final distance = data.distance ?? 0;
+    final duration = (distance * 0.6).toInt();
+
     return GestureDetector(
       onTap: () {
-        context.pushNamed(lineScreen,arguments: {
-          "lineId":data.id,
-          "stationId":data.fromStation,
-        });
+        context.pushNamed(
+          lineScreen,
+          arguments: {
+            "lineId": data.id,
+            "stationId": data.fromStation.id, // Use id if available: data.fromStationId
+          },
+        );
       },
       child: Card(
         elevation: 1,
-        borderOnForeground: true,
         color: Colors.white,
         child: ListTile(
           leading: CircleAvatar(
@@ -38,7 +43,7 @@ class RouteCard extends StatelessWidget {
             ),
           ),
           title: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.0.h, horizontal: 0.w),
+            padding: EdgeInsets.symmetric(vertical: 10.0.h),
             child: Row(
               children: [
                 Expanded(
@@ -50,9 +55,9 @@ class RouteCard extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
+                              toStationName,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              data.toStation,
                               style: AppTextStyle.font14BlackRegular,
                             ),
                           ),
@@ -60,8 +65,8 @@ class RouteCard extends StatelessWidget {
                       ),
                       SizedBox(height: 8.h),
                       RouteDetails(
-                        distance: data.distance.toString()+"  كم ",
-                        duration: (((data.distance)!*.6).toInt()).toString()+" دقيقه  ",
+                        distance: "$distance كم",
+                        duration: "$duration دقيقه",
                       ),
                     ],
                   ),
@@ -78,7 +83,7 @@ class RouteCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: Text(
-                      data.price.toString()+"EGP",
+                      "${data.price} EGP",
                       style: AppTextStyle.font18WhiteMedium.copyWith(
                         fontSize: 10.sp,
                       ),

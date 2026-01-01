@@ -26,9 +26,11 @@ class GetNearbyStationsCubit extends Cubit<GetNearbyStationsState> {
       if(result is ApiSuccess<StationsResponseModel>){
         emit(GetNearbyStationsSuccess(result.data.data, position));
       } else if(result is ApiError<StationsResponseModel>){
+        print(result.message);
         emit(GetNearbyStationsError(result.message));
       }
     } catch(e){
+      print(e.toString());
       emit(GetNearbyStationsError(e.toString()));
     }
   }

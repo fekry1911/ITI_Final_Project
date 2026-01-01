@@ -84,16 +84,18 @@ class Location {
 
 /// =======================
 /// Line Model
-/// =======================
+/// (نفس الاسم القديم)
+// =======================
 @JsonSerializable()
 class LineModel {
   @JsonKey(name: '_id')
   final String id;
 
-  @JsonKey(fromJson: _stationToString)
-  final String fromStation;
-  @JsonKey(fromJson: _stationToString)
-  final String toStation;
+  /// نفس الاسم القديم لكن Model مش String
+  final StationRef fromStation;
+
+  /// nullable عشان API بيرجع null أحيانًا
+  final StationRef? toStation;
 
   final num price;
   final num? distance;
@@ -101,7 +103,7 @@ class LineModel {
   const LineModel({
     required this.id,
     required this.fromStation,
-    required this.toStation,
+    this.toStation,
     required this.price,
     this.distance,
   });
@@ -109,14 +111,27 @@ class LineModel {
   factory LineModel.fromJson(Map<String, dynamic> json) =>
       _$LineModelFromJson(json);
 
-  static String _stationToString(dynamic value) {
-    if (value is Map) {
-      return value['stationName'] as String? ?? '';
-    } else if (value is String) {
-      return value;
-    }
-    return '';
-  }
-
   Map<String, dynamic> toJson() => _$LineModelToJson(this);
+}
+
+/// =======================
+/// Station Ref Model
+/// =======================
+@JsonSerializable()
+class StationRef {
+  @JsonKey(name: '_id')
+  final String id;
+
+  /// nullable عشان toStation ممكن تكون null
+  final String? stationName;
+
+  const StationRef({
+    required this.id,
+    this.stationName,
+  });
+
+  factory StationRef.fromJson(Map<String, dynamic> json) =>
+      _$StationRefFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StationRefToJson(this);
 }

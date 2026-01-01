@@ -15,4 +15,7 @@ class GetAllStationsRepo {
     );
    return reponse;
   }
+  Future<ApiResult<SimpleStationsResponse>> getAllStationsWithoutPagination() async {
+    return await apiService.getAllStations(page: 1, limit: 10000);
+  }
 }

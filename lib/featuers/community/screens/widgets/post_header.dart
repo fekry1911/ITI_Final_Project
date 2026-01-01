@@ -43,7 +43,7 @@ class PostHeader extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(30.r),
                   child: Image.network(
-
+                    fit: BoxFit.cover,
                     post.user.avatarUrl,
                     width: 60.h,
                     height: 60.h,

@@ -61,8 +61,10 @@ class ManageBookSeatCubit extends Cubit<ManageBookSeatState> {
     );
 
     if (response is ApiSuccess<SeatBookingResponse>) {
+      print(response.data);
       emit(ManageCancelBookSeatLoaded(response.data));
     } else if (response is ApiError<SeatBookingResponse>) {
+      print(response.message);
       emit(ManageCancelBookSeatError(response.message));
     }
   }

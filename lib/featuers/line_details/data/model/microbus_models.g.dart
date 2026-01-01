@@ -25,7 +25,14 @@ Microbus _$MicrobusFromJson(Map<String, dynamic> json) => Microbus(
   capacity: (json['capacity'] as num).toInt(),
   isAirConditioned: json['isAirConditioned'] as bool,
   currentStatus: json['currentStatus'] as String,
-  line: LineData.fromJson(json['line'] as Map<String, dynamic>),
+  lines: (json['lines'] as List<dynamic>)
+      .map((e) => LineData.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  currentStation: StationData.fromJson(
+    json['currentStation'] as Map<String, dynamic>,
+  ),
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  updatedAt: DateTime.parse(json['updatedAt'] as String),
   version: (json['__v'] as num).toInt(),
   bookedUsers: (json['bookedUsers'] as List<dynamic>)
       .map((e) => BookedUser.fromJson(e as Map<String, dynamic>))
@@ -41,7 +48,10 @@ Map<String, dynamic> _$MicrobusToJson(Microbus instance) => <String, dynamic>{
   'capacity': instance.capacity,
   'isAirConditioned': instance.isAirConditioned,
   'currentStatus': instance.currentStatus,
-  'line': instance.line,
+  'lines': instance.lines,
+  'currentStation': instance.currentStation,
+  'createdAt': instance.createdAt.toIso8601String(),
+  'updatedAt': instance.updatedAt.toIso8601String(),
   '__v': instance.version,
   'bookedUsers': instance.bookedUsers,
   'availableSeats': instance.availableSeats,

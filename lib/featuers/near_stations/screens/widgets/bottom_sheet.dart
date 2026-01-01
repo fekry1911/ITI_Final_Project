@@ -9,6 +9,7 @@ import 'package:iti_moqaf/featuers/near_stations/screens/widgets/recent_route_ca
 import 'package:iti_moqaf/featuers/near_stations/screens/widgets/search_field.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../../core/shared_widgets/network_error.dart';
 import '../../../../core/theme/color/colors.dart';
 import '../../../../core/theme/text_theme/text_theme.dart';
 import '../../data/model/near_stations_model.dart';
@@ -80,6 +81,21 @@ class HomeBottomSheet extends StatelessWidget {
                   var cubit = context.read<GetNearbyStationsCubit>();
 
                   if (state is GetNearbyStationsError) {
+                    if (state.error == "لا يوجد اتصال بالإنترنت"||state.error == "") {
+                      return Expanded(
+                        child: Center(child: Column(
+                          children: [
+                            NetWorkErrorPage(),
+                            Text("لا يوجد اتصال بالإنترنت"),
+                            TextButton(
+                              onPressed: () {
+                                cubit.getNearbyStations();
+                              },
+                              child: const Text("حاول مره اخري"),
+                            ),
+                          ],
+                        )),
+                      );}
                     return Center(
                       child: Column(
                         children: [

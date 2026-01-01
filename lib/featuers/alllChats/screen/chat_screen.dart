@@ -8,6 +8,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/const/const_paths.dart';
 import '../../../core/helpers/cach_helper.dart';
+import '../../../core/shared_widgets/network_error.dart';
 import '../../../core/theme/color/colors.dart';
 
 class AllChatsScreen extends StatelessWidget {
@@ -30,7 +31,16 @@ class AllChatsScreen extends StatelessWidget {
       body: BlocBuilder<GetAllChatsCubit, GetAllChatsState>(
         builder: (context, state) {
           if (state is GetAllChatsError) {
-            return Text(state.error);
+            if (state.error == "لا يوجد اتصال بالإنترنت") {
+              return Expanded(
+                child: Center(child: Column(
+                  children: [
+                    NetWorkErrorPage(),
+                    Text("لا يوجد اتصال بالإنترنت"),
+                  ],
+                )),
+              );}
+            return Center(child: Text(state.error));
           }
           List<ChatData> chats = state is GetAllChatsLoaded
               ? state.chatData

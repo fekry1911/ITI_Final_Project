@@ -29,8 +29,8 @@ class StationInfo extends StatelessWidget {
                   lines: [
                     LineModel(
                       id: 'l4',
-                      fromStation: 'Station C',
-                      toStation: 'Station A',
+                      fromStation: StationRef(id: "id", stationName: "Asdasd"),
+                      toStation: StationRef(id: "id", stationName: "Asdasd"),
                       price: 8,
                       distance: 3.5,
                     ),

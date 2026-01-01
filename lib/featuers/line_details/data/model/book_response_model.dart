@@ -80,16 +80,60 @@ class BookingVehicle {
   final String model;
   final String plateNumber;
   final String driverName;
+  final int capacity;
+  final List<BookingLineData>? lines;
+  final BookingStationData currentStation;
 
   BookingVehicle({
     required this.id,
     required this.model,
     required this.plateNumber,
     required this.driverName,
+    required this.capacity,
+    this.lines,
+    required this.currentStation,
   });
 
   factory BookingVehicle.fromJson(Map<String, dynamic> json) =>
       _$BookingVehicleFromJson(json);
 
   Map<String, dynamic> toJson() => _$BookingVehicleToJson(this);
+}
+
+@JsonSerializable()
+class BookingLineData {
+  @JsonKey(name: '_id')
+  final String id;
+  final BookingStationData fromStation;
+  final BookingStationData toStation;
+  final double price;
+
+  BookingLineData({
+    required this.id,
+    required this.fromStation,
+    required this.toStation,
+    required this.price,
+  });
+
+  factory BookingLineData.fromJson(Map<String, dynamic> json) =>
+      _$BookingLineDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BookingLineDataToJson(this);
+}
+
+@JsonSerializable()
+class BookingStationData {
+  @JsonKey(name: '_id')
+  final String id;
+  final String stationName;
+
+  BookingStationData({
+    required this.id,
+    required this.stationName,
+  });
+
+  factory BookingStationData.fromJson(Map<String, dynamic> json) =>
+      _$BookingStationDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BookingStationDataToJson(this);
 }

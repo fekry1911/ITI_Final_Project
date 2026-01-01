@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/core/models/user_model.dart';
 import 'package:iti_moqaf/core/networking/api_result.dart';
@@ -35,5 +36,25 @@ class ProfileCubit extends Cubit<ProfileState> {
     await CacheHelper.clearUser();
     await CacheHelper.removeString(key: 'token');
     emit(ProfileLoggedOut());
+  }
+
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      updateProfileImage(File(image.path));
+    }
+  }
+
+  Future<void> updateProfileImage(File image) async {
+    emit(ProfileLoading());
+    final result = await profileRepo.updateProfileImage(image);
+    if (result is ApiSuccess<User>) {
+      currentUser = result.data;
+      emit(ProfileLoaded(result.data));
+    } else if (result is ApiError<User>) {
+      emit(ProfileError(result.message));
+    }
   }
 }

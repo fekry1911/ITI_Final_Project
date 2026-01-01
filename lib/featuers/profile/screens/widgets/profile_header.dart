@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iti_moqaf/core/models/user_model.dart';
 import 'package:iti_moqaf/core/theme/color/colors.dart';
+import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
 
 import '../../../../core/const/const_paths.dart';
 import '../../../../core/theme/text_theme/text_theme.dart';
@@ -46,13 +48,19 @@ class ProfileHeader extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
+            if (id == CacheHelper.getString(key: "userId"))
+              Positioned(
               bottom: 0,
               right: 0,
-              child: CircleAvatar(
-                radius: 14,
-                backgroundColor: AppColors.primary,
-                child: Icon(Icons.camera_alt, size: 14, color: Colors.white),
+              child: InkWell(
+                onTap: () {
+                  context.read<ProfileCubit>().pickImage();
+                },
+                child: CircleAvatar(
+                  radius: 14,
+                  backgroundColor: AppColors.primary,
+                  child: Icon(Icons.camera_alt, size: 14, color: Colors.white),
+                ),
               ),
             ),
           ],

@@ -9,10 +9,10 @@ import 'package:iti_moqaf/featuers/stations_details/screen/widgets/route_card.da
 import 'package:iti_moqaf/featuers/stations_details/screen/widgets/station_info.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../core/shared_widgets/network_error.dart';
 import '../data/model/station_model.dart';
 
 class StationDetailsScreen extends StatelessWidget {
-
   const StationDetailsScreen({super.key});
 
   @override
@@ -56,6 +56,19 @@ class StationDetailsScreen extends StatelessWidget {
               ),
               child: Image.network(
                 "https://img.youm7.com/ArticleImgs/2025/4/12/756018-%D9%85%D9%88%D9%82%D9%81-%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85-%D8%A7%D9%84%D8%AC%D8%AF%D9%8A%D8%AF-(6).jpg",
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return SizedBox.shrink();
+                },
                 fit: BoxFit.cover,
               ),
             ),
@@ -80,6 +93,16 @@ class StationDetailsScreen extends StatelessWidget {
                 BlocBuilder<GetOneStationCubit, GetOneStationState>(
                   builder: (context, state) {
                     if (state is GetOneStationError) {
+                      if (state.error == "لا يوجد اتصال بالإنترنت") {
+                        return Expanded(
+                          child: Center(child: Column(
+                            children: [
+                              NetWorkErrorPage(),
+                              Text("لا يوجد اتصال بالإنترنت"),
+                            ],
+                          )),
+                        );
+                      }
                       return Center(child: Text(state.error));
                     } else if (state is GetOneStationSuccess &&
                         state.stationModel.data.lines.isEmpty) {
@@ -94,12 +117,14 @@ class StationDetailsScreen extends StatelessWidget {
                         ),
                       );
                     }
-                    StationModel stationModel = state is GetOneStationSuccess?state.stationModel:fakeStations[0];
+                    StationModel stationModel = state is GetOneStationSuccess
+                        ? state.stationModel
+                        : fakeStations[0];
                     return Expanded(
                       child: ListView.separated(
                         itemBuilder: (BuildContext context, int index) {
                           return Skeletonizer(
-                            enabled:  state is GetOneStationLoading,
+                            enabled: state is GetOneStationLoading,
                             child: RouteCard(
                               data: stationModel.data.lines[index],
                             ),
@@ -111,8 +136,6 @@ class StationDetailsScreen extends StatelessWidget {
                         itemCount: stationModel.data.lines.length,
                       ),
                     );
-
-
                   },
                 ),
               ],
@@ -127,54 +150,21 @@ class StationDetailsScreen extends StatelessWidget {
 final List<StationModel> fakeStations = [
   StationModel(
     data: StationData(
-      id: '1',
-      stationName: 'Station A',
-      location: Location(
-        type: 'Point',
-        coordinates: [31.2357, 30.0444], // [lng, lat]
-      ),
+      id: '3',
+      stationName: 'Station C',
+      location: Location(type: 'Point', coordinates: [31.240, 30.046]),
       lines: [
         LineModel(
-          id: 'l1',
-          fromStation: 'Station A',
-          toStation: 'Station B',
-          price: 5,
-          distance: 2.5,
-        ),
-        LineModel(
-          id: 'l2',
-          fromStation: 'Station A',
-          toStation: 'Station C',
-          price: 7,
-          distance: 3.2,
+          id: 'l4',
+          fromStation: StationRef(id: "id", stationName: "Asdasd"),
+          toStation: StationRef(id: "id", stationName: "Asdasd"),
+          price: 8,
+          distance: 3.5,
         ),
       ],
       status: 'Open',
       v: 0,
-      createdAt: DateTime.now().subtract(const Duration(days: 10)),
-      updatedAt: DateTime.now(),
-    ),
-  ),
-  StationModel(
-    data: StationData(
-      id: '2',
-      stationName: 'Station B',
-      location: Location(
-        type: 'Point',
-        coordinates: [31.238, 30.045],
-      ),
-      lines: [
-        LineModel(
-          id: 'l3',
-          fromStation: 'Station B',
-          toStation: 'Station D',
-          price: 6,
-          distance: 4.0,
-        ),
-      ],
-      status: 'Closed',
-      v: 0,
-      createdAt: DateTime.now().subtract(const Duration(days: 15)),
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
       updatedAt: DateTime.now(),
     ),
   ),
@@ -182,15 +172,152 @@ final List<StationModel> fakeStations = [
     data: StationData(
       id: '3',
       stationName: 'Station C',
-      location: Location(
-        type: 'Point',
-        coordinates: [31.240, 30.046],
-      ),
+      location: Location(type: 'Point', coordinates: [31.240, 30.046]),
       lines: [
         LineModel(
           id: 'l4',
-          fromStation: 'Station C',
-          toStation: 'Station A',
+          fromStation: StationRef(id: "id", stationName: "Asdasd"),
+          toStation: StationRef(id: "id", stationName: "Asdasd"),
+          price: 8,
+          distance: 3.5,
+        ),
+      ],
+      status: 'Open',
+      v: 0,
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
+      updatedAt: DateTime.now(),
+    ),
+  ),
+  StationModel(
+    data: StationData(
+      id: '3',
+      stationName: 'Station C',
+      location: Location(type: 'Point', coordinates: [31.240, 30.046]),
+      lines: [
+        LineModel(
+          id: 'l4',
+          fromStation: StationRef(id: "id", stationName: "Asdasd"),
+          toStation: StationRef(id: "id", stationName: "Asdasd"),
+          price: 8,
+          distance: 3.5,
+        ),
+      ],
+      status: 'Open',
+      v: 0,
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
+      updatedAt: DateTime.now(),
+    ),
+  ),
+  StationModel(
+    data: StationData(
+      id: '3',
+      stationName: 'Station C',
+      location: Location(type: 'Point', coordinates: [31.240, 30.046]),
+      lines: [
+        LineModel(
+          id: 'l4',
+          fromStation: StationRef(id: "id", stationName: "Asdasd"),
+          toStation: StationRef(id: "id", stationName: "Asdasd"),
+          price: 8,
+          distance: 3.5,
+        ),
+      ],
+      status: 'Open',
+      v: 0,
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
+      updatedAt: DateTime.now(),
+    ),
+  ),
+  StationModel(
+    data: StationData(
+      id: '3',
+      stationName: 'Station C',
+      location: Location(type: 'Point', coordinates: [31.240, 30.046]),
+      lines: [
+        LineModel(
+          id: 'l4',
+          fromStation: StationRef(id: "id", stationName: "Asdasd"),
+          toStation: StationRef(id: "id", stationName: "Asdasd"),
+          price: 8,
+          distance: 3.5,
+        ),
+      ],
+      status: 'Open',
+      v: 0,
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
+      updatedAt: DateTime.now(),
+    ),
+  ),
+  StationModel(
+    data: StationData(
+      id: '3',
+      stationName: 'Station C',
+      location: Location(type: 'Point', coordinates: [31.240, 30.046]),
+      lines: [
+        LineModel(
+          id: 'l4',
+          fromStation: StationRef(id: "id", stationName: "Asdasd"),
+          toStation: StationRef(id: "id", stationName: "Asdasd"),
+          price: 8,
+          distance: 3.5,
+        ),
+      ],
+      status: 'Open',
+      v: 0,
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
+      updatedAt: DateTime.now(),
+    ),
+  ),
+  StationModel(
+    data: StationData(
+      id: '3',
+      stationName: 'Station C',
+      location: Location(type: 'Point', coordinates: [31.240, 30.046]),
+      lines: [
+        LineModel(
+          id: 'l4',
+          fromStation: StationRef(id: "id", stationName: "Asdasd"),
+          toStation: StationRef(id: "id", stationName: "Asdasd"),
+          price: 8,
+          distance: 3.5,
+        ),
+      ],
+      status: 'Open',
+      v: 0,
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
+      updatedAt: DateTime.now(),
+    ),
+  ),
+  StationModel(
+    data: StationData(
+      id: '3',
+      stationName: 'Station C',
+      location: Location(type: 'Point', coordinates: [31.240, 30.046]),
+      lines: [
+        LineModel(
+          id: 'l4',
+          fromStation: StationRef(id: "id", stationName: "Asdasd"),
+          toStation: StationRef(id: "id", stationName: "Asdasd"),
+          price: 8,
+          distance: 3.5,
+        ),
+      ],
+      status: 'Open',
+      v: 0,
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
+      updatedAt: DateTime.now(),
+    ),
+  ),
+  StationModel(
+    data: StationData(
+      id: '3',
+      stationName: 'Station C',
+      location: Location(type: 'Point', coordinates: [31.240, 30.046]),
+      lines: [
+        LineModel(
+          id: 'l4',
+          fromStation: StationRef(id: "id", stationName: "Asdasd"),
+          toStation: StationRef(id: "id", stationName: "Asdasd"),
           price: 8,
           distance: 3.5,
         ),

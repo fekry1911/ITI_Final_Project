@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import '../helpers/cach_helper.dart';
 
 class AppInterceptor extends Interceptor {
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     String? token = CacheHelper.getString(key: "token");

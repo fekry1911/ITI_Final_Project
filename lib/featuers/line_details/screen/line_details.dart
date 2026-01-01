@@ -4,6 +4,7 @@ import 'package:iti_moqaf/featuers/line_details/data/model/microbus_models.dart'
 import 'package:iti_moqaf/featuers/line_details/logic/get_details_of_line_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../core/shared_widgets/network_error.dart';
 import 'widgets/bus_card.dart';
 
 class LineDetails extends StatelessWidget {
@@ -46,30 +47,62 @@ class LineDetails extends StatelessWidget {
         builder: (context, state) {
           List<Microbus> buses = [];
           bool isLoading = false;
+          if (state is GetDetailsOfLineError) {
+            if (state.message == "لا يوجد اتصال بالإنترنت") {
+              return Expanded(
+                child: Center(child: Column(
+                  children: [
+                    NetWorkErrorPage(),
+                    Text("لا يوجد اتصال بالإنترنت"),
+                  ],
+                )),
+              );}
+            return Center(child: Text(state.message));
+          }
 
           if (state is GetDetailsOfLineSuccess) {
             buses = state.results;
           } else if (state is GetDetailsOfLineLoading) {
             isLoading = true;
-            // Create dummy data for skeleton loading
             buses = List.generate(
               5,
               (index) => Microbus(
-                id: 'dummy',
-                model: 'Microbus Model',
-                plateNumber: '123 ABC',
-                driverName: 'Driver Name',
-                capacity: 14,
+                id: 'bus1',
+                model: 'Mercedes Sprinter',
+                plateNumber: 'ABC-1234',
+                driverName: 'Ahmed Ali',
+                capacity: 20,
                 isAirConditioned: true,
-                currentStatus: 'Running',
-                line: LineData(
-                  id: 'line1',
-                  fromStation: StationData(id: 's1', stationName: 'Station A'),
-                  toStation: StationData(id: 's2', stationName: 'Station B'),
+                currentStatus: 'active',
+                lines: [
+                  LineData(
+                    id: 'line1',
+                    fromStation: StationData(
+                      id: 'station1',
+                      stationName: 'Cairo',
+                    ),
+                    toStation: StationData(id: 'station2', stationName: 'Giza'),
+                  ),
+                ],
+                currentStation: StationData(
+                  id: 'station1',
+                  stationName: 'Cairo',
                 ),
+                createdAt: DateTime.now().subtract(Duration(days: 10)),
+                updatedAt: DateTime.now(),
                 version: 0,
-                bookedUsers: [],
-                availableSeats: 5,
+                bookedUsers: [
+                  BookedUser(
+                    id: 'user1',
+                    firstName: 'Mohamed',
+                    lastName: 'Salah',
+                    email: 'mohamed@example.com',
+                    bookingStatus: 'confirmed',
+                    bookingId: 'booking1',
+                    bookedAt: DateTime.now().subtract(Duration(hours: 5)),
+                  ),
+                ],
+                availableSeats: 19,
               ),
             );
           }

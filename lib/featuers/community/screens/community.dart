@@ -14,6 +14,7 @@ import 'package:iti_moqaf/featuers/profile/logic/posts_cubit.dart';
 import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../core/shared_widgets/login_first.dart';
 import '../../../core/theme/text_theme/text_theme.dart';
 
 class Community extends StatelessWidget {
@@ -23,20 +24,7 @@ class Community extends StatelessWidget {
   Widget build(BuildContext context) {
     var token = CacheHelper.getString(key: "token");
     if (token == null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("انت غير مسجل يجب التسجيل اولا"),
-            TextButton(
-              onPressed: () {
-                context.pushNamed(loginScreen);
-              },
-              child: Text("تسجيل الدخول"),
-            ),
-          ],
-        ),
-      );
+      return LoginFirst();
     } else {
       return NotificationListener<ScrollNotification>(
         onNotification: (notification) {
@@ -73,6 +61,7 @@ class Community extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(30.r),
                               child: Image.network(
+                                fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) =>
                                     const Icon(Icons.person),
                                 state is ProfileLoaded
@@ -152,8 +141,9 @@ class Community extends StatelessWidget {
                       print(
                         "Community Builder: cubitHashCode=${identityHashCode(context.read<GetAllPostsCubit>())}, postsCount=${posts.length}",
                       );
-                      if (state is GetAllPostsError) {
+                      if (state is GetAllPostsError&& state.message != "لا يوجد اتصال بالإنترنت") {
                         return NetWorkError(
+                          error: state.message,
                           onPressed: () {
                             cubit.getAllPosts();
                           },

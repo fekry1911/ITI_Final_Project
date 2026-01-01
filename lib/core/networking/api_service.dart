@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:iti_moqaf/core/const/api_const.dart';
@@ -51,6 +52,25 @@ class ApiService {
     }
   }
 
+  Future<ApiResult<User>> updateProfileImage(File file) async {
+    try {
+      String fileName = file.path.split('/').last;
+      FormData formData = FormData.fromMap({
+        "avatar": await MultipartFile.fromFile(file.path, filename: fileName),
+      });
+
+      var response = await dio.patch(updateProfile, data: formData);
+      
+      User user = User.fromJson(response.data['data']['user']);
+
+      return ApiSuccess<User>(user);
+    } on DioException catch (e) {
+      return ApiError(handleDioError(e));
+    } catch (e) {
+      return ApiError(e.toString());
+    }
+  }
+
   Future<ApiResult> verifyEmail(String email, String code) async {
     try {
       var response = await dio.post(
@@ -67,9 +87,13 @@ class ApiService {
 
   Future<ApiResult<SimpleStationsResponse>> getAllStations({
     required int page,
+    int? limit,
   }) async {
     try {
-      final response = await dio.get(station, queryParameters: {'page': page});
+      final response = await dio.get(
+        station,
+        queryParameters: {'page': page, if (limit != null) 'limit': limit},
+      );
       print(response.data);
 
       final SimpleStationsResponse stationsMoedl =
@@ -77,8 +101,10 @@ class ApiService {
       print(stationsMoedl.toString());
       return ApiSuccess<SimpleStationsResponse>(stationsMoedl);
     } on DioException catch (e) {
-      print(e.response.toString());
-      return ApiError<SimpleStationsResponse>(handleDioError(e));
+      if (e.type == DioExceptionType.connectionError) {
+        return ApiError("لا يوجد اتصال بالإنترنت");
+      }
+      return ApiError(handleDioError(e));
     } catch (e) {
       return ApiError<SimpleStationsResponse>(e.toString());
     }
@@ -87,11 +113,13 @@ class ApiService {
   Future<ApiResult<StationModel>> getOneStationDetails(id) async {
     try {
       final response = await dio.get("${station}/${id}");
-      print(response.data);
       StationModel stationModel = StationModel.fromJson(response.data);
       return ApiSuccess<StationModel>(stationModel);
     } on DioException catch (e) {
-      return ApiError<StationModel>(handleDioError(e));
+      if (e.type == DioExceptionType.connectionError) {
+        return ApiError("لا يوجد اتصال بالإنترنت");
+      }
+      return ApiError(handleDioError(e));
     } catch (e) {
       return ApiError<StationModel>(e.toString());
     }
@@ -112,8 +140,10 @@ class ApiService {
           StationsResponseModel.fromJson(response.data);
       return ApiSuccess<StationsResponseModel>(stationsResponseModel);
     } on DioException catch (e) {
-      print(e.toString());
-      return ApiError<StationsResponseModel>(e.response.toString());
+      if (e.type == DioExceptionType.connectionError) {
+        return ApiError("لا يوجد اتصال بالإنترنت");
+      }
+      return ApiError(handleDioError(e));
     } catch (e) {
       return ApiError(e.toString());
     }
@@ -129,7 +159,10 @@ class ApiService {
 
       return ApiSuccess<User>(user);
     } on DioException catch (e) {
-      return ApiError<User>(handleDioError(e));
+      if (e.type == DioExceptionType.connectionError) {
+        return ApiError("لا يوجد اتصال بالإنترنت");
+      }
+      return ApiError(handleDioError(e));
     } catch (e) {
       return ApiError<User>(e.toString());
     }
@@ -140,6 +173,8 @@ class ApiService {
     String stationId,
   ) async {
     try {
+      print(lineId);
+      print(stationId);
       var response = await dio.get(
         "$station/$stationId/$lines/$lineId/$vichels",
       );
@@ -148,7 +183,10 @@ class ApiService {
       );
       return ApiSuccess<MicrobusResponse>(microbusResponse);
     } on DioException catch (e) {
-      return ApiError<MicrobusResponse>(handleDioError(e));
+      if (e.type == DioExceptionType.connectionError) {
+        return ApiError("لا يوجد اتصال بالإنترنت");
+      }
+      return ApiError(handleDioError(e));
     } catch (e) {
       return ApiError<MicrobusResponse>(e.toString());
     }
@@ -287,7 +325,10 @@ class ApiService {
       print(CommentModel);
       return ApiSuccess<List<CommentModel>>(commentModel);
     } on DioException catch (e) {
-      return ApiError<List<CommentModel>>(handleDioError(e));
+      if (e.type == DioExceptionType.connectionError) {
+        return ApiError("لا يوجد اتصال بالإنترنت");
+      }
+      return ApiError(handleDioError(e));
     } catch (e) {
       return ApiError<List<CommentModel>>(e.toString());
     }
@@ -304,7 +345,10 @@ class ApiService {
               .toList();
       return ApiSuccess<List<ConversationModel>>(conversationList);
     } on DioException catch (e) {
-      return ApiError<List<ConversationModel>>(handleDioError(e));
+      if (e.type == DioExceptionType.connectionError) {
+        return ApiError("لا يوجد اتصال بالإنترنت");
+      }
+      return ApiError(handleDioError(e));
     } catch (e) {
       return ApiError<List<ConversationModel>>(e.toString());
     }
@@ -320,7 +364,10 @@ class ApiService {
           .toList();
       return ApiSuccess<List<MessageModel>>(messageList);
     } on DioException catch (e) {
-      return ApiError<List<MessageModel>>(handleDioError(e));
+      if (e.type == DioExceptionType.connectionError) {
+        return ApiError("لا يوجد اتصال بالإنترنت");
+      }
+      return ApiError(handleDioError(e));
     } catch (e) {
       return ApiError<List<MessageModel>>(e.toString());
     }
@@ -375,7 +422,10 @@ class ApiService {
       ChatResponse chatResponse = ChatResponse.fromJson(response.data);
       return ApiSuccess<ChatResponse>(chatResponse);
     } on DioException catch (e) {
-      return ApiError<ChatResponse>(handleDioError(e));
+      if (e.type == DioExceptionType.connectionError) {
+        return ApiError("لا يوجد اتصال بالإنترنت");
+      }
+      return ApiError(handleDioError(e));
     } catch (e) {
       return ApiError<ChatResponse>(e.toString());
     }
@@ -495,12 +545,12 @@ class ApiService {
   Future<ApiResult<String>> resetNewPassword({
     required String newPassword,
     required String confirmPassword,
-    required String token ,
+    required String token,
   }) async {
     try {
       var response = await dio.post(
         "$resetPassword/$token",
-        data: {"newPassword ": newPassword,"confirmPassword":confirmPassword},
+        data: {"newPassword ": newPassword, "confirmPassword": confirmPassword},
       );
       return ApiSuccess<String>(response.data["data"]["message"]);
     } on DioException catch (e) {

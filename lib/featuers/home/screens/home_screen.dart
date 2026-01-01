@@ -37,29 +37,29 @@ class HomeScreen extends StatelessWidget {
           appBar: index == 0 || index == 3
               ? null
               : AppBar(
-                  actions: index == 2
-                      ? [
-                          IconButton(
-                            onPressed: () {
-                              context.pushNamed(
-                                allChatsScreen,
-                                arguments:
-                                    CacheHelper.getString(key: "userId") ?? "",
-                              );
-                            },
-                            icon: SvgPicture.asset(
-                              "assets/svg_icons/send.svg",
-                              color: AppColors.mainColor,
-                            ),
-                            color: AppColors.primary,
-                          ),
-                        ]
-                      : [],
-                  title: Text(
-                    index == 1 ? "جميع المحطات" : "شارك بمساعده او مشكلتك",
-                  ),
-                  centerTitle: false,
+            actions: index == 2
+                ? [
+              IconButton(
+                onPressed: () {
+                  context.pushNamed(
+                    allChatsScreen,
+                    arguments:
+                    CacheHelper.getString(key: "userId") ?? "",
+                  );
+                },
+                icon: SvgPicture.asset(
+                  "assets/svg_icons/send.svg",
+                  color: AppColors.mainColor,
                 ),
+                color: AppColors.primary,
+              ),
+            ]
+                : [],
+            title: Text(
+              index == 1 ? "جميع المحطات" : "شارك بمساعده او مشكلتك",
+            ),
+            centerTitle: false,
+          ),
 
           body: IndexedStack(index: cubit.index, children: screens),
           floatingActionButton: Transform.translate(
@@ -96,7 +96,7 @@ class HomeScreen extends StatelessWidget {
           ),
 
           floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: Container(
             margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
             height: 60.h,

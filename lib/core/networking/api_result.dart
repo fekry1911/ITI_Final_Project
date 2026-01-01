@@ -4,8 +4,9 @@ sealed class ApiResult<T>{}
 
 class ApiSuccess<T> extends ApiResult<T>{
   final T data;
+  final bool fromCache;
 
-  ApiSuccess(this.data);
+  ApiSuccess(this.data,{this.fromCache=false});
 }
 
 class ApiError<T> extends ApiResult<T>{

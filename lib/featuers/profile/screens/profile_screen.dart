@@ -13,6 +13,7 @@ import 'package:iti_moqaf/featuers/profile/screens/widgets/profile_header.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/shared_widgets/error_page.dart';
+import '../../../core/shared_widgets/login_first.dart';
 import '../../../core/shared_widgets/toast.dart';
 import '../../community/data/model/fake_data/model.dart';
 import '../../community/screens/widgets/post_card.dart';
@@ -33,20 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     var token = CacheHelper.getString(key: "token");
     if (token == null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("انت غير مسجل يجب التسجيل اولا"),
-            TextButton(
-              onPressed: () {
-                context.pushNamed(loginScreen);
-              },
-              child: Text("تسجيل الدخول"),
-            ),
-          ],
-        ),
-      );
+      return LoginFirst();
     } else {
       return Scaffold(
         extendBodyBehindAppBar: true,
@@ -84,10 +72,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   loginScreen,
                       (route) => false,
                 );
-                CacheHelper.clearUser();
-                CacheHelper.removeString(key: 'token');
-                CacheHelper.removeString(key: 'userId');
-                CacheHelper.removeString(key: 'uid');
                 sucssesToast(
                   context,
                   "تم تسجيل الخروج بنجاح",
@@ -150,13 +134,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 builder: (context, state) {
                                   var cubit = context.read<PostsCubit>();
 
-                                  if (state is PostsError) {
+                                  if (state is PostsError&& state.message != "لا يوجد اتصال بالإنترنت") {
                                     return NetWorkError(
+                                      error: state.message,
                                       onPressed: () {
-                                        String id = CacheHelper.getString(
-                                          key: "uid",
-                                        );
-                                        cubit.getAllPostsOfUser(id);
+                                        cubit.getAllPostsOfUser(widget.id);
                                       },
                                     );
                                   }

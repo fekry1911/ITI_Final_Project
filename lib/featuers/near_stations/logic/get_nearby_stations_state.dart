@@ -16,7 +16,7 @@ final class GetNearbyStationsLoading extends GetNearbyStationsState {
 }
 
 final class GetNearbyStationsSuccess extends GetNearbyStationsState {
-  List<NearStationModel> data;
+  final List<NearStationModel> data;
   Position userPosition;
 
   GetNearbyStationsSuccess(this.data, this.userPosition);
@@ -26,7 +26,7 @@ final class GetNearbyStationsSuccess extends GetNearbyStationsState {
 }
 
 final class GetNearbyStationsError extends GetNearbyStationsState {
-  String error;
+  final String error;
 
   GetNearbyStationsError(this.error);
   @override

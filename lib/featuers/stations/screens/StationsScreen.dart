@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/shared_widgets/shared_text_form_field.dart';
+import 'package:iti_moqaf/featuers/stations/screens/search_stations_screen.dart';
 import 'package:iti_moqaf/featuers/stations/data/model/stations_model.dart';
 import 'package:iti_moqaf/featuers/stations/logic/get_all_stations_cubit.dart';
 import 'package:iti_moqaf/featuers/stations/screens/widgets/filter_widget.dart';
@@ -63,6 +64,12 @@ class _StationsscreenState extends State<StationsScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal:4, vertical: 8.0),
             child: TextField(
+              readOnly: true,
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const SearchStationsScreen()),
+                );
+              },
               decoration: InputDecoration(
                 hintText: "ابحث عن محطه",
                 hintStyle: TextStyle(color: Colors.grey[400]),
@@ -81,8 +88,9 @@ class _StationsscreenState extends State<StationsScreen> {
           BlocConsumer<GetAllStationsCubit, GetAllStationsState>(
             builder: (BuildContext context, state) {
               var cubit = context.read<GetAllStationsCubit>();
-              if (state is GetAllStationsError) {
+              if (state is GetAllStationsError && state.error != "لا يوجد اتصال بالإنترنت") {
                 return NetWorkError(
+                  error: state.error,
                   onPressed: () {
                     cubit.getAllStations();
                   },

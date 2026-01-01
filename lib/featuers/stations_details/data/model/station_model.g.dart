@@ -50,8 +50,10 @@ Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
 
 LineModel _$LineModelFromJson(Map<String, dynamic> json) => LineModel(
   id: json['_id'] as String,
-  fromStation: LineModel._stationToString(json['fromStation']),
-  toStation: LineModel._stationToString(json['toStation']),
+  fromStation: StationRef.fromJson(json['fromStation'] as Map<String, dynamic>),
+  toStation: json['toStation'] == null
+      ? null
+      : StationRef.fromJson(json['toStation'] as Map<String, dynamic>),
   price: json['price'] as num,
   distance: json['distance'] as num?,
 );
@@ -63,3 +65,11 @@ Map<String, dynamic> _$LineModelToJson(LineModel instance) => <String, dynamic>{
   'price': instance.price,
   'distance': instance.distance,
 };
+
+StationRef _$StationRefFromJson(Map<String, dynamic> json) => StationRef(
+  id: json['_id'] as String,
+  stationName: json['stationName'] as String?,
+);
+
+Map<String, dynamic> _$StationRefToJson(StationRef instance) =>
+    <String, dynamic>{'_id': instance.id, 'stationName': instance.stationName};

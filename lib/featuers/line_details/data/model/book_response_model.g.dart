@@ -71,6 +71,13 @@ BookingVehicle _$BookingVehicleFromJson(Map<String, dynamic> json) =>
       model: json['model'] as String,
       plateNumber: json['plateNumber'] as String,
       driverName: json['driverName'] as String,
+      capacity: (json['capacity'] as num).toInt(),
+      lines: (json['lines'] as List<dynamic>?)
+          ?.map((e) => BookingLineData.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      currentStation: BookingStationData.fromJson(
+        json['currentStation'] as Map<String, dynamic>,
+      ),
     );
 
 Map<String, dynamic> _$BookingVehicleToJson(BookingVehicle instance) =>
@@ -79,4 +86,36 @@ Map<String, dynamic> _$BookingVehicleToJson(BookingVehicle instance) =>
       'model': instance.model,
       'plateNumber': instance.plateNumber,
       'driverName': instance.driverName,
+      'capacity': instance.capacity,
+      'lines': instance.lines,
+      'currentStation': instance.currentStation,
     };
+
+BookingLineData _$BookingLineDataFromJson(Map<String, dynamic> json) =>
+    BookingLineData(
+      id: json['_id'] as String,
+      fromStation: BookingStationData.fromJson(
+        json['fromStation'] as Map<String, dynamic>,
+      ),
+      toStation: BookingStationData.fromJson(
+        json['toStation'] as Map<String, dynamic>,
+      ),
+      price: (json['price'] as num).toDouble(),
+    );
+
+Map<String, dynamic> _$BookingLineDataToJson(BookingLineData instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'fromStation': instance.fromStation,
+      'toStation': instance.toStation,
+      'price': instance.price,
+    };
+
+BookingStationData _$BookingStationDataFromJson(Map<String, dynamic> json) =>
+    BookingStationData(
+      id: json['_id'] as String,
+      stationName: json['stationName'] as String,
+    );
+
+Map<String, dynamic> _$BookingStationDataToJson(BookingStationData instance) =>
+    <String, dynamic>{'_id': instance.id, 'stationName': instance.stationName};
