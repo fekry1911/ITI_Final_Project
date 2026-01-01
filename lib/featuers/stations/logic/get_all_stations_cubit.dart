@@ -48,7 +48,13 @@ class GetAllStationsCubit extends Cubit<GetAllStationsState> {
 
         emit(GetAllStationsSuccess(List.from(_allStations), position, hasMore));
       } else if (result is ApiError<SimpleStationsResponse>) {
-        emit(GetAllStationsError(result.message));
+        if (_allStations.isNotEmpty) {
+          // If we have data, keep showing it and just stop loading
+          hasMore = false; 
+          emit(GetAllStationsSuccess(List.from(_allStations), position, hasMore));
+        } else {
+          emit(GetAllStationsError(result.message));
+        }
       }
     } catch (e) {
       emit(GetAllStationsError(e.toString()));

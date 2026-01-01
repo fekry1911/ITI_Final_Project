@@ -8,7 +8,7 @@ import '../../../../core/theme/text_theme/text_theme.dart';
 Widget buildButton({
   required String text,
   required Color color,
-  required VoidCallback onTap,
+  required VoidCallback? onTap,
 }) {
   return ElevatedButton(
     onPressed: onTap,

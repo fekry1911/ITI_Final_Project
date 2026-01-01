@@ -45,7 +45,12 @@ class GetAllPostsCubit extends Cubit<GetAllPostsState> {
 
       emit(GetAllPostsSuccess(List.from(posts), hasMore));
     } else if (result is ApiError<PostsResponse>) {
-      emit(GetAllPostsError(result.message));
+      if (posts.isNotEmpty) {
+        hasMore = false;
+        emit(GetAllPostsSuccess(List.from(posts), hasMore));
+      } else {
+        emit(GetAllPostsError(result.message));
+      }
     }
 
     isFetching = false;

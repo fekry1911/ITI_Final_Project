@@ -47,7 +47,12 @@ class PostsCubit extends Cubit<PostsState> {
     }
 
     else if (result is ApiError<PostsResponse>) {
-      emit(PostsError(result.message));
+      if (posts.isNotEmpty) {
+        hasMore = false;
+        emit(PostsLoaded(List.from(posts), hasMore));
+      } else {
+        emit(PostsError(result.message));
+      }
     }
     isFetching = false;
   }
