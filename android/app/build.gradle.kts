@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.iti_moqaf"
+    namespace = "com.example.final_task"  // <--- هنا تحدد الـ package name الجديد
     compileSdk = 36
     ndkVersion = "27.0.12077973"
 
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.iti_moqaf"
+        applicationId = "com.example.final_task"
         minSdk = 23
         targetSdk = 36
         versionCode = 1
@@ -29,14 +29,11 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-            signingConfig = signingConfigs.getByName("debug") // غرض الاختبار
+            isMinifyEnabled = false
+            isShrinkResources = false
+            signingConfig = signingConfigs.getByName("debug") // للاختبار
         }
+
     }
 }
 
