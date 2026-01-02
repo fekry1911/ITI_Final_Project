@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.final_task"  // <--- هنا تحدد الـ package name الجديد
+    namespace = "com.example.iti_moqaf"  // <--- هنا تحدد الـ package name الجديد
     compileSdk = 36
     ndkVersion = "27.0.12077973"
 
@@ -20,11 +20,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.final_task"
+        applicationId = "com.example.iti_moqaf"
         minSdk = 23
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0.0"
+        versionName = "1.0.2"
     }
 
     buildTypes {
