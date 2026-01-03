@@ -160,6 +160,34 @@ class AppTextStyle {
     color: AppColors.whiteColor,
     fontWeight: FontWeightHelper.semiBold,
     fontSize: 16.sp,
+  );
 
+  // Added Missing Styles
+  static TextStyle font16BlackBold = GoogleFonts.cairo(
+    color: AppColors.blackColor,
+    fontWeight: FontWeightHelper.bold,
+    fontSize: 16.sp,
+    letterSpacing: 0.7,
+  );
+
+  static TextStyle font12BlackRegular = GoogleFonts.cairo(
+    color: AppColors.blackColor,
+    fontWeight: FontWeightHelper.regular,
+    fontSize: 12.sp,
+    letterSpacing: 0.7,
+  );
+
+  static TextStyle font14BlackBold = GoogleFonts.cairo(
+    color: AppColors.blackColor,
+    fontWeight: FontWeightHelper.bold,
+    fontSize: 14.sp,
+    letterSpacing: 0.7,
+  );
+
+  static TextStyle font12BlackBold = GoogleFonts.cairo(
+    color: AppColors.blackColor,
+    fontWeight: FontWeightHelper.bold,
+    fontSize: 12.sp,
+    letterSpacing: 0.7,
   );
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart'; // Added
 import 'package:iti_moqaf/featuers/stations/screens/search_stations_screen.dart';
 import 'package:iti_moqaf/featuers/stations/screens/widgets/station_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/shared_widgets/error_page.dart';
+import '../../../core/shared_widgets/location_disabled_widget.dart'; // Added
 import '../../../core/theme/color/colors.dart';
 import '../data/model/data/filter_data.dart';
 import '../data/model/data/statuins_data.dart';
@@ -20,19 +22,52 @@ class StationsScreen extends StatefulWidget {
   State<StationsScreen> createState() => _StationsscreenState();
 }
 
-class _StationsscreenState extends State<StationsScreen> {
+class _StationsscreenState extends State<StationsScreen> with WidgetsBindingObserver { // Added Observer
   TextEditingController controller = TextEditingController();
   String fillter = filters[0]["label"]!;
   String valueFillter = filters[0]["value"]!;
   List? currentStations;
   ScrollController controllerScroll = ScrollController();
+  
+  Position? _userPosition;
+  bool _isLocationServiceEnabled = true;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this); // Observer
+    _checkLocationStatus();
     if (context.read<GetAllStationsCubit>().lastPage !=
         context.read<GetAllStationsCubit>().page) {
       controllerScroll.addListener(() => _getMore());
+    }
+  }
+
+  Future<void> _checkLocationStatus() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    setState(() {
+      _isLocationServiceEnabled = serviceEnabled;
+    });
+
+    if (serviceEnabled) {
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      
+      if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
+        Position position = await Geolocator.getCurrentPosition();
+        setState(() {
+          _userPosition = position;
+        });
+      }
+    }
+  }
+  
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _checkLocationStatus();
     }
   }
 
@@ -45,6 +80,7 @@ class _StationsscreenState extends State<StationsScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     controllerScroll.dispose();
     controllerScroll.removeListener(()=>_getMore());
     super.dispose();
@@ -86,6 +122,10 @@ class _StationsscreenState extends State<StationsScreen> {
               ),
             ),
           ),
+          SizedBox(height: 10.h),
+          if (!_isLocationServiceEnabled)
+            LocationDisabledWidget(onRetry: _checkLocationStatus),
+
           SizedBox(height: 10.h),
           BlocConsumer<GetAllStationsCubit, GetAllStationsState>(
             builder: (BuildContext context, state) {
@@ -129,12 +169,17 @@ class _StationsscreenState extends State<StationsScreen> {
                   child: RefreshIndicator(
                     onRefresh: () {
                       cubit.getAllStations();
+                      _checkLocationStatus(); // Also retry location
                       return Future.delayed(Duration(seconds: 1));
                     },
                     child: ListView.separated(
                       controller: controllerScroll,
                       itemBuilder: (BuildContext context, int index) {
-                        return StationCard(data: data[index], index: index);
+                        return StationCard(
+                          data: data[index],
+                          index: index,
+                          userPosition: _userPosition, // Passed User Position
+                        );
                       },
                       separatorBuilder: (BuildContext context, int index) {
                         return SizedBox(height: 5.h);

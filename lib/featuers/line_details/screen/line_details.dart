@@ -5,6 +5,8 @@ import 'package:iti_moqaf/featuers/line_details/screen/widgets/bus_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/shared_widgets/network_error.dart';
+import '../../../core/shared_widgets/no_trips_widget.dart'; // Added
+import '../../../core/theme/color/colors.dart'; // Added
 import '../data/model/microbus_models.dart';
 import '../logic/get_details_of_line_cubit.dart';
 
@@ -17,7 +19,7 @@ class LineDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA), // Light grey background
+      backgroundColor: AppColors.background, // Light grey background
       appBar: AppBar(
         backgroundColor: const Color(0xFFF5F7FA),
         elevation: 0,
@@ -48,7 +50,7 @@ class LineDetails extends StatelessWidget {
         builder: (context, state) {
           List<Microbus> buses = [];
           bool isLoading = false;
-          if (state is GetDetailsOfLineError) {
+            if (state is GetDetailsOfLineError) {
             if (state.message == "لا يوجد اتصال بالإنترنت") {
               return Expanded(
                 child: Center(child: Column(
@@ -58,7 +60,8 @@ class LineDetails extends StatelessWidget {
                   ],
                 )),
               );}
-            return Center(child: Text(state.message));
+              // Use NoTripsWidget for "No Buses" type errors or generic empty states if message implies it
+            return Expanded(child: NoTripsWidget(message: state.message));
           }
 
           if (state is GetDetailsOfLineSuccess) {
