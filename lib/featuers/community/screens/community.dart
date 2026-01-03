@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
-import 'package:iti_moqaf/core/helpers/cach_helper.dart';
-import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/shared_widgets/error_page.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/featuers/community/data/model/fake_data/model.dart';
-import 'package:iti_moqaf/featuers/community/logic/get_all_posts_cubit.dart';
 import 'package:iti_moqaf/featuers/community/screens/widgets/post_card.dart';
-import 'package:iti_moqaf/featuers/profile/logic/posts_cubit.dart';
-import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../core/const/const_paths.dart';
+import '../../../core/helpers/cach_helper.dart';
+import '../../../core/shared_widgets/error_page.dart';
 import '../../../core/shared_widgets/login_first.dart';
+import '../../../core/theme/color/colors.dart';
 import '../../../core/theme/text_theme/text_theme.dart';
+import '../../profile/logic/posts_cubit.dart';
+import '../../profile/logic/profile_cubit.dart';
+import '../data/model/fake_data/model.dart';
+import '../logic/get_all_posts_cubit.dart';
 
 class Community extends StatelessWidget {
   Community({super.key});

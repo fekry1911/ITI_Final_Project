@@ -1,6 +1,6 @@
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/core/networking/api_service.dart';
 
+import '../../../../core/networking/api_result.dart';
+import '../../../../core/networking/api_service.dart';
 import '../model/book_response_model.dart';
 
 class BookAndCancelRepo {

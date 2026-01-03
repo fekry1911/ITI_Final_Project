@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-
 import '../../../../core/theme/color/colors.dart';
+import '../../../../core/theme/text_theme/text_theme.dart';
 
 class WhatsAppMessage extends StatelessWidget {
   final String message;
@@ -22,7 +21,7 @@ class WhatsAppMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     final bgColor = isMe
         ? AppColors.mainColor.withOpacity(0.8)
-        : AppColors.greyText.withOpacity(0.6);
+        : AppColors.greyColor.withOpacity(0.6);
     final textColor =isMe?AppColors.whiteColor: AppColors.blackColor;
 
 

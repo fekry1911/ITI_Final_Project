@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/shared_widgets/shared_text_form_field.dart';
 import 'package:iti_moqaf/featuers/stations/screens/search_stations_screen.dart';
-import 'package:iti_moqaf/featuers/stations/data/model/stations_model.dart';
-import 'package:iti_moqaf/featuers/stations/logic/get_all_stations_cubit.dart';
-import 'package:iti_moqaf/featuers/stations/screens/widgets/filter_widget.dart';
 import 'package:iti_moqaf/featuers/stations/screens/widgets/station_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -13,6 +9,8 @@ import '../../../core/shared_widgets/error_page.dart';
 import '../../../core/theme/color/colors.dart';
 import '../data/model/data/filter_data.dart';
 import '../data/model/data/statuins_data.dart';
+import '../data/model/stations_model.dart';
+import '../logic/get_all_stations_cubit.dart';
 import '../logic/get_all_stations_state.dart';
 
 class StationsScreen extends StatefulWidget {
@@ -72,13 +70,17 @@ class _StationsscreenState extends State<StationsScreen> {
               },
               decoration: InputDecoration(
                 hintText: "ابحث عن محطه",
-                hintStyle: TextStyle(color: Colors.grey[400]),
-                prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
+                hintStyle: TextStyle(color: AppColors.textTertiary),
+                prefixIcon: Icon(Icons.search, color: AppColors.textTertiary),
                 filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                fillColor: AppColors.surface,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(color: AppColors.border),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(color: AppColors.primary),
                 ),
                 contentPadding: const EdgeInsets.symmetric(vertical: 0),
               ),

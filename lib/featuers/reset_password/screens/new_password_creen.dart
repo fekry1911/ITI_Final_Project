@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import 'package:iti_moqaf/featuers/reset_password/screens/widgest/shared_button.dart';
 import 'package:iti_moqaf/featuers/reset_password/screens/widgest/title_desc.dart';
-
+import '../../../core/const/const_paths.dart';
 import '../../../core/shared_widgets/shared_text_form_field.dart';
 import '../../../core/shared_widgets/toast.dart';
+import '../../../core/theme/text_theme/text_theme.dart';
 import '../logic/reset_password_cubit.dart';
 
 class NewPasswordScreen extends StatelessWidget {

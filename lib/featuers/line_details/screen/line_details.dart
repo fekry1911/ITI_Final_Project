@@ -1,11 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iti_moqaf/featuers/line_details/data/model/microbus_models.dart';
-import 'package:iti_moqaf/featuers/line_details/logic/get_details_of_line_cubit.dart';
+import 'package:iti_moqaf/featuers/line_details/screen/widgets/bus_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/shared_widgets/network_error.dart';
-import 'widgets/bus_card.dart';
+import '../data/model/microbus_models.dart';
+import '../logic/get_details_of_line_cubit.dart';
 
 class LineDetails extends StatelessWidget {
   String stationId;

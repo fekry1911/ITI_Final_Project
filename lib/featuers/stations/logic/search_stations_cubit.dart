@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/featuers/stations/data/model/repo/get_all_stations-repo.dart';
-import 'package:iti_moqaf/featuers/stations/data/model/stations_model.dart';
+import '../../../core/networking/api_result.dart';
+import '../data/model/repo/get_all_stations-repo.dart';
+import '../data/model/stations_model.dart';
 
 part 'search_stations_state.dart';
 

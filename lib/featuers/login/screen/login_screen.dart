@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/shared_widgets/toast.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/login/logic/login_cubit.dart';
 import 'package:iti_moqaf/featuers/login/screen/widgets/button_done.dart';
 import 'package:iti_moqaf/featuers/login/screen/widgets/email_password.dart';
 import '../../../core/const/const_paths.dart';
 import '../../../core/shared_widgets/image_messsage.dart';
+import '../../../core/shared_widgets/toast.dart';
 import '../../../core/theme/color/colors.dart';
+import '../../../core/theme/text_theme/text_theme.dart';
+import '../../../core/shared_widgets/modern_card.dart'; // Added Import
+import '../logic/login_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -30,15 +31,20 @@ class LoginScreen extends StatelessWidget {
                 title: 'مرحبا بعودتك',
                 desc: 'قم بتسجيل الدخول للوصول لحسابك',
               ),
-              SizedBox(height: 40.h),
+              SizedBox(height: 32.h), // Adjusted spacing
+              
               Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Column(
                   children: [
+                    SizedBox(height: 16.h),
                     EmailAndPassword(),
                     SizedBox(height: 24.h),
                     ButtonDone(),
                     SizedBox(height: 24.h),
+                    
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -63,9 +69,10 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 30.h,),
+                    SizedBox(height: 16.h,),
                   ],
                 ),
+              ),
               ),
 
               BlocListener<LoginCubit, LoginStates>(

@@ -1,20 +1,18 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
-import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/featuers/community/screens/community.dart';
-import 'package:iti_moqaf/featuers/home/logic/home_cubit.dart';
-import 'package:iti_moqaf/featuers/near_stations/screens/screen.dart';
-import 'package:iti_moqaf/featuers/profile/screens/profile_screen.dart';
-import 'package:iti_moqaf/featuers/stations/screens/StationsScreen.dart';
-
+import '../../../core/const/const_paths.dart';
+import '../../../core/helpers/cach_helper.dart';
 import '../../../core/theme/color/colors.dart';
+import '../../community/screens/community.dart';
+import '../../near_stations/screens/screen.dart';
+import '../../profile/screens/profile_screen.dart';
+import '../../stations/screens/StationsScreen.dart';
+import '../logic/home_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -153,7 +151,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         icon: SvgPicture.asset(
                           'assets/svg_icons/stroke_home.svg',
-                          color: AppColors.greyText,
+                          color: AppColors.greyColor,
 
                           width: 24,
                         ),
@@ -171,7 +169,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         icon: SvgPicture.asset(
                           'assets/svg_icons/community.svg',
-                          color: AppColors.greyText,
+                          color: AppColors.greyColor,
 
                           width: 30,
                         ),
@@ -185,7 +183,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         icon: SvgPicture.asset(
                           'assets/svg_icons/stroke_profile.svg',
-                          color: AppColors.greyText,
+                          color: AppColors.greyColor,
                           width: 24,
                         ),
                         label: "Profile",

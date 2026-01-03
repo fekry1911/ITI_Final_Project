@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:iti_moqaf/core/models/user_model.dart';
+import '../../../../core/models/user_model.dart';
 
 part 'post_model.g.dart';
 

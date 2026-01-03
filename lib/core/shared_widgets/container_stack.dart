@@ -39,7 +39,7 @@ class SharedStackHeader extends StatelessWidget {
           ),
         ).animate().scaleXY(duration: 2000.ms),
       register ?  Positioned(
-          top: 25.h,
+          top: 30.h,
           child: IconButton(
             onPressed: () {
               print("Done");

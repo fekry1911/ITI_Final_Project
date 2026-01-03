@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:iti_moqaf/core/models/user_model.dart';
-import 'package:iti_moqaf/core/helpers/cach_helper.dart';
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/featuers/register/data/repo/register_user.dart';
 import 'package:meta/meta.dart';
 
+import '../../../core/helpers/cach_helper.dart';
+import '../../../core/models/user_model.dart';
+import '../../../core/networking/api_result.dart';
 import '../data/model/user_register_request.dart';
+import '../data/repo/register_user.dart';
 
 part 'register_user_state.dart';
 

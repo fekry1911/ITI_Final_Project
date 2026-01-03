@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../../core/theme/color/colors.dart';
+import '../theme/text_theme/text_theme.dart';
 import 'container_stack.dart';
 
 class ImageAndMessage extends StatelessWidget {

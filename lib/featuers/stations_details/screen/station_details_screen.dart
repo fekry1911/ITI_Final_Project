@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/stations_details/logic/get_one_station_cubit.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/widgets/route_card.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/widgets/station_info.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/shared_widgets/network_error.dart';
+import '../../../core/theme/color/colors.dart';
+import '../../../core/theme/text_theme/text_theme.dart';
 import '../data/model/station_model.dart';
+import '../logic/get_one_station_cubit.dart';
 
 class StationDetailsScreen extends StatelessWidget {
   const StationDetailsScreen({super.key});

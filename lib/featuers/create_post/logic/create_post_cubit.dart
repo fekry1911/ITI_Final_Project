@@ -1,13 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/featuers/create_post/data/create_post_repo.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
-
-import 'package:iti_moqaf/featuers/community/data/model/post_model.dart';
-import 'package:iti_moqaf/featuers/create_post/data/creatr_post_model.dart';
+import '../../../core/networking/api_result.dart';
+import '../../community/data/model/post_model.dart';
+import '../data/create_post_repo.dart';
+import '../data/creatr_post_model.dart';
 
 part 'create_post_state.dart';
 

@@ -1,9 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:iti_moqaf/featuers/community/data/model/like_resonse_model.dart';
-import 'package:iti_moqaf/featuers/community/data/repo/like_post_repo.dart';
-
 import '../../../core/networking/api_result.dart';
+import '../data/model/like_resonse_model.dart';
+import '../data/repo/like_post_repo.dart';
 part 'like_post_state.dart';
 class LikePostCubit extends Cubit<LikePostState> {
   final LikePostRepo likePostRepo;

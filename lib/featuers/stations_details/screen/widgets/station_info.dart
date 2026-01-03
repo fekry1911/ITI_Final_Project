@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/stations_details/logic/get_one_station_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../../core/theme/color/colors.dart';
+import '../../../../core/theme/text_theme/text_theme.dart';
 import '../../data/model/station_model.dart';
+import '../../logic/get_one_station_cubit.dart';
 
 class StationInfo extends StatelessWidget {
   const StationInfo({super.key});

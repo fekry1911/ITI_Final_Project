@@ -1,6 +1,5 @@
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/core/networking/api_service.dart';
-
+import '../../../../core/networking/api_result.dart';
+import '../../../../core/networking/api_service.dart';
 import '../model/near_stations_model.dart';
 
 class GetNearbyStationsRepo{

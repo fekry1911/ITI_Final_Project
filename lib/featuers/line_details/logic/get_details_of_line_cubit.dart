@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/featuers/line_details/data/repo/get_line_details_repo.dart';
+import '../../../core/networking/api_result.dart';
 import '../data/model/microbus_models.dart';
+import '../data/repo/get_line_details_repo.dart';
 
 part 'get_details_of_line_state.dart';
 

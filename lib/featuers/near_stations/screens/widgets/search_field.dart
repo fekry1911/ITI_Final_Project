@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
+
+import '../../../../core/theme/color/colors.dart';
 
 class SearchField extends StatelessWidget {
   final String hintText;

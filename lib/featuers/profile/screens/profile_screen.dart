@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
-import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/models/user_model.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/featuers/profile/logic/posts_cubit.dart';
-import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
 import 'package:iti_moqaf/featuers/profile/screens/widgets/profile_header.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../core/const/const_paths.dart';
+import '../../../core/helpers/cach_helper.dart';
+import '../../../core/models/user_model.dart';
 import '../../../core/shared_widgets/error_page.dart';
 import '../../../core/shared_widgets/login_first.dart';
 import '../../../core/shared_widgets/toast.dart';
+import '../../../core/theme/color/colors.dart';
 import '../../community/data/model/fake_data/model.dart';
 import '../../community/screens/widgets/post_card.dart';
+import '../logic/posts_cubit.dart';
+import '../logic/profile_cubit.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({super.key, required this.id});

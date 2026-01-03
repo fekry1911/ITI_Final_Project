@@ -1,5 +1,5 @@
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:iti_moqaf/core/const/api_const.dart';
+import '../const/api_const.dart';
 
 class SocketService {
   late IO.Socket socket;

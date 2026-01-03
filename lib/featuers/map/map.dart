@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-
 import '../../core/const/const_paths.dart';
 import '../near_stations/data/model/near_stations_model.dart';
 import '../near_stations/logic/get_nearby_stations_cubit.dart';

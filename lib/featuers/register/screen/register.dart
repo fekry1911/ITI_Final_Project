@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/shared_widgets/toast.dart';
 import 'package:iti_moqaf/featuers/register/screen/widgets/button_done.dart';
 import 'package:iti_moqaf/featuers/register/screen/widgets/email_password.dart';
-
 import '../../../core/const/const_paths.dart';
 import '../../../core/shared_widgets/image_messsage.dart';
+import '../../../core/shared_widgets/toast.dart';
 import '../../../core/theme/text_theme/text_theme.dart';
 import '../logic/register_user_cubit.dart';
 

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/helpers/cach_helper.dart';
-import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iti_moqaf/core/models/user_model.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import '../../../../core/const/const_paths.dart';
+import '../../../../core/helpers/cach_helper.dart';
+import '../../../../core/models/user_model.dart';
+import '../../../../core/theme/color/colors.dart';
 import '../../../../core/theme/text_theme/text_theme.dart';
+import '../../logic/profile_cubit.dart';
 
 class ProfileHeader extends StatelessWidget {
   final User? user;

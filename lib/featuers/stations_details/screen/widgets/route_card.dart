@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/stations_details/data/model/station_model.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/widgets/route_details.dart';
+import '../../../../core/const/const_paths.dart';
+import '../../../../core/theme/color/colors.dart';
+import '../../../../core/theme/text_theme/text_theme.dart';
+import '../../data/model/station_model.dart';
 
 class RouteCard extends StatelessWidget {
   final LineModel data;

@@ -1,8 +1,7 @@
-import 'package:iti_moqaf/core/networking/api_service.dart';
-
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/featuers/community/data/model/post_model.dart';
-import 'package:iti_moqaf/featuers/create_post/data/creatr_post_model.dart';
+import '../../../core/networking/api_result.dart';
+import '../../../core/networking/api_service.dart';
+import '../../community/data/model/post_model.dart';
+import 'creatr_post_model.dart';
 
 class CreatePostRepo {
   ApiService apiService;

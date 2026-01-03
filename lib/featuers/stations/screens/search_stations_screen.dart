@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/shared_widgets/error_page.dart';
-import 'package:iti_moqaf/featuers/stations/logic/search_stations_cubit.dart';
 import 'package:iti_moqaf/featuers/stations/screens/widgets/station_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/di/di.dart';
+import '../../../core/shared_widgets/error_page.dart';
 import '../data/model/stations_model.dart';
 import '../../../core/networking/api_service.dart';
 import '../data/model/repo/get_all_stations-repo.dart';
+import '../logic/search_stations_cubit.dart';
 
 class SearchStationsScreen extends StatelessWidget {
   const SearchStationsScreen({super.key});

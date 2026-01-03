@@ -1,4 +1,4 @@
-import 'package:iti_moqaf/featuers/on_boarding/models/onBoarding_model.dart';
+import '../../featuers/on_boarding/models/onBoarding_model.dart';
 
 final List<OnboardingModel> onboardingData = [
   OnboardingModel(

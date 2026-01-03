@@ -3,11 +3,10 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:iti_moqaf/core/helpers/cach_helper.dart';
-import 'package:iti_moqaf/core/models/user_model.dart';
-import 'package:iti_moqaf/core/networking/api_result.dart';
-
-import 'package:iti_moqaf/featuers/profile/data/repo/profile_repo.dart';
+import '../../../core/helpers/cach_helper.dart';
+import '../../../core/models/user_model.dart';
+import '../../../core/networking/api_result.dart';
+import '../data/repo/profile_repo.dart';
 
 part 'profile_state.dart';
 

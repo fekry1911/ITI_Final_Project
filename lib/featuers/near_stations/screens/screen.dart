@@ -3,13 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/di/di.dart';
-import 'package:iti_moqaf/featuers/near_stations/logic/get_nearby_stations_cubit.dart';
 import 'package:iti_moqaf/featuers/near_stations/screens/widgets/bottom_sheet.dart';
 import 'package:iti_moqaf/featuers/near_stations/screens/widgets/header.dart';
-import 'package:iti_moqaf/featuers/near_stations/screens/widgets/map_chips.dart';
-
+import '../../../core/di/di.dart';
 import '../../map/map.dart';
+import '../logic/get_nearby_stations_cubit.dart';
 
 class NearStations extends StatefulWidget {
   const NearStations({super.key});

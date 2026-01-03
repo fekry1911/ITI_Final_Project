@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/featuers/chat/logic/chat_cubit.dart';
-import 'package:iti_moqaf/featuers/chat/logic/chat_state.dart';
-// Note: You might need to update this import if your message widget location or name is different,
-// but based on the previous file content, it was imported from here.
-import 'package:iti_moqaf/featuers/chat/data/model/chat_models.dart';
-import 'package:iti_moqaf/featuers/chat/screen/widgets/message.dart'; 
-import 'package:skeletonizer/skeletonizer.dart'; 
+import 'package:iti_moqaf/featuers/chat/screen/widgets/message.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
+import '../../../core/theme/color/colors.dart';
+import '../data/model/chat_models.dart';
+import '../logic/chat_cubit.dart';
+import '../logic/chat_state.dart';
  
 
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import 'package:lottie/lottie.dart';
 
 import '../theme/color/colors.dart';
+import '../theme/text_theme/text_theme.dart';
 
 class NetWorkError extends StatelessWidget {
   const NetWorkError({super.key, required this.onPressed, required this.error});

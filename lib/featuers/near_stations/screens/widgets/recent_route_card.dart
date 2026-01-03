@@ -3,9 +3,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-
 import '../../../../core/const/const_paths.dart';
+import '../../../../core/theme/text_theme/text_theme.dart';
 import '../../data/model/near_stations_model.dart';
 
 class RecentRouteCard extends StatelessWidget {

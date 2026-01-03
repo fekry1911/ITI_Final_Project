@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../core/const/const_paths.dart';
 import '../../../core/helpers/cach_helper.dart';
+import '../../../core/theme/color/colors.dart';
+import '../../../core/theme/text_theme/text_theme.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -40,75 +40,93 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Center(
-            child: Column(
+      backgroundColor: AppColors.background,
+      body: Center(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            // Background subtle gradient or design element could go here
+            
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
-                  child: Lottie.asset("assets/animation/BusSplash.json"),
-                ).animate().scaleXY(delay: 4000.ms, duration: 1500.ms),
-                Text(
-                  "لو تايه احنا ندلّك",
-                  style: AppTextStyle.font30BlackBold.copyWith(
-                    color: AppColors.mainColor,
+                // Logo Animation
+                Container(
+                  padding: EdgeInsets.all(24.w),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withOpacity(0.1),
+                        blurRadius: 30,
+                        spreadRadius: 10,
+                      )
+                    ]
                   ),
-                ).animate().fadeIn(delay: 4000.ms, duration: 2000.ms),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(color: AppColors.mainColor),
-                ).animate().moveY(
-                  delay: 3000.ms,
-                  begin: 0.w,
-                  end: -1000.w,
-                  duration: 2500.ms,
-                ),
-                Expanded(
-                  child: Container(color: AppColors.mainColor),
-                ).animate().moveY(
-                  delay: 3000.ms,
-                  begin: 0.w,
-                  end: 1000.w,
-                  duration: 2500.ms,
-                ),
-              ],
-            ),
-          ),
-          Center(
-            child:
-                SizedBox(
-                      height: 100.h,
-                      width: 100.w,
-                      child: Lottie.asset(
-                        "assets/animation/bus2.json",
-                        delegates: LottieDelegates(
-                          values: [
-                            ValueDelegate.color(['**'], value: Colors.white),
-                          ],
-                        ),
+                  child: Lottie.asset(
+                    "assets/animation/BusSplash.json",
+                    width: 180.w,
+                    height: 180.h,
+                    fit: BoxFit.contain,
+                  ),
+                )
+                .animate()
+                .scale(duration: 800.ms, curve: Curves.easeOutBack)
+                .fadeIn(duration: 500.ms),
+
+                SizedBox(height: 32.h),
+
+                // App Name / Slogan
+                Column(
+                  children: [
+                     Text(
+                      "ITI Moqaf", // Optionally replace with Logo Type if available
+                       style: AppTextStyle.font30BlackBold.copyWith(
+                        color: AppColors.primary,
+                        fontSize: 32.sp,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.2,
                       ),
-                    )
-                    .animate()
-                    .scaleXY(duration: 1500.ms)
-                    .moveX(
-                      delay: 2000.ms,
-                      begin: 0,
-                      end: 1000.w,
-                      duration: 2000.ms,
-                    ),
-          ),
-        ],
+                    ).animate()
+                     .fadeIn(delay: 600.ms, duration: 600.ms)
+                     .slideY(begin: 0.2, end: 0, delay: 600.ms, duration: 600.ms),
+                    
+                    SizedBox(height: 8.h),
+                    
+                    Text(
+                      "لو تايه احنا ندلّك",
+                      style: AppTextStyle.font18BlackBold.copyWith(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ).animate()
+                     .fadeIn(delay: 1000.ms, duration: 600.ms),
+                  ],
+                ),
+              ],
+            ),
+
+            // Bottom loading indicator or version info
+            Positioned(
+              bottom: 48.h,
+              child: SizedBox(
+                width: 40.w,
+                height: 40.w,
+                child: CircularProgressIndicator(
+                  color: AppColors.primary,
+                  strokeWidth: 3,
+                ),
+              ).animate(onPlay: (c) => c.repeat())
+               .fadeIn(delay: 1500.ms),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
 
 /*
 * Stack(

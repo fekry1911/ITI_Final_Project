@@ -45,40 +45,43 @@ class SharedTextFormField extends StatelessWidget {
       obscuringCharacter: "●",
       keyboardType: keyboardType,
       textInputAction: textInputAction,
-      cursorColor: AppColors.redColor,
+      cursorColor: AppColors.primary,
       onTap: onTap,
       style: AppTextStyle.font15GreyRegular.copyWith(
         letterSpacing: obscureText ? 2.5 : null,
         fontWeight: FontWeight.w600,
+        color: AppColors.textPrimary,
       ),
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey[400]),
+        hintStyle: TextStyle(color: AppColors.textTertiary),
         filled: true,
-        fillColor: fillColor ?? Colors.white,
+        fillColor: fillColor ?? AppColors.surface, // Use surface color by default
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         errorMaxLines: 2,
         errorStyle: TextStyle(
-          color: AppColors.redColor,
+          color: AppColors.error,
           fontSize: 12.sp,
         ),
+        // By removing explicit border definitions here, we allow the main.dart ThemeData to take effect.
+        // If we want to support custom borderRadius passing, we can do:
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius.r),
-          borderSide: BorderSide(color: Colors.grey.shade100),
+           borderRadius: BorderRadius.circular(borderRadius.r),
+           borderSide: BorderSide(color: AppColors.border),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius.r),
-          borderSide: BorderSide(color: AppColors.blackColor),
-        ),
+           borderRadius: BorderRadius.circular(borderRadius.r),
+           borderSide: BorderSide(color: AppColors.primary, width: 2),
+         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius.r),
-          borderSide: BorderSide(color: AppColors.redColor),
-        ),
+           borderRadius: BorderRadius.circular(borderRadius.r),
+           borderSide: BorderSide(color: AppColors.error),
+         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius.r),
-          borderSide: BorderSide(color: AppColors.blackColor),
-        ),
+           borderRadius: BorderRadius.circular(borderRadius.r),
+           borderSide: BorderSide(color: AppColors.error, width: 2),
+         ),
       ),
     );
   }

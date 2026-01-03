@@ -3,12 +3,12 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:iti_moqaf/core/shared_widgets/comments.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/community/data/model/post_model.dart';
-import 'package:iti_moqaf/featuers/community/logic/get_all_posts_cubit.dart';
-import 'package:iti_moqaf/featuers/community/logic/like_post_cubit.dart';
+import '../../../../core/shared_widgets/comments.dart';
+import '../../../../core/theme/color/colors.dart';
+import '../../../../core/theme/text_theme/text_theme.dart';
+import '../../data/model/post_model.dart';
+import '../../logic/get_all_posts_cubit.dart';
+import '../../logic/like_post_cubit.dart';
 
 class LikesAndComments extends StatelessWidget {
   const LikesAndComments({super.key, required this.post});
@@ -54,7 +54,7 @@ class LikesAndComments extends StatelessWidget {
                     ? 'assets/svg_icons/favorite.svg'
                     : 'assets/svg_icons/stroke_fav.svg',
 
-                color: isLiked ? AppColors.redColor : AppColors.greyText,
+                color: isLiked ? AppColors.redColor : AppColors.greyColor,
                 label: "$likes",
                 onTap: () {
                   context.read<LikePostCubit>().likePost(
@@ -94,7 +94,7 @@ class LikesAndComments extends StatelessWidget {
 
                   return _ActionButton(
                     asset: 'assets/svg_icons/comment.svg',
-                    color: AppColors.greyText,
+                    color: AppColors.greyColor,
                     label: "$comments",
                     onTap: () {
                       showFacebookCommentsSheet(
@@ -156,7 +156,7 @@ class _ActionButton extends StatelessWidget {
             Text(
               label,
               style: AppTextStyle.font13BlackSemiMedium.copyWith(
-                color: AppColors.greyText,
+                color: AppColors.greyColor,
                 fontWeight: FontWeight.w600,
               ),
             ),

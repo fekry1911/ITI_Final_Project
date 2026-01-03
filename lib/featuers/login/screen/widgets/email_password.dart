@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/shared_widgets/shared_text_form_field.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/login/logic/login_cubit.dart';
-
 import '../../../../core/const/const_paths.dart';
+import '../../../../core/shared_widgets/shared_text_form_field.dart';
 import '../../../../core/theme/color/colors.dart';
+import '../../../../core/theme/text_theme/text_theme.dart';
+import '../../logic/login_cubit.dart';
 
 class EmailAndPassword extends StatelessWidget {
   EmailAndPassword({super.key});

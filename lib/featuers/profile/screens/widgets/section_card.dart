@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
+
+import '../../../../core/theme/color/colors.dart';
 
 class SectionCard extends StatelessWidget {
   final IconData icon;

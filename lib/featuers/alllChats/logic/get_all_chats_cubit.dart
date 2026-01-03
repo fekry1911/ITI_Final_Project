@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/featuers/alllChats/data/all_chats_response.dart';
-import 'package:iti_moqaf/featuers/alllChats/data/repo/get_all_chats_repo.dart';
 import 'package:meta/meta.dart';
+
+import '../../../core/networking/api_result.dart';
+import '../data/all_chats_response.dart';
+import '../data/repo/get_all_chats_repo.dart';
 
 part 'get_all_chats_state.dart';
 

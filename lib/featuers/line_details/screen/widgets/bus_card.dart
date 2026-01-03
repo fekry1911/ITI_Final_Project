@@ -2,17 +2,16 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
-import 'package:iti_moqaf/core/helpers/cach_helper.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/shared_widgets/toast.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/line_details/logic/manage_book_seat_cubit.dart';
 import 'package:iti_moqaf/featuers/line_details/screen/widgets/payment_view.dart';
-
+import '../../../../core/const/const_paths.dart';
+import '../../../../core/helpers/cach_helper.dart';
+import '../../../../core/shared_widgets/toast.dart';
+import '../../../../core/theme/color/colors.dart';
+import '../../../../core/theme/text_theme/text_theme.dart';
 import '../../data/model/microbus_models.dart';
 import '../../logic/get_details_of_line_cubit.dart';
+import '../../logic/manage_book_seat_cubit.dart';
 import 'button_of_book.dart';
 
 class BusCard extends StatelessWidget {
@@ -41,34 +40,6 @@ class BusCard extends StatelessWidget {
           return current.seatBookingResponse.data!.vehicle.id == bus.id;
         }
         if (current is ManageCancelBookSeatLoaded) {
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
-          print("${current.seatBookingResponse.data!.vehicle.id} + ${bus.id}");
 
           return current.seatBookingResponse.data!.vehicle.id == bus.id;
         }

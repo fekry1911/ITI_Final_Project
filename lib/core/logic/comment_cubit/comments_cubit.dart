@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:iti_moqaf/core/models/comments_response_model.dart';
-import 'package:iti_moqaf/core/repo/get_all_comments_post.dart';
-import 'package:iti_moqaf/core/repo/put_comment_on_post.dart';
 import 'package:meta/meta.dart';
 
+import '../../models/comments_response_model.dart';
 import '../../networking/api_result.dart';
+import '../../repo/get_all_comments_post.dart';
+import '../../repo/put_comment_on_post.dart';
 
 part 'comments_state.dart';
 

@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
-import 'package:iti_moqaf/core/di/di.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/logic/comment_cubit/comments_cubit.dart';
-import 'package:iti_moqaf/core/models/comments_response_model.dart';
-import 'package:iti_moqaf/core/models/user_model.dart';
-import 'package:iti_moqaf/core/shared_widgets/error_page.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/featuers/community/logic/get_all_posts_cubit.dart';
 import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../featuers/community/logic/get_all_posts_cubit.dart';
 import '../../featuers/community/logic/like_post_cubit.dart';
+import '../const/const_paths.dart';
+import '../di/di.dart';
+import '../logic/comment_cubit/comments_cubit.dart';
+import '../models/comments_response_model.dart';
+import '../models/user_model.dart';
+import '../theme/color/colors.dart';
+import 'error_page.dart';
 
 void showFacebookCommentsSheet(
   BuildContext context,

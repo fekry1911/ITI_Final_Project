@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
-import 'package:iti_moqaf/core/const/onBoarding_pages.dart';
-import 'package:iti_moqaf/core/helpers/cach_helper.dart';
-import 'package:iti_moqaf/featuers/on_boarding/widgets/buttons.dart';
-import 'package:iti_moqaf/featuers/on_boarding/widgets/dots.dart';
-import 'package:iti_moqaf/featuers/on_boarding/widgets/pages.dart';
-import 'package:iti_moqaf/featuers/on_boarding/widgets/skip_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../core/const/const_paths.dart';
+import '../../../core/const/onBoarding_pages.dart';
+import '../../../core/helpers/cach_helper.dart';
+import '../widgets/buttons.dart';
+import '../widgets/dots.dart';
+import '../widgets/pages.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});

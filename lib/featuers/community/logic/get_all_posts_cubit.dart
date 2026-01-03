@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/featuers/community/data/model/post_model.dart';
-import 'package:iti_moqaf/featuers/community/data/repo/get_all_posts_repo.dart';
 import 'package:meta/meta.dart';
+
+import '../../../core/networking/api_result.dart';
+import '../data/model/post_model.dart';
+import '../data/repo/get_all_posts_repo.dart';
 
 part 'get_all_posts_state.dart';
 

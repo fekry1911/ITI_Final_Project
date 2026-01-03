@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 import 'package:lottie/lottie.dart';
+
+import '../const/const_paths.dart';
+import '../theme/text_theme/text_theme.dart';
 
 class LoginFirst extends StatelessWidget {
   const LoginFirst({super.key});

@@ -10,15 +10,21 @@ import 'core/helpers/cach_helper.dart';
 import 'core/keys.dart';
 import 'core/networking/dio_config.dart';
 import 'core/routing/router.dart';
-import 'firebase_options.dart';
 import 'my_app.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Firebase
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+
+// ...
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // Hive initialization
   await Hive.initFlutter();
 

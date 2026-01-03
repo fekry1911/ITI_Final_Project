@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
+import '../../../../core/const/const_paths.dart';
 import '../../../../core/theme/color/colors.dart';
 import '../../../../core/theme/text_theme/text_theme.dart';
 import '../../data/model/post_model.dart';
@@ -66,7 +65,7 @@ class PostHeader extends StatelessWidget {
                 Text(
                   post.category,
                   style: AppTextStyle.font13MainColorMedium.copyWith(
-                    color: AppColors.greyText,
+                    color: AppColors.greyColor,
                     fontSize: 10.sp,
                   ),
                 ),
@@ -76,7 +75,7 @@ class PostHeader extends StatelessWidget {
           Text(
             _formatTimeAgo(post.createdAt),
             style: AppTextStyle.font13MainColorMedium.copyWith(
-              color: AppColors.greyText.withOpacity(0.6),
+              color: AppColors.greyColor.withOpacity(0.6),
               fontSize: 10.sp,
             ),
           ),

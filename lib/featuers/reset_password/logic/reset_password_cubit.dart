@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/featuers/reset_password/data/repo/reset_password.dart';
-import 'package:iti_moqaf/featuers/reset_password/data/repo/send_code_repo.dart';
-import 'package:iti_moqaf/featuers/reset_password/data/repo/verify_code.dart';
 import 'package:meta/meta.dart';
+
+import '../../../core/networking/api_result.dart';
+import '../data/repo/reset_password.dart';
+import '../data/repo/send_code_repo.dart';
+import '../data/repo/verify_code.dart';
 
 part 'reset_password_state.dart';
 

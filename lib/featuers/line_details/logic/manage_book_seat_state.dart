@@ -1,6 +1,8 @@
 part of 'manage_book_seat_cubit.dart';
 
 
+
+
 @immutable
 sealed class ManageBookSeatState extends Equatable {}
 

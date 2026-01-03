@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/const/onBoarding_pages.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/on_boarding/models/onBoarding_model.dart';
-import 'package:iti_moqaf/featuers/on_boarding/widgets/dots.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../../core/theme/text_theme/text_theme.dart';
+import '../models/onBoarding_model.dart';
 
 class Pages extends StatelessWidget {
   final OnboardingModel data;

@@ -1,13 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:iti_moqaf/featuers/line_details/data/model/stripe_checkout_response.dart';
-import 'package:iti_moqaf/featuers/line_details/data/repo/check_out_payment.dart';
 
 import '../../../core/networking/api_result.dart';
 import '../data/model/book_response_model.dart';
+import '../data/model/stripe_checkout_response.dart';
 import '../data/repo/book_cancel_repo.dart';
-
+import '../data/repo/check_out_payment.dart';
 part 'manage_book_seat_state.dart';
 
 class ManageBookSeatCubit extends Cubit<ManageBookSeatState> {
@@ -77,9 +76,7 @@ class ManageBookSeatCubit extends Cubit<ManageBookSeatState> {
 
     emit(ConfirmBookSeatLoading());
 
-    final response = await bookCancelRepo.confirmBookRepo(
-      sessionId: sessionId,
-    );
+    final response = await bookCancelRepo.confirmBookRepo(sessionId: sessionId);
 
     if (response is ApiSuccess<String>) {
       emit(ConfirmBookSeatLoaded(response.data, vehicleId));
@@ -88,7 +85,10 @@ class ManageBookSeatCubit extends Cubit<ManageBookSeatState> {
     }
   }
 
-  Future<void> handleCheckoutPayment({required String bookingId, required String vehicleId}) async {
+  Future<void> handleCheckoutPayment({
+    required String bookingId,
+    required String vehicleId,
+  }) async {
     if (_isBusy) return;
     emit(ConfirmCheckPaymentLoading());
     final response = await checkOutPaymentRepo.handleCheckoutPayment(

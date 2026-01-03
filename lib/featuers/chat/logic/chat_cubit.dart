@@ -1,11 +1,11 @@
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/core/networking/api_service.dart';
-import 'package:iti_moqaf/featuers/chat/data/model/chat_models.dart';
-import 'package:iti_moqaf/featuers/chat/logic/chat_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../core/theme/color/colors.dart';
 import '../../../../core/networking/socket_service.dart';
+import '../../../core/networking/api_result.dart';
+import '../../../core/networking/api_service.dart';
+import '../data/model/chat_models.dart';
+import 'chat_state.dart';
 
 
 class ChatCubit extends Cubit<ChatState> {

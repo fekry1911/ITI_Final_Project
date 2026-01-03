@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:iti_moqaf/core/const/api_const.dart';
+import '../const/api_const.dart';
 
 part 'user_model.g.dart';
 

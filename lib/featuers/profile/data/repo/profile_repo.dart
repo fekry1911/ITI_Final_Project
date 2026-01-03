@@ -1,8 +1,7 @@
 import 'dart:io';
-
-import 'package:iti_moqaf/core/models/user_model.dart';
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/core/networking/api_service.dart';
+import '../../../../core/models/user_model.dart';
+import '../../../../core/networking/api_result.dart';
+import '../../../../core/networking/api_service.dart';
 
 class ProfileRepo {
   final ApiService apiService;

@@ -1,10 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:iti_moqaf/core/networking/api_result.dart';
-import 'package:iti_moqaf/featuers/stations/data/model/repo/get_all_stations-repo.dart';
-import 'package:iti_moqaf/featuers/stations/data/model/stations_model.dart';
-
+import '../../../core/networking/api_result.dart';
 import '../../../core/utils/determine_position.dart';
+import '../data/model/repo/get_all_stations-repo.dart';
+import '../data/model/stations_model.dart';
 import 'get_all_stations_state.dart';
 
 class GetAllStationsCubit extends Cubit<GetAllStationsState> {

@@ -1,8 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
-import 'package:iti_moqaf/featuers/alllChats/data/all_chats_response.dart';
-import 'package:iti_moqaf/featuers/alllChats/logic/get_all_chats_cubit.dart';
 import 'package:iti_moqaf/featuers/alllChats/screen/widgets/user_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -10,6 +9,8 @@ import '../../../core/const/const_paths.dart';
 import '../../../core/helpers/cach_helper.dart';
 import '../../../core/shared_widgets/network_error.dart';
 import '../../../core/theme/color/colors.dart';
+import '../data/all_chats_response.dart';
+import '../logic/get_all_chats_cubit.dart';
 
 class AllChatsScreen extends StatelessWidget {
   const AllChatsScreen({super.key});

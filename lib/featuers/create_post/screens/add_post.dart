@@ -5,13 +5,14 @@ import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
-import 'package:iti_moqaf/featuers/community/logic/get_all_posts_cubit.dart';
-import 'package:iti_moqaf/featuers/create_post/data/creatr_post_model.dart';
-import 'package:iti_moqaf/featuers/create_post/logic/create_post_cubit.dart';
-import 'package:iti_moqaf/featuers/profile/logic/posts_cubit.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+
+import '../../../core/theme/color/colors.dart';
+import '../../../core/theme/text_theme/text_theme.dart';
+import '../../community/logic/get_all_posts_cubit.dart';
+import '../../profile/logic/posts_cubit.dart';
+import '../data/creatr_post_model.dart';
+import '../logic/create_post_cubit.dart';
 
 class AddPost extends StatelessWidget {
   const AddPost({super.key});
@@ -118,7 +119,7 @@ class AddPost extends StatelessWidget {
                     return Padding(
                       padding: EdgeInsets.only(right: 8.w),
                       child: MaterialButton(
-                        disabledColor: AppColors.greyText,
+                        disabledColor: AppColors.greyColor,
                         onPressed: (canPost && !isLoading)
                             ? () {
                                 final model = CreatePostModel(

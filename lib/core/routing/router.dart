@@ -1,42 +1,41 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iti_moqaf/core/const/const_paths.dart';
-import 'package:iti_moqaf/core/di/di.dart';
-import 'package:iti_moqaf/core/helpers/cach_helper.dart';
-import 'package:iti_moqaf/featuers/alllChats/logic/get_all_chats_cubit.dart';
-import 'package:iti_moqaf/featuers/chat/logic/chat_cubit.dart';
-import 'package:iti_moqaf/featuers/chat/screen/chat_screen.dart';
-import 'package:iti_moqaf/featuers/community/logic/get_all_posts_cubit.dart';
-import 'package:iti_moqaf/featuers/community/logic/like_post_cubit.dart';
-import 'package:iti_moqaf/featuers/create_post/logic/create_post_cubit.dart';
-import 'package:iti_moqaf/featuers/create_post/screens/add_post.dart';
-import 'package:iti_moqaf/featuers/home/logic/home_cubit.dart';
-import 'package:iti_moqaf/featuers/home/screens/home_screen.dart';
-import 'package:iti_moqaf/featuers/line_details/logic/get_details_of_line_cubit.dart';
-import 'package:iti_moqaf/featuers/line_details/screen/line_details.dart';
-import 'package:iti_moqaf/featuers/login/logic/login_cubit.dart';
-import 'package:iti_moqaf/featuers/login/screen/login_screen.dart';
-import 'package:iti_moqaf/featuers/map/map.dart';
-import 'package:iti_moqaf/featuers/on_boarding/screen/on_boarding_screen.dart';
-import 'package:iti_moqaf/featuers/profile/logic/posts_cubit.dart';
-import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
-import 'package:iti_moqaf/featuers/profile/screens/profile_screen.dart';
-import 'package:iti_moqaf/featuers/register/logic/register_user_cubit.dart';
-import 'package:iti_moqaf/featuers/register/screen/register.dart';
-import 'package:iti_moqaf/featuers/register/screen/verify_email_screen.dart';
-import 'package:iti_moqaf/featuers/reset_password/screens/code_screen.dart';
-import 'package:iti_moqaf/featuers/splash/screen/splash_screen.dart';
-import 'package:iti_moqaf/featuers/stations/logic/get_all_stations_cubit.dart';
-import 'package:iti_moqaf/featuers/stations/screens/StationsScreen.dart';
-import 'package:iti_moqaf/featuers/stations_details/logic/get_one_station_cubit.dart';
-import 'package:iti_moqaf/featuers/stations_details/screen/station_details_screen.dart';
-
+import '../../featuers/alllChats/logic/get_all_chats_cubit.dart';
 import '../../featuers/alllChats/screen/chat_screen.dart';
+import '../../featuers/chat/logic/chat_cubit.dart';
+import '../../featuers/chat/screen/chat_screen.dart';
+import '../../featuers/community/logic/get_all_posts_cubit.dart';
+import '../../featuers/community/logic/like_post_cubit.dart';
+import '../../featuers/create_post/logic/create_post_cubit.dart';
+import '../../featuers/create_post/screens/add_post.dart';
+import '../../featuers/home/logic/home_cubit.dart';
+import '../../featuers/home/screens/home_screen.dart';
+import '../../featuers/line_details/logic/get_details_of_line_cubit.dart';
 import '../../featuers/line_details/logic/manage_book_seat_cubit.dart';
+import '../../featuers/line_details/screen/line_details.dart';
 import '../../featuers/line_details/screen/widgets/payment_view.dart';
+import '../../featuers/login/logic/login_cubit.dart';
+import '../../featuers/login/screen/login_screen.dart';
+import '../../featuers/map/map.dart';
+import '../../featuers/on_boarding/screen/on_boarding_screen.dart';
+import '../../featuers/profile/logic/posts_cubit.dart';
+import '../../featuers/profile/logic/profile_cubit.dart';
+import '../../featuers/profile/screens/profile_screen.dart';
+import '../../featuers/register/logic/register_user_cubit.dart';
+import '../../featuers/register/screen/register.dart';
+import '../../featuers/register/screen/verify_email_screen.dart';
 import '../../featuers/reset_password/logic/reset_password_cubit.dart';
+import '../../featuers/reset_password/screens/code_screen.dart';
 import '../../featuers/reset_password/screens/email_screen.dart';
 import '../../featuers/reset_password/screens/new_password_creen.dart';
+import '../../featuers/splash/screen/splash_screen.dart';
+import '../../featuers/stations/logic/get_all_stations_cubit.dart';
+import '../../featuers/stations/screens/StationsScreen.dart';
+import '../../featuers/stations_details/logic/get_one_station_cubit.dart';
+import '../../featuers/stations_details/screen/station_details_screen.dart';
+import '../const/const_paths.dart';
+import '../di/di.dart';
+import '../helpers/cach_helper.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -192,7 +191,9 @@ class AppRouter {
                     getIt<GetDetailsOfLineCubit>()
                       ..getLineDetails(lineId, stationId),
               ),
-              BlocProvider(create: (context) => getIt<ManageBookSeatCubit>()),
+              BlocProvider(create: (BuildContext context) {
+                return  getIt<ManageBookSeatCubit>();
+              },),
             ],
             child: LineDetails(stationId: stationId, lineId: lineId),
           ),

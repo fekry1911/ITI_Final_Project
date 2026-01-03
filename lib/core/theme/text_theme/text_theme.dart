@@ -137,7 +137,7 @@ class AppTextStyle {
 
 
   static TextStyle font18GreyColorSemiBold = GoogleFonts.cairo(
-    color: AppColors.greyText,
+    color: AppColors.greyColor,
     fontWeight: FontWeightHelper.semiBold,
     fontSize: 15.sp,
     letterSpacing: 0.7,
@@ -155,5 +155,11 @@ class AppTextStyle {
     fontWeight: FontWeightHelper.bold,
     fontSize: 15.sp,
     letterSpacing: 0.7,
+  );
+  static TextStyle font16WhiteSemiBold = GoogleFonts.cairo(
+    color: AppColors.whiteColor,
+    fontWeight: FontWeightHelper.semiBold,
+    fontSize: 16.sp,
+
   );
 }

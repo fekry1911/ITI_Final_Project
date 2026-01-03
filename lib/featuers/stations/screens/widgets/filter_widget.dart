@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:iti_moqaf/core/theme/text_theme/text_theme.dart';
 
 import '../../../../core/theme/color/colors.dart';
+import '../../../../core/theme/text_theme/text_theme.dart';
 
 class FilterWidget extends StatelessWidget {
    FilterWidget({super.key,required this.text,required this.backColor,required this.textColor});

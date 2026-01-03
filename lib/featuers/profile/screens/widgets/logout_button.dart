@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iti_moqaf/core/theme/color/colors.dart';
-import 'package:iti_moqaf/featuers/profile/logic/profile_cubit.dart';
+
+import '../../../../core/theme/color/colors.dart';
+import '../../logic/profile_cubit.dart';
 
 class LogoutButton extends StatelessWidget {
   const LogoutButton({super.key});

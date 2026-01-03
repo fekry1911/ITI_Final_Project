@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:iti_moqaf/featuers/chat/data/model/chat_models.dart';
+import '../data/model/chat_models.dart';
 
 
 abstract class ChatState extends Equatable {
