@@ -151,6 +151,12 @@ class Community extends StatelessWidget {
 
                       return ListView.separated(
                         itemBuilder: (BuildContext context, int index) {
+                          if (index == posts.length) {
+                             return Padding(
+                               padding: EdgeInsets.all(16.h),
+                               child: const Center(child: CircularProgressIndicator()),
+                             );
+                          }
                           return Skeletonizer(
                             enabled: isLoading,
                             child: PostItem(post: posts[index]),
@@ -158,10 +164,10 @@ class Community extends StatelessWidget {
                         },
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: posts.length,
+                        itemCount: posts.length + (state is GetAllPostsSuccess && state.isLoadingMore ? 1 : 0),
                         separatorBuilder: (BuildContext context, int index) {
                           return SizedBox.shrink();
-                          return Divider(color: Colors.grey[300]);
+                          // return Divider(color: Colors.grey[300]);
                         },
                       );
                     },

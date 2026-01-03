@@ -27,6 +27,8 @@ class GetAllPostsCubit extends Cubit<GetAllPostsState> {
 
     if (page == 1) {
       emit(GetAllPostsLoading());
+    } else {
+        emit(GetAllPostsSuccess(List.from(posts), hasMore, isLoadingMore: true));
     }
 
     final result = await getAllPostsRepo.getAllPostsRepo(page: page);

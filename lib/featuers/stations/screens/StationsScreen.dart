@@ -174,17 +174,23 @@ class _StationsscreenState extends State<StationsScreen> with WidgetsBindingObse
                     },
                     child: ListView.separated(
                       controller: controllerScroll,
+                      itemCount: data.length + (state is GetAllStationsSuccess && state.isLoadingMore ? 1 : 0),
                       itemBuilder: (BuildContext context, int index) {
+                        if (index == data.length) {
+                          return Padding(
+                            padding: EdgeInsets.all(16.h),
+                            child: const Center(child: CircularProgressIndicator()),
+                          );
+                        }
                         return StationCard(
                           data: data[index],
                           index: index,
-                          userPosition: _userPosition, // Passed User Position
+                          userPosition: _userPosition,
                         );
                       },
                       separatorBuilder: (BuildContext context, int index) {
                         return SizedBox(height: 5.h);
                       },
-                      itemCount: data.length,
                     ),
                   ),
                 ),
