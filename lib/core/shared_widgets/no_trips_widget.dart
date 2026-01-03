@@ -29,8 +29,8 @@ class NoTripsWidget extends StatelessWidget {
               size: 60.r,
               color: AppColors.textTertiary.withOpacity(0.5),
             ),
-          ).animate()
-           .scale(duration: 600.ms, curve: Curves.easeOutBack)
+          ).animate(onPlay: (c) => c.repeat(reverse: true))
+           .scaleXY(begin: 1.0, end: 1.15, duration: 1000.ms, curve: Curves.easeInOut)
            .fadeIn(),
            
           SizedBox(height: 24.h),

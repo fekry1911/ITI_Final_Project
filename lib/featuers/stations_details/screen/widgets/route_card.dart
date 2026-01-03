@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
 import 'package:iti_moqaf/featuers/stations_details/screen/widgets/route_details.dart';
 import '../../../../core/const/const_paths.dart';
+import '../../../../core/shared_widgets/modern_card.dart'; // Added Import
 import '../../../../core/theme/color/colors.dart';
 import '../../../../core/theme/text_theme/text_theme.dart';
 import '../../data/model/station_model.dart';
@@ -30,72 +31,82 @@ class RouteCard extends StatelessWidget {
           },
         );
       },
-      child: Card(
+      child: ModernCard(
         elevation: 1,
-        color: Colors.white,
-        child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: AppColors.greyColor.withOpacity(.1),
-            radius: 30,
-            child: Icon(
-              Icons.route,
-              color: AppColors.greyColor.withOpacity(.7),
-            ),
-          ),
-          title: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.0.h),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              toStationName,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: AppTextStyle.font14BlackRegular,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8.h),
-                      RouteDetails(
-                        distance: "$distance كم",
-                        duration: "$duration دقيقه",
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(
-                      vertical: 5.h,
-                      horizontal: 3.w,
-                    ),
+        padding: EdgeInsets.zero,
+        child: Padding(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10.r),
                     decoration: BoxDecoration(
-                      color: AppColors.lightGreen,
-                      borderRadius: BorderRadius.circular(20.r),
+                      color: AppColors.primary.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.directions_bus_filled_rounded,
+                      color: AppColors.primary,
+                      size: 24.r,
+                    ),
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "إلى $toStationName",
+                          style: AppTextStyle.font16BlackBold,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 4.h),
+                        Row(
+                          children: [
+                            Icon(Icons.route_rounded, size: 14.r, color: AppColors.textTertiary),
+                             SizedBox(width: 4.w),
+                            Text(
+                              "$distance كم",
+                              style: AppTextStyle.font12BlackRegular.copyWith(color: AppColors.textSecondary),
+                            ),
+                            SizedBox(width: 12.w),
+                             Icon(Icons.access_time_rounded, size: 14.r, color: AppColors.textTertiary),
+                             SizedBox(width: 4.w),
+                            Text(
+                              "$duration دقيقة",
+                              style: AppTextStyle.font12BlackRegular.copyWith(color: AppColors.textSecondary),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                    decoration: BoxDecoration(
+                      color: AppColors.secondary,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                         BoxShadow(
+                          color: AppColors.secondary.withOpacity(0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     child: Text(
-                      "${data.price} EGP",
-                      style: AppTextStyle.font18WhiteMedium.copyWith(
-                        fontSize: 10.sp,
-                      ),
-                      textAlign: TextAlign.center,
+                      "${data.price} ج.م",
+                      style: AppTextStyle.font14BlackBold.copyWith(color: Colors.white),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
         ),
-      ).animate().scaleXY(duration: 500.ms),
+      ).animate().fadeIn().slideY(begin: 0.1, end: 0, duration: 400.ms),
     );
   }
 }

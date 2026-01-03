@@ -66,6 +66,19 @@ class LineDetails extends StatelessWidget {
 
           if (state is GetDetailsOfLineSuccess) {
             buses = state.results;
+            if (buses.isEmpty) {
+               return Column(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 children: [
+                   NoTripsWidget(
+                     message: "لا توجد حافلات متاحة في هذا الخط حالياً",
+                     onRetry: () {
+                         context.read<GetDetailsOfLineCubit>().getLineDetails(lineId, stationId);
+                     },
+                   ),
+                 ],
+               );
+            }
           } else if (state is GetDetailsOfLineLoading) {
             isLoading = true;
             buses = List.generate(

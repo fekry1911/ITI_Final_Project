@@ -7,6 +7,7 @@ import 'package:iti_moqaf/featuers/stations_details/screen/widgets/station_info.
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/shared_widgets/network_error.dart';
+import '../../../core/shared_widgets/no_trips_widget.dart';
 import '../../../core/theme/color/colors.dart';
 import '../../../core/theme/text_theme/text_theme.dart';
 import '../data/model/station_model.dart';
@@ -107,14 +108,7 @@ class StationDetailsScreen extends StatelessWidget {
                     } else if (state is GetOneStationSuccess &&
                         state.stationModel.data.lines.isEmpty) {
                       return Expanded(
-                        child: Center(
-                          child: Text(
-                            "لا يوجد خطوط ف هذه المحطه",
-                            style: AppTextStyle.font24BlackSemiBold.copyWith(
-                              fontSize: 20.sp,
-                            ),
-                          ),
-                        ),
+                        child: NoTripsWidget(message: "لا توجد خطوط متاحة في هذه المحطة"),
                       );
                     }
                     StationModel stationModel = state is GetOneStationSuccess
