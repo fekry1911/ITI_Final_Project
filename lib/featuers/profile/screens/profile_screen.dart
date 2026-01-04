@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -37,28 +38,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return LoginFirst();
     } else {
       return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          leading: CacheHelper.getString(key: "userId") != widget.id
-              ? null
-              : IconButton(
-            onPressed: () {
-              context.read<ProfileCubit>().logout();
-            },
-            icon: FaIcon(FontAwesomeIcons.signOut, color: AppColors.redColor),
-          ),
-        ),
+        backgroundColor: AppColors.scaffoldColor,
         body: NotificationListener<ScrollNotification>(
           onNotification: (notification) {
             if (notification.metrics.pixels >=
                 notification.metrics.maxScrollExtent - 200) {
-              if (context
-                  .read<PostsCubit>()
-                  .lastPage !=
-                  context
-                      .read<PostsCubit>()
-                      .page) {
+              if (context.read<PostsCubit>().lastPage !=
+                  context.read<PostsCubit>().page) {
                 context.read<PostsCubit>().getAllPostsOfUser(widget.id);
               }
             }
@@ -70,132 +56,166 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   loginScreen,
-                      (route) => false,
+                  (route) => false,
                 );
                 sucssesToast(
                   context,
                   "تم تسجيل الخروج بنجاح",
                   "نراك قريبا دمتم سالمين",
                 );
-                Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.primary,
-                  ),
-                );
               }
               if (state is ProfileError) {
-                context.popScreen();
                 errorToast(context, "مشكله ف تسجيل الخروج", state.message);
               }
             },
-            child: Scaffold(
-              backgroundColor: AppColors.background,
-              body: BlocBuilder<ProfileCubit, ProfileState>(
-                builder: (context, state) {
-                  final user = state is ProfileLoaded ? state.user : null;
-                  return SingleChildScrollView(
-                    controller: scrollController,
-                    child: Stack(
-                      alignment: Alignment.topCenter,
-                      children: [
-                        Container(
-                          width: 1.sw,
-                          height: .5.sh,
+            child: BlocBuilder<ProfileCubit, ProfileState>(
+              builder: (context, state) {
+                final user = state is ProfileLoaded ? state.user : null;
+                return CustomScrollView(
+                  controller: scrollController,
+                  physics: const BouncingScrollPhysics(),
+                  slivers: [
+                    SliverAppBar(
+                      expandedHeight: 200.h,
+                      pinned: true,
+                      stretch: true,
+                      backgroundColor: AppColors.primary,
+                      leading: CacheHelper.getString(key: "userId") != widget.id
+                          ? BackButton(color: Colors.white)
+                          : IconButton(
+                              onPressed: () {
+                                context.read<ProfileCubit>().logout();
+                              },
+                              icon: FaIcon(
+                                FontAwesomeIcons.signOut,
+                                color: Colors.white,
+                              ),
+                            ),
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: Container(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                AppColors.primary,
                                 AppColors.mainColor,
-                                AppColors.background,
-                                AppColors.mainColor,
-                                AppColors.primary,
+                                AppColors.blackColor,
+
                               ],
                             ),
                           ),
-                        ),
-
-                        Container(
-                          padding: EdgeInsets.only(
-                            top: widget.id != CacheHelper.getString(key: "userId") ? 65.h:
-                            30.h,
-                          ),
-                          margin: EdgeInsets.only(top: 130.h),
-                          decoration: BoxDecoration(
-                            color: AppColors.scaffoldColor,
-                            borderRadius: BorderRadius.circular(20.r),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Stack(
+                            fit: StackFit.expand,
                             children: [
-                              const SizedBox(height: 24),
-                              BlocBuilder<PostsCubit, PostsState>(
-                                builder: (context, state) {
-                                  var cubit = context.read<PostsCubit>();
-
-                                  if (state is PostsError&& state.message != "لا يوجد اتصال بالإنترنت") {
-                                    return NetWorkError(
-                                      error: state.message,
-                                      onPressed: () {
-                                        cubit.getAllPostsOfUser(widget.id);
-                                      },
-                                    );
-                                  }
-                                  final isLoading = state is PostsLoading;
-
-                                  final posts = isLoading
-                                      ? List.generate(3, (_) => FakePost.fake())
-                                      : state is PostsLoaded
-                                      ? state.posts
-                                      : [];
-
-                                  return ListView.separated(
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Skeletonizer(
-                                        enabled: isLoading,
-                                        child: PostItem(post: posts[index]),
-                                      );
-                                    },
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: posts.length,
-                                    separatorBuilder:
-                                        (BuildContext context, int index) {
-                                      return SizedBox.shrink();
-                                    },
-                                  );
-                                },
+                              // Optional: Add a pattern or image opacity here
+                              Opacity(
+                                opacity: 0.1,
+                                child: Image.asset(
+                                  "assets/images/pattern.png", // Assuming you have a pattern or use a standard one
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) => SizedBox(),
+                                ),
                               ),
                             ],
                           ),
                         ),
-                        Positioned(
-                          top: 80.h,
-                          child: Center(
-                            child: state is ProfileLoading
-                                ? Skeletonizer(
-                              enabled: true,
-                              child: ProfileHeader(
-                                id: widget.id,
-                                user: User(
-                                  id: "asd",
-                                  firstName: "asdasd",
-                                  lastName: "asdad",
-                                  avatar:
-                                  "https://sm.ign.com/t/ign_pk/cover/a/avatar-gen/avatar-generations_rpge.1200.jpg",
-                                ),
-                              ),
-                            )
-                                : ProfileHeader(user: user, id: widget.id),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  );
-                },
-              ),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: Container(
+                              child: state is ProfileLoading
+                                  ? Skeletonizer(
+                                      enabled: true,
+                                      child: ProfileHeader(
+                                        id: widget.id,
+                                        user: User(
+                                          id: "asd",
+                                          firstName: "Loading...",
+                                          lastName: "",
+                                          avatar: "",
+                                        ),
+                                      ),
+                                    )
+                                  : ProfileHeader(user: user, id: widget.id),
+                            ),
+                          ).animate().fadeIn(duration: 500.ms).moveY(
+                                begin: 50,
+                                end: 0,
+                                curve: Curves.easeOut,
+                              ),
+                          SizedBox(height: 10.h),
+                        ],
+                      ),
+                    ),
+                    BlocBuilder<PostsCubit, PostsState>(
+                      builder: (context, state) {
+                        var cubit = context.read<PostsCubit>();
+
+                        if (state is PostsError &&
+                            state.message != "لا يوجد اتصال بالإنترنت") {
+                          return SliverToBoxAdapter(
+                            child: NetWorkError(
+                              error: state.message,
+                              onPressed: () {
+                                cubit.getAllPostsOfUser(widget.id);
+                              },
+                            ),
+                          );
+                        }
+                        final isLoading = state is PostsLoading;
+
+                        final posts = isLoading
+                            ? List.generate(3, (_) => FakePost.fake())
+                            : state is PostsLoaded
+                                ? state.posts
+                                : [];
+                        
+                        // Handle empty state
+                        if (!isLoading && posts.isEmpty) {
+                           return SliverToBoxAdapter(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 50.h),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.post_add, size: 60, color: Colors.grey.withOpacity(0.5)),
+                                  SizedBox(height: 10),
+                                  Text("لا توجد منشورات بعد", style: TextStyle(color: Colors.grey)),
+                                ],
+                              ),
+                            ).animate().fadeIn(),
+                          ); 
+                        }
+
+                        return SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w,
+                                  vertical: 8.h,
+                                ),
+                                child: Skeletonizer(
+                                  enabled: isLoading,
+                                  child: PostItem(post: posts[index]),
+                                ),
+                              ).animate().fadeIn(
+                                    delay: (100 * index).ms,
+                                    duration: 500.ms,
+                                  ).slideX(begin: 0.2, end: 0);
+                            },
+                            childCount: posts.length,
+                          ),
+                        );
+                      },
+                    ),
+                    SliverPadding(padding: EdgeInsets.only(bottom: 20.h)),
+                  ],
+                );
+              },
             ),
           ),
         ),
