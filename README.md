@@ -7,7 +7,6 @@ Welcome to **Moqaf**, a comprehensive Flutter-based application designed to revo
 ### 🚌 Transportation & Maps
 *   **Station Locator**: Find nearby bus and transit stations with ease using interactive Google Maps.
 *   **Line Details**: View detailed information about transportation lines, including routes, prices, and schedules.
-*   **Real-time Tracking**: (Planned/Implemented) Track vehicle locations in real-time.
 *   **Search**: robust search functionality for stations and specific lines.
 
 ### 👥 Community & Social
