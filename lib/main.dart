@@ -36,7 +36,6 @@ Future<void> main() async {
   // CacheHelper
   await CacheHelper.init();
 
-  // DioConfig (مهم جداً قبل تسجيل Dio في DI)
   await DioConfig.instance.init();
 
   // تسجيل dependencies بعد ما Dio جاهز
