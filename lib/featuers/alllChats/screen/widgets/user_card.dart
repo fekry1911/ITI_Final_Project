@@ -31,68 +31,62 @@ class UserCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
 
-    return Card(
-      color: AppColors.scaffoldColor,
-      borderOnForeground: false,
-      elevation: 0,
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0.w, horizontal: 8.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CircleAvatar(radius: 23.r, backgroundImage: NetworkImage(avatar)),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
 
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0.w, horizontal: 8.h),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircleAvatar(radius: 23.r, backgroundImage: NetworkImage(avatar)),
-            SizedBox(width: 8.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "${firstName} ${lastName}",
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontSize: 13.sp,
-                          color: isDark
-                              ? AppColors.mainColor
-                              : AppColors.blackColor,
-                        ),
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "${firstName} ${lastName}",
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontSize: 13.sp,
+                        color: isDark
+                            ? AppColors.mainColor
+                            : AppColors.blackColor,
                       ),
-                      Text(
-                        time,
-                        style: theme.textTheme.labelLarge?.copyWith(
+                    ),
+                    Text(
+                      time,
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        fontSize: 10.sp,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "message",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyle.font14GreyRegular.copyWith(
                           fontSize: 10.sp,
-                          color: Colors.grey,
                         ),
                       ),
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          "message",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppTextStyle.font14GreyRegular.copyWith(
-                            fontSize: 10.sp,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

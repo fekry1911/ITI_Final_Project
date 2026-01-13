@@ -18,13 +18,13 @@ final class GetAllPostsLoading extends GetAllPostsState {
 final class GetAllPostsSuccess extends GetAllPostsState {
   final List<PostModel> postModel;
   final bool hasMore;
+  final bool isLoadingMore; // Added
 
-
-  GetAllPostsSuccess(this.postModel, this.hasMore);
+  GetAllPostsSuccess(this.postModel, this.hasMore, {this.isLoadingMore = false});
 
   @override
   // TODO: implement props
-  List<Object?> get props => [postModel];
+  List<Object?> get props => [postModel, hasMore, isLoadingMore];
 }
 
 final class GetAllPostsError extends GetAllPostsState {

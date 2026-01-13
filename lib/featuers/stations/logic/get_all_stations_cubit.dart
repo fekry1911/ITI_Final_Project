@@ -17,6 +17,8 @@ class GetAllStationsCubit extends Cubit<GetAllStationsState> {
   int page = 1;
   int lastPage = 0;
 
+  Position? _lastPosition;
+
   Future<void> getAllStations() async {
     if (isFetching || !hasMore) return;
 
@@ -24,13 +26,20 @@ class GetAllStationsCubit extends Cubit<GetAllStationsState> {
 
     if (page == 1) {
       emit(GetAllStationsLoading());
+    } else {
+      // Pagination loading
+      emit(GetAllStationsSuccess(List.from(_allStations), _lastPosition, hasMore, isLoadingMore: true));
     }
 
     try {
       Position? position;
       try {
         position = (await determinePosition()) as Position?;
+        if (position != null) _lastPosition = position;
       } catch (_) {}
+      
+      // Use _lastPosition if current fetch fails or returns null
+      position ??= _lastPosition;
 
       final result = await getAllStationsRepo.getAllStations(page: page);
 
