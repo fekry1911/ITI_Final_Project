@@ -2,14 +2,12 @@ import 'package:dio/dio.dart';
 
 import '../helpers/cach_helper.dart';
 
-class AppInterceptor extends Interceptor {
+class AppPathInterceptor extends Interceptor {
+  static const apiKey = 'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjY1Y2MyY2U1N2QwMTRkY2RiMGUzNWM1MTNlYzRiYTM4IiwiaCI6Im11cm11cjY0In0=';
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    String? token = CacheHelper.getString(key: "token");
-    if (token != null && token.isNotEmpty) {
-      options.headers['Authorization'] = 'Bearer $token';
-    }
+      options.headers['Authorization'] = 'Bearer $apiKey';
     print('➡️ REQUEST');
     print('${options.method} ${options.uri}');
     print('Headers: ${options.headers}');
@@ -31,8 +29,6 @@ class AppInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     print('❌ ERROR');
     print('Message: ${err.message}');
-    print('Status: ${err.response?.statusCode}');
-    print('Path: ${err.requestOptions.path}');
     print('Status: ${err.response?.statusCode}');
     print('Path: ${err.requestOptions.path}');
     super.onError(err, handler);

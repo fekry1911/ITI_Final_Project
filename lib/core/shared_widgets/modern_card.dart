@@ -57,7 +57,12 @@ class ModernCard extends StatelessWidget {
           width: 1,
         ),
       ),
-      child: Material(
+      child: onTap == null
+          ? Padding(
+              padding: padding ?? EdgeInsets.all(16.w),
+              child: child,
+            )
+          : Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,

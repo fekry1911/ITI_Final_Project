@@ -16,7 +16,8 @@ import '../../featuers/line_details/screen/line_details.dart';
 import '../../featuers/line_details/screen/widgets/payment_view.dart';
 import '../../featuers/login/logic/login_cubit.dart';
 import '../../featuers/login/screen/login_screen.dart';
-import '../../featuers/map/map.dart';
+import '../../featuers/map/presentation/logic/path_between_points_dart_cubit.dart';
+import '../../featuers/map/presentation/screen/map.dart';
 import '../../featuers/on_boarding/screen/on_boarding_screen.dart';
 import '../../featuers/profile/logic/posts_cubit.dart';
 import '../../featuers/profile/logic/profile_cubit.dart';
@@ -79,7 +80,9 @@ class AppRouter {
           settings,
           MultiBlocProvider(
             providers: [
-              BlocProvider(create: (context) => HomeCubit()),
+              BlocProvider(create: (context) => getIt<HomeCubit>()),
+
+              BlocProvider(create: (context) => getIt<PathBetweenPointsDartCubit>()),
 
               BlocProvider(create: (context) => getIt<RegisterUserCubit>()),
               if (id.isNotEmpty)

@@ -25,11 +25,13 @@ class StationCard extends StatelessWidget {
     return ModernCard(
       // Use ModernCard
       padding: EdgeInsets.zero,
+
       // ListTile has its own padding usually, or we control it here
       onTap: () {
         Navigator.pushNamed(context, stationDetailsScreen, arguments: data.id);
       },
       elevation: 0,
+      margin: EdgeInsets.zero,
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         leading: data.status != "Issues"

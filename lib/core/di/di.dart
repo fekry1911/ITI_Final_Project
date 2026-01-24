@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:iti_moqaf/core/networking/path_dio_config.dart';
+import 'package:iti_moqaf/featuers/home/logic/home_cubit.dart';
+import 'package:iti_moqaf/featuers/map/data/impl/get_route_impl.dart';
 
 import '../../featuers/alllChats/data/repo/get_all_chats_repo.dart';
 import '../../featuers/alllChats/logic/get_all_chats_cubit.dart';
@@ -17,6 +20,9 @@ import '../../featuers/line_details/logic/get_details_of_line_cubit.dart';
 import '../../featuers/line_details/logic/manage_book_seat_cubit.dart';
 import '../../featuers/login/data/repo/login_request_repo.dart';
 import '../../featuers/login/logic/login_cubit.dart';
+import '../../featuers/map/data/source/service.dart';
+import '../../featuers/map/domain/repo/get_route.dart';
+import '../../featuers/map/presentation/logic/path_between_points_dart_cubit.dart';
 import '../../featuers/near_stations/data/repo/get_nearby_stations.dart';
 import '../../featuers/near_stations/logic/get_nearby_stations_cubit.dart';
 import '../../featuers/profile/data/repo/get_all_posts_repo.dart';
@@ -44,16 +50,25 @@ final getIt = GetIt.instance;
 
 void configureDependencies() {
   Dio dio = DioConfig.instance.dio;
+  Dio dioPath=DioPathConfig.instance.dio;
 
-  getIt.registerLazySingleton<Dio>(() => dio);
+  getIt.registerLazySingleton<Dio>(() => dio,instanceName: "main");
+  getIt.registerLazySingleton<Dio>(() => dioPath,instanceName: "path");
+
   // api service
-  getIt.registerLazySingleton<ApiService>(() => ApiService(getIt<Dio>()));
+  getIt.registerLazySingleton<ApiService>(() => ApiService(getIt<Dio>(instanceName: "main")));
   getIt.registerLazySingleton<SocketService>(() => SocketService());
+  getIt.registerLazySingleton<GetData>(() => GetData(getIt<Dio>(instanceName: "path")));
+
 
   //repos
   getIt.registerLazySingleton<RegisterUser>(
     () => RegisterUser(getIt<ApiService>()),
   );
+  getIt.registerLazySingleton<GetRoute>(
+        () => GetRouteImpl(getIt<GetData>()),
+  );
+
   getIt.registerLazySingleton<GetAllStationsRepo>(
     () => GetAllStationsRepo(getIt<ApiService>()),
   );
@@ -172,6 +187,13 @@ void configureDependencies() {
       getIt<BookAndCancelRepo>(),
       getIt<CheckOutPaymentRepo>(),
     ),
+  );
+
+  getIt.registerFactory<PathBetweenPointsDartCubit>(
+        () => PathBetweenPointsDartCubit(getIt<GetRoute>()),
+  );
+  getIt.registerFactory<HomeCubit>(
+        () => HomeCubit(),
   );
 
   getIt.registerFactory<ResetPasswordCubit>(

@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,8 +50,7 @@ class LineDetails extends StatelessWidget {
         },
         builder: (context, state) {
           List<Microbus> buses = [];
-          bool isLoading = false;
-            if (state is GetDetailsOfLineError) {
+          if (state is GetDetailsOfLineError) {
             if (state.message == "لا يوجد اتصال بالإنترنت") {
               return Expanded(
                 child: Center(child: Column(
@@ -60,30 +60,38 @@ class LineDetails extends StatelessWidget {
                   ],
                 )),
               );}
-              // Use NoTripsWidget for "No Buses" type errors or generic empty states if message implies it
+            // Use NoTripsWidget for "No Buses" type errors or generic empty states if message implies it
             return Expanded(child: NoTripsWidget(message: state.message));
           }
 
           if (state is GetDetailsOfLineSuccess) {
             buses = state.results;
             if (buses.isEmpty) {
-               return Column(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 children: [
-                   NoTripsWidget(
-                     message: "لا توجد حافلات متاحة في هذا الخط حالياً",
-                     onRetry: () {
-                         context.read<GetDetailsOfLineCubit>().getLineDetails(lineId, stationId);
-                     },
-                   ),
-                 ],
-               );
+              for(var i in buses){
+                print(i.id);
+
+              }
+              print(buses);
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  NoTripsWidget(
+                    message: "لا توجد حافلات متاحة في هذا الخط حالياً",
+                    onRetry: () {
+                      context.read<GetDetailsOfLineCubit>().getLineDetails(lineId, stationId);
+                    },
+                  ),
+                ],
+              );
             }
           } else if (state is GetDetailsOfLineLoading) {
-            isLoading = true;
+            for(var i in buses){
+              print(i.id);
+
+            }
             buses = List.generate(
               5,
-              (index) => Microbus(
+                  (index) => Microbus(
                 id: 'bus1',
                 model: 'Mercedes Sprinter',
                 plateNumber: 'ABC-1234',
@@ -106,54 +114,43 @@ class LineDetails extends StatelessWidget {
                   stationName: 'Cairo',
                 ),
                 createdAt: DateTime.now().subtract(Duration(days: 10)),
-                updatedAt: DateTime.now(),
-                version: 0,
-                bookedUsers: [
-                  BookedUser(
-                    id: 'user1',
-                    firstName: 'Mohamed',
-                    lastName: 'Salah',
-                    email: 'mohamed@example.com',
-                    bookingStatus: 'confirmed',
-                    bookingId: 'booking1',
-                    bookedAt: DateTime.now().subtract(Duration(hours: 5)),
-                  ),
-                ],
-                availableSeats: 19,
-              ),
-            );
+                  updatedAt: DateTime.now(),
+                  version: 0,
+                  bookedUsers: [
+                    BookedUser(
+                      id: 'user1',
+                      firstName: 'Mohamed',
+                      lastName: 'Salah',
+                      email: 'mohamed@example.com',
+                      bookingStatus: 'confirmed',
+                      bookingId: 'booking1',
+                      bookedAt: DateTime.now().subtract(Duration(hours: 5)),
+                    ),
+                  ],
+                  availableSeats: 19,
+                ),
+              );
+            }
+          if(state is GetDetailsOfLineSuccess){
+            buses=state.results;
           }
 
-          int active = isLoading ? 14 : buses.length;
-          int onTime = isLoading
-              ? 10
-              : buses.where((b) => b.currentStatus != 'Delayed').length;
-          int delayed = isLoading
-              ? 2
-              : buses.where((b) => b.currentStatus == 'Delayed').length;
-
+          print(buses);
           return Skeletonizer(
-            enabled: isLoading,
-            child: Column(
-              children: [
-                // Bus List
-                Expanded(
-                  child: ListView.separated(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: buses.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 16),
-                    itemBuilder: (context, index) {
-                      final bus = buses[index];
-                      return BusCard(
-                        bus: bus,
-                        stationId: stationId,
-                        lineId: lineId,
-                      );
-                    },
-                  ),
-                ),
-              ],
+            enabled: state is GetDetailsOfLineLoading,
+            child: ListView.separated(
+              padding: const EdgeInsets.all(16),
+              itemCount: buses.length,
+              separatorBuilder: (context, index) =>
+              const SizedBox(height: 16),
+              itemBuilder: (context, index) {
+                final bus = buses[index];
+                return BusCard(
+                  bus: bus,
+                  stationId: stationId,
+                  lineId: lineId,
+                );
+              },
             ),
           );
         },
