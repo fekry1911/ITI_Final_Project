@@ -6,6 +6,7 @@ import 'package:iti_moqaf/featuers/map/data/source/service.dart';
 
 import '../../domain/repo/get_route.dart';
 import '../../presentation/screen/map.dart';
+import '../models/mode.dart';
 
 class GetRouteImpl implements GetRoute{
   GetData data;

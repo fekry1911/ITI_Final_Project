@@ -1,5 +1,6 @@
 import 'package:iti_moqaf/core/networking/api_result.dart';
 
+import '../../data/models/mode.dart';
 import '../../data/models/route_response.dart';
 import '../../data/source/service.dart';
 import '../../presentation/screen/map.dart';

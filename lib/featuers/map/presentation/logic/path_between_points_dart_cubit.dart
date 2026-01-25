@@ -4,6 +4,7 @@ import 'package:iti_moqaf/featuers/map/presentation/screen/map.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/networking/api_result.dart';
+import '../../data/models/mode.dart';
 import '../../domain/repo/get_route.dart';
 
 part 'path_between_points_dart_state.dart';
