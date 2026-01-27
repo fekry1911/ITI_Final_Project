@@ -15,6 +15,15 @@ class PathBetweenPointsDartState {
     required this.mode,
   });
 
+  final FlutterTts tts = FlutterTts();
+
+  Future<void> initTts() async {
+    await tts.setLanguage("ar-EG");
+    await tts.setSpeechRate(0.45);
+    await tts.setPitch(1.0);
+  }
+
+
   factory PathBetweenPointsDartState.initial() {
     return PathBetweenPointsDartState(
       isLoading: false,

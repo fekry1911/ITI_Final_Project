@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
@@ -6,6 +7,7 @@ import 'package:iti_moqaf/featuers/stations_details/screen/widgets/route_card.da
 import 'package:iti_moqaf/featuers/stations_details/screen/widgets/station_info.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../core/const/const_paths.dart';
 import '../../../core/shared_widgets/network_error.dart';
 import '../../../core/shared_widgets/no_trips_widget.dart';
 import '../../../core/theme/color/colors.dart';
@@ -21,6 +23,24 @@ class StationDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        actions: [
+          BlocBuilder<GetOneStationCubit, GetOneStationState>(
+            builder: (context, state) {
+              return IconButton(
+                onPressed:state is GetOneStationSuccess? () {
+                  context.pushNamed(stationMap, arguments: state.stationModel);
+                }:null,
+                icon: (Icon(Icons.map)),
+              ).animate(
+                onPlay: (controller) => controller.repeat(),
+              ).fadeIn(
+                duration: Duration(seconds: 3)
+              ).fadeOut(
+                  duration: Duration(seconds: 3)
+              );
+            },
+          ),
+        ],
         backgroundColor: AppColors.whiteColor,
         title: BlocBuilder<GetOneStationCubit, GetOneStationState>(
           builder: (context, state) {
@@ -96,19 +116,23 @@ class StationDetailsScreen extends StatelessWidget {
                     if (state is GetOneStationError) {
                       if (state.error == "لا يوجد اتصال بالإنترنت") {
                         return Expanded(
-                          child: Center(child: Column(
-                            children: [
-                              NetWorkErrorPage(),
-                              Text("لا يوجد اتصال بالإنترنت"),
-                            ],
-                          )),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                NetWorkErrorPage(),
+                                Text("لا يوجد اتصال بالإنترنت"),
+                              ],
+                            ),
+                          ),
                         );
                       }
                       return Center(child: Text(state.error));
                     } else if (state is GetOneStationSuccess &&
                         state.stationModel.data.lines.isEmpty) {
                       return Expanded(
-                        child: NoTripsWidget(message: "لا توجد خطوط متاحة في هذه المحطة"),
+                        child: NoTripsWidget(
+                          message: "لا توجد خطوط متاحة في هذه المحطة",
+                        ),
                       );
                     }
                     StationModel stationModel = state is GetOneStationSuccess

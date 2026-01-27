@@ -9,26 +9,25 @@ import 'package:iti_moqaf/featuers/map/presentation/screen/widgets/mode_selector
 import 'package:latlong2/latlong.dart';
 
 import '../../../../core/const/const_paths.dart';
-import '../../../../core/keys.dart';
-import '../../../../core/logic/tts/tts_cubit.dart';
 import '../../../../core/theme/color/colors.dart';
-import '../../../near_stations/data/model/near_stations_model.dart';
-import '../../../near_stations/logic/get_nearby_stations_cubit.dart';
-import '../../data/models/mode.dart';
-import '../logic/path_between_points_dart_cubit.dart';
+import '../../../core/keys.dart';
+import '../../../core/logic/tts/tts_cubit.dart';
+import '../../../core/utils/determine_position.dart';
+import '../../map/data/models/mode.dart';
+import '../../map/presentation/logic/path_between_points_dart_cubit.dart';
+import '../../stations_details/data/model/station_model.dart';
 
-class MapSample extends StatefulWidget {
-  const MapSample({super.key});
+class StationOnMap extends StatefulWidget {
+  StationOnMap({super.key, required this.stationModel});
+
+  final StationModel stationModel;
 
   @override
-  State<MapSample> createState() => _MapSampleState();
+  State<StationOnMap> createState() => _StationOnMapState();
 }
 
-class _MapSampleState extends State<MapSample> {
-  LatLng userLocation = const LatLng(30.0444, 31.2357); // default Cairo
-  List<NearStationModel> stations = [];
-  NearStationModel? selectedStation;
-
+class _StationOnMapState extends State<StationOnMap> {
+  LatLng userLocation = const LatLng(30.0444, 31.2357);
   bool showBottom = false;
   String distanceKm = "";
   String durationMin = "";
@@ -48,20 +47,38 @@ class _MapSampleState extends State<MapSample> {
     );
   }
 
+  Future<void> _initLocationAndRoute() async {
+    try {
+      final position = (await determinePosition()) as Position;
+      userLocation = LatLng(position.latitude, position.longitude);
+
+      setState(() {});
+
+      context.read<PathBetweenPointsDartCubit>().getAllGeometry(
+        coordinates: [
+          [userLocation!.longitude, userLocation!.latitude],
+          [
+            widget.stationModel.data.location.coordinates[0],
+            widget.stationModel.data.location.coordinates[1],
+          ],
+        ],
+        mode: selectedMode,
+      );
+    } catch (e) {
+      debugPrint("Location error: $e");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _mapController = MapController();
     selectedMode = TravelMode.car;
     sheetController = DraggableScrollableController();
-    // context.read<GetNearbyStationsCubit>().getNearbyStations();
+
+    _initLocationAndRoute();
   }
 
-  void _updateUserAndStations(Position userPosition,
-      List<NearStationModel> data,) {
-    userLocation = LatLng(userPosition.latitude, userPosition.longitude);
-    stations = data;
-  }
 
   void _showStationBottomSheet({
     required String distance,
@@ -84,29 +101,17 @@ class _MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<GetNearbyStationsCubit, GetNearbyStationsState>(
-          listener: (context, state) {
-            if (state is GetNearbyStationsSuccess) {
-              _updateUserAndStations(state.userPosition, state.data);
-              setState(() {});
-            }
-          },
-        ),
-      ],
-      child: BlocProvider(
-        create: (context) => VoiceNavigationCubit(),
-        child: Stack(
+    return BlocProvider(
+      create: (context) => VoiceNavigationCubit(),
+      child: Scaffold(
+        body: Stack(
           children: [
             BlocConsumer<
                 PathBetweenPointsDartCubit,
                 PathBetweenPointsDartState
             >(
               listener: (context, state) {
-                if (state.data != null &&
-                    selectedStation != null &&
-                    !state.isLoading) {
+                if (state.data != null && !state.isLoading) {
                   context.read<VoiceNavigationCubit>().speakDirections(
                     state.data!.properties.segments[0].steps,
                   );
@@ -116,8 +121,7 @@ class _MapSampleState extends State<MapSample> {
                       .toList();
                   _fitRouteToCamera(points);
                   _showStationBottomSheet(
-                    distance:
-                    (state.data!.properties.summary.distance / 1000)
+                    distance: (state.data!.properties.summary.distance / 1000)
                         .toStringAsFixed(1),
                     duration: (state.data!.properties.summary.duration / 60)
                         .toStringAsFixed(1),
@@ -155,38 +159,44 @@ class _MapSampleState extends State<MapSample> {
                             size: 30.r,
                           ),
                         ),
-                        for (final station in stations)
-                          Marker(
-                            point: LatLng(
-                              station.location.coordinates[1],
-                              station.location.coordinates[0],
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                selectedStation = station;
-                                context
-                                    .read<PathBetweenPointsDartCubit>()
-                                    .getAllGeometry(
-                                  coordinates: [
-                                    [
-                                      userLocation!.longitude,
-                                      userLocation!.latitude,
-                                    ],
-                                    [
-                                      station.location.coordinates[0],
-                                      station.location.coordinates[1],
-                                    ],
+                        Marker(
+                          point: LatLng(
+                            widget.stationModel.data.location.coordinates[1],
+                            widget.stationModel.data.location.coordinates[0],
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<PathBetweenPointsDartCubit>()
+                                  .getAllGeometry(
+                                coordinates: [
+                                  [
+                                    userLocation!.longitude,
+                                    userLocation!.latitude,
                                   ],
-                                  mode: selectedMode,
-                                );
-                              },
-                              child: Icon(
-                                Icons.location_on,
-                                color: Colors.lightGreen,
-                                size: 30.r,
-                              ),
+                                  [
+                                    widget
+                                        .stationModel
+                                        .data
+                                        .location
+                                        .coordinates[0],
+                                    widget
+                                        .stationModel
+                                        .data
+                                        .location
+                                        .coordinates[1],
+                                  ],
+                                ],
+                                mode: selectedMode,
+                              );
+                            },
+                            child: Icon(
+                              Icons.location_on,
+                              color: Colors.lightGreen,
+                              size: 30.r,
                             ),
                           ),
+                        ),
                       ],
                     ),
                     if (routePoints.isNotEmpty)
@@ -208,14 +218,14 @@ class _MapSampleState extends State<MapSample> {
                 );
               },
             ),
-            if (showBottom && selectedStation != null)
+            if (showBottom && widget.stationModel != null)
               Align(
                 alignment: Alignment.bottomCenter,
                 child: DraggableScrollableSheet(
                   controller: sheetController,
-                  initialChildSize: 0.4,
+                  initialChildSize: 0.3,
                   minChildSize: 0.2,
-                  maxChildSize: 0.7,
+                  maxChildSize: 0.5,
                   builder: (context, scrollController) {
                     return Container(
                       padding: const EdgeInsets.all(16),
@@ -225,10 +235,7 @@ class _MapSampleState extends State<MapSample> {
                           top: Radius.circular(20),
                         ),
                         boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 10,
-                          ),
+                          BoxShadow(color: Colors.black26, blurRadius: 10),
                         ],
                       ),
                       child: ListView(
@@ -246,7 +253,7 @@ class _MapSampleState extends State<MapSample> {
                             ),
                           ),
                           Text(
-                            selectedStation!.stationName,
+                            widget.stationModel.data.stationName,
                             style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
@@ -277,7 +284,7 @@ class _MapSampleState extends State<MapSample> {
                                 selectedMode = mode;
                               });
 
-                              if (selectedStation != null) {
+                              if (widget.stationModel.data != null) {
                                 context
                                     .read<PathBetweenPointsDartCubit>()
                                     .getAllGeometry(
@@ -287,10 +294,14 @@ class _MapSampleState extends State<MapSample> {
                                       userLocation!.latitude,
                                     ],
                                     [
-                                      selectedStation!
+                                      widget
+                                          .stationModel
+                                          .data!
                                           .location
                                           .coordinates[0],
-                                      selectedStation!
+                                      widget
+                                          .stationModel
+                                          .data!
                                           .location
                                           .coordinates[1],
                                     ],
@@ -306,7 +317,7 @@ class _MapSampleState extends State<MapSample> {
                             onPressed: () {
                               context.pushNamed(
                                 stationDetailsScreen,
-                                arguments: selectedStation!.id,
+                                arguments: widget.stationModel.data.id,
                               );
                             },
                             child: const Text("عرض تفاصيل المحطة"),

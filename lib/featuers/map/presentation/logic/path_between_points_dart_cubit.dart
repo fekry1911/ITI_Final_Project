@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:iti_moqaf/featuers/map/data/models/route_response.dart';
 import 'package:iti_moqaf/featuers/map/presentation/screen/map.dart';
 import 'package:meta/meta.dart';

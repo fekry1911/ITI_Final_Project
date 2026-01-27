@@ -16,6 +16,7 @@ const webViewScreen="/webViewScreen";
 const emailScreen="/emailScreen";
 const codeScreen="/codeScreen";
 const newPasswordScreen="/newPasswordScreen";
+const stationMap="/stationMapScreen";
 
 
 

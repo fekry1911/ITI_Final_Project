@@ -83,6 +83,7 @@ dependencies:
   location: ^8.0.1
   flutter_map: ^8.2.2
   latlong2: ^0.9.0
+  flutter_tts: ^4.2.5
 
 
 

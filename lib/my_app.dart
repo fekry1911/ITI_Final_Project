@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'core/const/const_paths.dart';
+import 'core/logic/tts/tts_cubit.dart';
 import 'core/routing/router.dart';
 import 'core/theme/color/colors.dart';
 import 'core/theme/text_theme/text_theme.dart';
@@ -10,8 +13,6 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key, required this.appRouter});
 
   final AppRouter appRouter;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +40,15 @@ class MyApp extends StatelessWidget {
           },
 
           onGenerateRoute: appRouter.generateRoute,
-          initialRoute:splashScreen,
+          initialRoute: splashScreen,
 
           theme: ThemeData(
             useMaterial3: true,
-            fontFamily: 'Cairo', // Assuming Cairo or similar from GoogleFonts is used/desired, otherwise default
+            fontFamily: 'Cairo',
+            // Assuming Cairo or similar from GoogleFonts is used/desired, otherwise default
             scaffoldBackgroundColor: AppColors.background,
             primaryColor: AppColors.primary,
-            
+
             // Color Scheme
             colorScheme: ColorScheme.fromSeed(
               seedColor: AppColors.primary,
@@ -70,13 +72,14 @@ class MyApp extends StatelessWidget {
                 fontSize: 20.sp,
               ),
               iconTheme: IconThemeData(color: AppColors.textPrimary),
-              surfaceTintColor: Colors.transparent, 
+              surfaceTintColor: Colors.transparent,
             ),
 
             // Card Theme
             cardTheme: CardThemeData(
               color: AppColors.surface,
-              elevation: 0, // We will use shadow for "ModernCard" feel manually mostly, but default is 0 for flat look with border or shadow
+              elevation: 0,
+              // We will use shadow for "ModernCard" feel manually mostly, but default is 0 for flat look with border or shadow
               margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.r),
@@ -97,7 +100,10 @@ class MyApp extends StatelessWidget {
                 textStyle: AppTextStyle.font16WhiteSemiBold.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
-                padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 24.w),
+                padding: EdgeInsets.symmetric(
+                  vertical: 14.h,
+                  horizontal: 24.w,
+                ),
               ),
             ),
 
@@ -105,7 +111,10 @@ class MyApp extends StatelessWidget {
             inputDecorationTheme: InputDecorationTheme(
               filled: true,
               fillColor: AppColors.surface,
-              contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 16.h,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
                 borderSide: const BorderSide(color: AppColors.border),
@@ -116,20 +125,33 @@ class MyApp extends StatelessWidget {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
-                borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                borderSide: const BorderSide(
+                  color: AppColors.primary,
+                  width: 2,
+                ),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16.r),
                 borderSide: const BorderSide(color: AppColors.error),
               ),
               prefixIconColor: AppColors.textSecondary,
-              hintStyle: TextStyle(color: AppColors.textTertiary, fontSize: 14.sp),
+              hintStyle: TextStyle(
+                color: AppColors.textTertiary,
+                fontSize: 14.sp,
+              ),
             ),
-            
+
             // Text Theme (Global)
             textTheme: TextTheme(
-              bodyMedium: TextStyle(color: AppColors.textPrimary, fontSize: 14.sp),
-              titleMedium: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 16.sp),
+              bodyMedium: TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 14.sp,
+              ),
+              titleMedium: TextStyle(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.bold,
+                fontSize: 16.sp,
+              ),
             ),
 
             // Transition
@@ -140,7 +162,6 @@ class MyApp extends StatelessWidget {
               },
             ),
           ),
-
         );
       },
     );

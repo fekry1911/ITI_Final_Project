@@ -5,8 +5,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../../../core/theme/color/colors.dart';
 import '../../../../near_stations/data/model/near_stations_model.dart';
 import '../../../data/models/mode.dart';
-import '../../logic/path_between_points_dart_cubit.dart';
-import '../map.dart';
+
 
 class TravelModeSelector extends StatelessWidget {
   const TravelModeSelector({
