@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 
 import '../helpers/cach_helper.dart';
+import '../keys.dart';
 
 class AppPathInterceptor extends Interceptor {
-  static const apiKey = 'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjY1Y2MyY2U1N2QwMTRkY2RiMGUzNWM1MTNlYzRiYTM4IiwiaCI6Im11cm11cjY0In0=';
+  static final apiKey = tokenOpenSource;
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
