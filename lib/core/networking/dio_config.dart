@@ -23,9 +23,7 @@ class DioConfig {
     cacheOptions = CacheOptions(
       store: cacheStore,
       policy: CachePolicy.request,
-      // يحصل من الشبكة ويحدث الكاش
       hitCacheOnErrorExcept: [401, 403],
-      // لو حصل خطأ غير 401/403 يستخدم الكاش
       maxStale: const Duration(days: 7),
       priority: CachePriority.normal,
       keyBuilder: (request) => request.uri.toString(),

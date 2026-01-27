@@ -9,11 +9,14 @@ const String lines = "lines";
 const String near = "/api/station/near";
 const String vichels = "vichels";
 const String verifyEmailEndpoint = "/api/auth/verify-email";
-const String posts="/api/community/posts";
+const String posts = "/api/community/posts";
 const String getUserById = "/api/auth/user";
 const String conversations = "/api/conversations";
 const String messages = "/api/messages";
-const String checkOut= "/api/payment";
+const String checkOut = "/api/payment";
 const String sendVerificationPassword = "/api/auth/send-verification-password";
 const String verifyPassword = "/api/auth/verify-password";
-const String resetPassword= "/api/auth/reset-password";
+const String resetPassword = "/api/auth/reset-password";
+const String apiBasePathURL = "https://api.openrouteservice.org/v2";
+String routePath(String profile) =>
+    "/directions/$profile/geojson";

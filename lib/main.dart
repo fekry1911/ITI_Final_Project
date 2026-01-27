@@ -1,9 +1,10 @@
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:iti_moqaf/core/networking/path_dio_config.dart';
 
 import 'core/di/di.dart';
 import 'core/helpers/cach_helper.dart';
@@ -27,18 +28,15 @@ Future<void> main() async {
 
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // Hive initialization
   await Hive.initFlutter();
 
-  // Stripe
   Stripe.publishableKey = publishKey;
 
-  // CacheHelper
   await CacheHelper.init();
 
   await DioConfig.instance.init();
+  await DioPathConfig.instance.init();
 
-  // تسجيل dependencies بعد ما Dio جاهز
   configureDependencies();
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);

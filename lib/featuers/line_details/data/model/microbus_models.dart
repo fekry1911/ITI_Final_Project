@@ -68,7 +68,39 @@ class Microbus {
       _$MicrobusFromJson(json);
 
   Map<String, dynamic> toJson() => _$MicrobusToJson(this);
-
+  factory Microbus.fake() {
+    return Microbus(
+      id: 'skeleton',
+      model: '---',
+      plateNumber: '---',
+      driverName: '---',
+      capacity: 20,
+      isAirConditioned: true,
+      currentStatus: 'idle',
+      lines: [
+        LineData(
+          id: '1',
+          fromStation: StationData(
+            id: '1',
+            stationName: '---',
+          ),
+          toStation: StationData(
+            id: '2',
+            stationName: '---',
+          ),
+        ),
+      ],
+      currentStation: StationData(
+        id: '1',
+        stationName: '---',
+      ),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      version: 0,
+      bookedUsers: const [],
+      availableSeats: 10,
+    );
+  }
   Microbus copyWith({
     String? id,
     String? model,

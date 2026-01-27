@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iti_moqaf/featuers/stations_details/data/model/station_model.dart';
+
 import '../../featuers/alllChats/logic/get_all_chats_cubit.dart';
 import '../../featuers/alllChats/screen/chat_screen.dart';
 import '../../featuers/chat/logic/chat_cubit.dart';
@@ -16,7 +18,8 @@ import '../../featuers/line_details/screen/line_details.dart';
 import '../../featuers/line_details/screen/widgets/payment_view.dart';
 import '../../featuers/login/logic/login_cubit.dart';
 import '../../featuers/login/screen/login_screen.dart';
-import '../../featuers/map/map.dart';
+import '../../featuers/map/presentation/logic/path_between_points_dart_cubit.dart';
+import '../../featuers/map/presentation/screen/map.dart';
 import '../../featuers/on_boarding/screen/on_boarding_screen.dart';
 import '../../featuers/profile/logic/posts_cubit.dart';
 import '../../featuers/profile/logic/profile_cubit.dart';
@@ -29,6 +32,7 @@ import '../../featuers/reset_password/screens/code_screen.dart';
 import '../../featuers/reset_password/screens/email_screen.dart';
 import '../../featuers/reset_password/screens/new_password_creen.dart';
 import '../../featuers/splash/screen/splash_screen.dart';
+import '../../featuers/station_on_map/presentation/map.dart';
 import '../../featuers/stations/logic/get_all_stations_cubit.dart';
 import '../../featuers/stations/screens/StationsScreen.dart';
 import '../../featuers/stations_details/logic/get_one_station_cubit.dart';
@@ -79,7 +83,11 @@ class AppRouter {
           settings,
           MultiBlocProvider(
             providers: [
-              BlocProvider(create: (context) => HomeCubit()),
+              BlocProvider(create: (context) => getIt<HomeCubit>()),
+
+              BlocProvider(
+                create: (context) => getIt<PathBetweenPointsDartCubit>(),
+              ),
 
               BlocProvider(create: (context) => getIt<RegisterUserCubit>()),
               if (id.isNotEmpty)
@@ -163,6 +171,18 @@ class AppRouter {
           transition: TransitionType.scale,
         );
 
+      case stationMap:
+        final args = settings.arguments as StationModel;
+
+        return _buildPageRoute(
+          settings,
+          BlocProvider(
+            create: (context) => getIt<PathBetweenPointsDartCubit>(),
+            child: StationOnMap(stationModel: args,),
+          ),
+          transition: TransitionType.scale,
+        );
+
       case addPost:
         final args = settings.arguments as Map<String, dynamic>;
         return _buildPageRoute(
@@ -191,9 +211,11 @@ class AppRouter {
                     getIt<GetDetailsOfLineCubit>()
                       ..getLineDetails(lineId, stationId),
               ),
-              BlocProvider(create: (BuildContext context) {
-                return  getIt<ManageBookSeatCubit>();
-              },),
+              BlocProvider(
+                create: (BuildContext context) {
+                  return getIt<ManageBookSeatCubit>();
+                },
+              ),
             ],
             child: LineDetails(stationId: stationId, lineId: lineId),
           ),
@@ -247,7 +269,7 @@ class AppRouter {
           settings,
           BlocProvider(
             create: (context) => getIt<ResetPasswordCubit>(),
-            child: CodeScreen(email: email,),
+            child: CodeScreen(email: email),
           ),
           transition: TransitionType.scale,
           // مهم: خلي ال-route ترجع قيمة عند Navigator.pop
@@ -259,7 +281,7 @@ class AppRouter {
           settings,
           BlocProvider(
             create: (context) => getIt<ResetPasswordCubit>(),
-            child: NewPasswordScreen(token: token,),
+            child: NewPasswordScreen(token: token),
           ),
           transition: TransitionType.scale,
           // مهم: خلي ال-route ترجع قيمة عند Navigator.pop

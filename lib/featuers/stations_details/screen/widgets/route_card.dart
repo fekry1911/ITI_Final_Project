@@ -23,6 +23,7 @@ class RouteCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
+        print("adasdasdasdasdasdasdasdasdas${data.id}");
         context.pushNamed(
           lineScreen,
           arguments: {
@@ -66,14 +67,14 @@ class RouteCard extends StatelessWidget {
                         Row(
                           children: [
                             Icon(Icons.route_rounded, size: 14.r, color: AppColors.textTertiary),
-                             SizedBox(width: 4.w),
+                            SizedBox(width: 4.w),
                             Text(
                               "$distance كم",
                               style: AppTextStyle.font12BlackRegular.copyWith(color: AppColors.textSecondary),
                             ),
                             SizedBox(width: 12.w),
-                             Icon(Icons.access_time_rounded, size: 14.r, color: AppColors.textTertiary),
-                             SizedBox(width: 4.w),
+                            Icon(Icons.access_time_rounded, size: 14.r, color: AppColors.textTertiary),
+                            SizedBox(width: 4.w),
                             Text(
                               "$duration دقيقة",
                               style: AppTextStyle.font12BlackRegular.copyWith(color: AppColors.textSecondary),
@@ -89,7 +90,7 @@ class RouteCard extends StatelessWidget {
                       color: AppColors.secondary,
                       borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
-                         BoxShadow(
+                        BoxShadow(
                           color: AppColors.secondary.withOpacity(0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 4),
