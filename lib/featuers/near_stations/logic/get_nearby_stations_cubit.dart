@@ -20,7 +20,7 @@ class GetNearbyStationsCubit extends Cubit<GetNearbyStationsState> {
     try {
       Position position = (await determinePosition()) as Position;
 
-      var result = await getNearbyStationsRepo.fetNearpyStations(position.latitude, position.longitude, 300000);
+      var result = await getNearbyStationsRepo.fetNearpyStations(position.latitude, position.longitude, 30000);
 
       if(result is ApiSuccess<StationsResponseModel>){
         emit(GetNearbyStationsSuccess(result.data.data, position));

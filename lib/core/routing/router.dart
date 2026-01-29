@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iti_moqaf/core/logic/tts/tts_cubit.dart';
 import 'package:iti_moqaf/featuers/stations_details/data/model/station_model.dart';
 
 import '../../featuers/alllChats/logic/get_all_chats_cubit.dart';
@@ -84,6 +85,7 @@ class AppRouter {
           MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => getIt<HomeCubit>()),
+              BlocProvider(create: (context) => VoiceNavigationCubit()),
 
               BlocProvider(
                 create: (context) => getIt<PathBetweenPointsDartCubit>(),
@@ -178,7 +180,7 @@ class AppRouter {
           settings,
           BlocProvider(
             create: (context) => getIt<PathBetweenPointsDartCubit>(),
-            child: StationOnMap(stationModel: args,),
+            child: StationOnMap(stationModel: args),
           ),
           transition: TransitionType.scale,
         );

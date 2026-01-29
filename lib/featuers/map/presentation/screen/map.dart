@@ -25,7 +25,7 @@ class MapSample extends StatefulWidget {
 }
 
 class _MapSampleState extends State<MapSample> {
-  LatLng userLocation = const LatLng(30.0444, 31.2357); // default Cairo
+  LatLng? userLocation;
   List<NearStationModel> stations = [];
   NearStationModel? selectedStation;
 
@@ -35,8 +35,39 @@ class _MapSampleState extends State<MapSample> {
 
   late TravelMode selectedMode;
 
-  late DraggableScrollableController sheetController;
   late final MapController _mapController;
+  late final DraggableScrollableController sheetController;
+
+  @override
+  void initState() {
+    super.initState();
+    _mapController = MapController();
+    sheetController = DraggableScrollableController();
+    selectedMode = TravelMode.car;
+
+    /// 🔥 مهم
+    context.read<GetNearbyStationsCubit>().getNearbyStations();
+  }
+
+  void _updateUserAndStations(
+      Position userPosition,
+      List<NearStationModel> data,
+      ) {
+    userLocation = LatLng(
+      userPosition.latitude,
+      userPosition.longitude,
+    );
+    stations = data;
+  }
+
+  void _moveCameraToUser() {
+    if (userLocation == null) return;
+
+    _mapController.move(
+      userLocation!,
+      15,
+    );
+  }
 
   void _fitRouteToCamera(List<LatLng> points) {
     if (points.isEmpty) return;
@@ -44,23 +75,11 @@ class _MapSampleState extends State<MapSample> {
     final bounds = LatLngBounds.fromPoints(points);
 
     _mapController.fitCamera(
-      CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(40)),
+      CameraFit.bounds(
+        bounds: bounds,
+        padding: const EdgeInsets.all(40),
+      ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _mapController = MapController();
-    selectedMode = TravelMode.car;
-    sheetController = DraggableScrollableController();
-    // context.read<GetNearbyStationsCubit>().getNearbyStations();
-  }
-
-  void _updateUserAndStations(Position userPosition,
-      List<NearStationModel> data,) {
-    userLocation = LatLng(userPosition.latitude, userPosition.longitude);
-    stations = data;
   }
 
   void _showStationBottomSheet({
@@ -89,64 +108,72 @@ class _MapSampleState extends State<MapSample> {
         BlocListener<GetNearbyStationsCubit, GetNearbyStationsState>(
           listener: (context, state) {
             if (state is GetNearbyStationsSuccess) {
-              _updateUserAndStations(state.userPosition, state.data);
+              _updateUserAndStations(
+                state.userPosition,
+                state.data,
+              );
+
+              /// ✅ الحل هنا
+              _moveCameraToUser();
+
               setState(() {});
             }
           },
         ),
       ],
-      child: BlocProvider(
-        create: (context) => VoiceNavigationCubit(),
-        child: Stack(
-          children: [
-            BlocConsumer<
-                PathBetweenPointsDartCubit,
-                PathBetweenPointsDartState
-            >(
-              listener: (context, state) {
-                if (state.data != null &&
-                    selectedStation != null &&
-                    !state.isLoading) {
-                  context.read<VoiceNavigationCubit>().speakDirections(
-                    state.data!.properties.segments[0].steps,
-                  );
+      child: Stack(
+        children: [
+          BlocConsumer<PathBetweenPointsDartCubit,
+              PathBetweenPointsDartState>(
+            listener: (context, state) {
+              if (state.data != null &&
+                  selectedStation != null &&
+                  !state.isLoading) {
+                context.read<VoiceNavigationCubit>().speakDirections(
+                  state.data!.properties.segments[0].steps,
+                );
 
-                  final points = state.data!.geometry.coordinates
-                      .map<LatLng>((c) => LatLng(c[1], c[0]))
-                      .toList();
-                  _fitRouteToCamera(points);
-                  _showStationBottomSheet(
-                    distance:
-                    (state.data!.properties.summary.distance / 1000)
-                        .toStringAsFixed(1),
-                    duration: (state.data!.properties.summary.duration / 60)
-                        .toStringAsFixed(1),
-                  );
-                }
-              },
-              builder: (context, state) {
-                final routePoints = state.data == null
-                    ? <LatLng>[]
-                    : state.data!.geometry.coordinates
+                final points = state.data!.geometry.coordinates
                     .map<LatLng>((c) => LatLng(c[1], c[0]))
                     .toList();
 
-                return FlutterMap(
-                  mapController: _mapController,
-                  options: MapOptions(
-                    initialCenter: userLocation!,
-                    initialZoom: 13,
-                  ),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                      "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=$mapKey",
-                      userAgentPackageName: 'flutter_map',
-                    ),
+                _fitRouteToCamera(points);
 
-                    /// MARKERS
-                    MarkerLayer(
-                      markers: [
+                _showStationBottomSheet(
+                  distance:
+                  (state.data!.properties.summary.distance / 1000)
+                      .toStringAsFixed(1),
+                  duration:
+                  (state.data!.properties.summary.duration / 60)
+                      .toStringAsFixed(1),
+                );
+              }
+            },
+            builder: (context, state) {
+              final routePoints = state.data == null
+                  ? <LatLng>[]
+                  : state.data!.geometry.coordinates
+                  .map<LatLng>((c) => LatLng(c[1], c[0]))
+                  .toList();
+
+              return FlutterMap(
+                mapController: _mapController,
+                options: const MapOptions(
+                  /// fallback بس
+                  initialCenter: LatLng(30.0444, 31.2357),
+                  initialZoom: 13,
+                ),
+                children: [
+                  TileLayer(
+                    urlTemplate:
+                    "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=$mapKey",
+                    userAgentPackageName: 'flutter_map',
+                  ),
+
+                  /// MARKERS
+                  MarkerLayer(
+                    markers: [
+                      if (userLocation != null)
                         Marker(
                           point: userLocation!,
                           child: Icon(
@@ -155,170 +182,161 @@ class _MapSampleState extends State<MapSample> {
                             size: 30.r,
                           ),
                         ),
-                        for (final station in stations)
-                          Marker(
-                            point: LatLng(
-                              station.location.coordinates[1],
-                              station.location.coordinates[0],
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                selectedStation = station;
-                                context
-                                    .read<PathBetweenPointsDartCubit>()
-                                    .getAllGeometry(
-                                  coordinates: [
-                                    [
-                                      userLocation!.longitude,
-                                      userLocation!.latitude,
-                                    ],
-                                    [
-                                      station.location.coordinates[0],
-                                      station.location.coordinates[1],
-                                    ],
+                      for (final station in stations)
+                        Marker(
+                          point: LatLng(
+                            station.location.coordinates[1],
+                            station.location.coordinates[0],
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              selectedStation = station;
+                              context
+                                  .read<PathBetweenPointsDartCubit>()
+                                  .getAllGeometry(
+                                coordinates: [
+                                  [
+                                    userLocation!.longitude,
+                                    userLocation!.latitude,
                                   ],
-                                  mode: selectedMode,
-                                );
-                              },
-                              child: Icon(
-                                Icons.location_on,
-                                color: Colors.lightGreen,
-                                size: 30.r,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                    if (routePoints.isNotEmpty)
-                      PolylineLayer(
-                        polylines: [
-                          Polyline(
-                            strokeCap: StrokeCap.round,
-                            strokeJoin: StrokeJoin.round,
-                            pattern: selectedMode != TravelMode.car
-                                ? StrokePattern.dotted()
-                                : StrokePattern.solid(),
-                            points: routePoints,
-                            strokeWidth: 2.5,
-                            color: AppColors.mainColor,
-                          ),
-                        ],
-                      ),
-                  ],
-                );
-              },
-            ),
-            if (showBottom && selectedStation != null)
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: DraggableScrollableSheet(
-                  controller: sheetController,
-                  initialChildSize: 0.4,
-                  minChildSize: 0.2,
-                  maxChildSize: 0.7,
-                  builder: (context, scrollController) {
-                    return Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 10,
-                          ),
-                        ],
-                      ),
-                      child: ListView(
-                        controller: scrollController,
-                        children: [
-                          Center(
-                            child: Container(
-                              width: 40,
-                              height: 4,
-                              margin: const EdgeInsets.only(bottom: 12),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade400,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                          Text(
-                            selectedStation!.stationName,
-                            style: const TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            children: [
-                              infoItem(
-                                Icons.route,
-                                "$distanceKm كم",
-                                Colors.blue,
-                              ),
-                              const SizedBox(width: 20),
-                              infoItem(
-                                Icons.access_time,
-                                "$durationMin دقيقة",
-                                Colors.orange,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-
-                          TravelModeSelector(
-                            selectedMode: selectedMode,
-                            onModeChanged: (mode) {
-                              setState(() {
-                                selectedMode = mode;
-                              });
-
-                              if (selectedStation != null) {
-                                context
-                                    .read<PathBetweenPointsDartCubit>()
-                                    .getAllGeometry(
-                                  coordinates: [
-                                    [
-                                      userLocation!.longitude,
-                                      userLocation!.latitude,
-                                    ],
-                                    [
-                                      selectedStation!
-                                          .location
-                                          .coordinates[0],
-                                      selectedStation!
-                                          .location
-                                          .coordinates[1],
-                                    ],
+                                  [
+                                    station.location.coordinates[0],
+                                    station.location.coordinates[1],
                                   ],
-                                  mode: mode,
-                                );
-                              }
-                            },
-                          ),
-
-                          const SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: () {
-                              context.pushNamed(
-                                stationDetailsScreen,
-                                arguments: selectedStation!.id,
+                                ],
+                                mode: selectedMode,
                               );
                             },
-                            child: const Text("عرض تفاصيل المحطة"),
+                            child: Icon(
+                              Icons.location_on,
+                              color: Colors.lightGreen,
+                              size: 30.r,
+                            ),
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                        ),
+                    ],
+                  ),
+
+                  if (routePoints.isNotEmpty)
+                    PolylineLayer(
+                      polylines: [
+                        Polyline(
+                          points: routePoints,
+                          strokeWidth: 2.5,
+                          color: AppColors.mainColor,
+                          pattern: selectedMode != TravelMode.car
+                              ? StrokePattern.dotted()
+                              : StrokePattern.solid(),
+                        ),
+                      ],
+                    ),
+                ],
+              );
+            },
+          ),
+
+          /// BOTTOM SHEET
+          if (showBottom && selectedStation != null)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: DraggableScrollableSheet(
+                controller: sheetController,
+                initialChildSize: 0.4,
+                minChildSize: 0.2,
+                maxChildSize: 0.7,
+                builder: (context, scrollController) {
+                  return Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(20)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: ListView(
+                      controller: scrollController,
+                      children: [
+                        Center(
+                          child: Container(
+                            width: 40,
+                            height: 4,
+                            margin: const EdgeInsets.only(bottom: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade400,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          selectedStation!.stationName,
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            infoItem(
+                              Icons.route,
+                              "$distanceKm كم",
+                              Colors.blue,
+                            ),
+                            const SizedBox(width: 20),
+                            infoItem(
+                              Icons.access_time,
+                              "$durationMin دقيقة",
+                              Colors.orange,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        TravelModeSelector(
+                          selectedMode: selectedMode,
+                          onModeChanged: (mode) {
+                            setState(() => selectedMode = mode);
+
+                            context
+                                .read<PathBetweenPointsDartCubit>()
+                                .getAllGeometry(
+                              coordinates: [
+                                [
+                                  userLocation!.longitude,
+                                  userLocation!.latitude,
+                                ],
+                                [
+                                  selectedStation!
+                                      .location.coordinates[0],
+                                  selectedStation!
+                                      .location.coordinates[1],
+                                ],
+                              ],
+                              mode: mode,
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            context.pushNamed(
+                              stationDetailsScreen,
+                              arguments: selectedStation!.id,
+                            );
+                          },
+                          child: const Text("عرض تفاصيل المحطة"),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

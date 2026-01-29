@@ -1,12 +1,15 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iti_moqaf/core/helpers/extentions/context_extentions.dart';
+
 import '../../../core/const/const_paths.dart';
 import '../../../core/helpers/cach_helper.dart';
+import '../../../core/logic/tts/tts_cubit.dart';
 import '../../../core/theme/color/colors.dart';
 import '../../community/screens/community.dart';
 import '../../near_stations/screens/screen.dart';
@@ -35,29 +38,29 @@ class HomeScreen extends StatelessWidget {
           appBar: index == 0 || index == 3
               ? null
               : AppBar(
-            actions: index == 2
-                ? [
-              IconButton(
-                onPressed: () {
-                  context.pushNamed(
-                    allChatsScreen,
-                    arguments:
-                    CacheHelper.getString(key: "userId") ?? "",
-                  );
-                },
-                icon: SvgPicture.asset(
-                  "assets/svg_icons/send.svg",
-                  color: AppColors.mainColor,
+                  actions: index == 2
+                      ? [
+                          IconButton(
+                            onPressed: () {
+                              context.pushNamed(
+                                allChatsScreen,
+                                arguments:
+                                    CacheHelper.getString(key: "userId") ?? "",
+                              );
+                            },
+                            icon: SvgPicture.asset(
+                              "assets/svg_icons/send.svg",
+                              color: AppColors.mainColor,
+                            ),
+                            color: AppColors.primary,
+                          ),
+                        ]
+                      : [],
+                  title: Text(
+                    index == 1 ? "جميع المحطات" : "شارك بمساعده او مشكلتك",
+                  ),
+                  centerTitle: false,
                 ),
-                color: AppColors.primary,
-              ),
-            ]
-                : [],
-            title: Text(
-              index == 1 ? "جميع المحطات" : "شارك بمساعده او مشكلتك",
-            ),
-            centerTitle: false,
-          ),
 
           body: IndexedStack(index: cubit.index, children: screens),
           floatingActionButton: Transform.translate(
@@ -94,7 +97,7 @@ class HomeScreen extends StatelessWidget {
           ),
 
           floatingActionButtonLocation:
-          FloatingActionButtonLocation.centerDocked,
+              FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: Container(
             margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
             height: 60.h,
@@ -190,6 +193,9 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                     onTap: (index) {
+                      if (index != 0) {
+                        context.read<VoiceNavigationCubit>().stopVoice();
+                      }
                       cubit.changeIndex(index);
                     },
                   ),
