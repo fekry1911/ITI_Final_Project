@@ -10,44 +10,55 @@ class VoiceNavigationCubit extends Cubit<void> {
   }
 
   final FlutterTts tts = FlutterTts();
+  bool _isStopped = false;
 
   Future<void> _initTts() async {
     await tts.setEngine("com.google.android.tts");
-
     await tts.setLanguage("ar-EG");
-
     await tts.setSpeechRate(0.45);
     await tts.setPitch(1.0);
-
     await tts.setQueueMode(1); // Android
+
+    await tts.awaitSpeakCompletion(true);
   }
 
   Future<void> speakDirections(List<Step> steps) async {
+    _isStopped = false;
     await tts.stop();
 
-    await tts.speak("بدايه الرحلة");
+    if (_isStopped) return;
+    await tts.speak("بداية الرحلة");
 
-    for (var entry in steps.asMap().entries) {
-      int index = entry.key;
-      var step = entry.value;
+    for (int i = 0; i < steps.length; i++) {
+      if (_isStopped) return;
+
+      final step = steps[i];
       final text =
           '${translateInstruction(step.instruction)} لمسافة ${step.distance.round()} متر';
 
-      print(text);
-      await tts.awaitSpeakCompletion(true); // يجعل speak ينتظر فعليًا
-
       await tts.speak(text);
-      print(step.duration);
-      if (index !=0) {
-        await Future.delayed(Duration(seconds: (step.duration / 2).round()));
+
+      if (i != 0) {
+        await Future.delayed(
+          Duration(seconds: (step.duration / 2).round()),
+        );
       }
     }
-    await tts.speak("وصلت إلى وجهتك");
+
+    if (!_isStopped) {
+      await tts.speak("وصلت إلى وجهتك");
+    }
+  }
+
+  Future<void> stopVoice() async {
+    _isStopped = true;
+    await tts.stop();
   }
 
   @override
-  Future<void> close() {
-    tts.stop();
+  Future<void> close() async {
+    _isStopped = true;
+    await tts.stop();
     return super.close();
   }
 }

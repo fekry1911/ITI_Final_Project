@@ -18,7 +18,7 @@ import '../../map/presentation/logic/path_between_points_dart_cubit.dart';
 import '../../stations_details/data/model/station_model.dart';
 
 class StationOnMap extends StatefulWidget {
-  StationOnMap({super.key, required this.stationModel});
+  const StationOnMap({super.key, required this.stationModel});
 
   final StationModel stationModel;
 
@@ -27,15 +27,55 @@ class StationOnMap extends StatefulWidget {
 }
 
 class _StationOnMapState extends State<StationOnMap> {
-  LatLng userLocation = const LatLng(30.0444, 31.2357);
+  LatLng? userLocation;
   bool showBottom = false;
   String distanceKm = "";
   String durationMin = "";
 
   late TravelMode selectedMode;
-
-  late DraggableScrollableController sheetController;
   late final MapController _mapController;
+  late final DraggableScrollableController sheetController;
+
+  @override
+  void initState() {
+    super.initState();
+    _mapController = MapController();
+    sheetController = DraggableScrollableController();
+    selectedMode = TravelMode.car;
+
+    _initLocationAndRoute();
+  }
+
+  Future<void> _initLocationAndRoute() async {
+    try {
+      final Position position = (await determinePosition())as Position;
+      userLocation = LatLng(position.latitude, position.longitude);
+
+      /// ✅ تحريك الكاميرا
+      _mapController.move(userLocation!, 15);
+
+      setState(() {});
+
+      _getRoute();
+    } catch (e) {
+      debugPrint("Location error: $e");
+    }
+  }
+
+  void _getRoute() {
+    if (userLocation == null) return;
+
+    context.read<PathBetweenPointsDartCubit>().getAllGeometry(
+      coordinates: [
+        [userLocation!.longitude, userLocation!.latitude],
+        [
+          widget.stationModel.data.location.coordinates[0],
+          widget.stationModel.data.location.coordinates[1],
+        ],
+      ],
+      mode: selectedMode,
+    );
+  }
 
   void _fitRouteToCamera(List<LatLng> points) {
     if (points.isEmpty) return;
@@ -43,42 +83,12 @@ class _StationOnMapState extends State<StationOnMap> {
     final bounds = LatLngBounds.fromPoints(points);
 
     _mapController.fitCamera(
-      CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(40)),
+      CameraFit.bounds(
+        bounds: bounds,
+        padding: const EdgeInsets.all(40),
+      ),
     );
   }
-
-  Future<void> _initLocationAndRoute() async {
-    try {
-      final position = (await determinePosition()) as Position;
-      userLocation = LatLng(position.latitude, position.longitude);
-
-      setState(() {});
-
-      context.read<PathBetweenPointsDartCubit>().getAllGeometry(
-        coordinates: [
-          [userLocation!.longitude, userLocation!.latitude],
-          [
-            widget.stationModel.data.location.coordinates[0],
-            widget.stationModel.data.location.coordinates[1],
-          ],
-        ],
-        mode: selectedMode,
-      );
-    } catch (e) {
-      debugPrint("Location error: $e");
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _mapController = MapController();
-    selectedMode = TravelMode.car;
-    sheetController = DraggableScrollableController();
-
-    _initLocationAndRoute();
-  }
-
 
   void _showStationBottomSheet({
     required String distance,
@@ -92,7 +102,7 @@ class _StationOnMapState extends State<StationOnMap> {
 
     if (sheetController.isAttached) {
       sheetController.animateTo(
-        0.4,
+        0.35,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
@@ -102,14 +112,12 @@ class _StationOnMapState extends State<StationOnMap> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => VoiceNavigationCubit(),
+      create: (_) => VoiceNavigationCubit(),
       child: Scaffold(
         body: Stack(
           children: [
-            BlocConsumer<
-                PathBetweenPointsDartCubit,
-                PathBetweenPointsDartState
-            >(
+            BlocConsumer<PathBetweenPointsDartCubit,
+                PathBetweenPointsDartState>(
               listener: (context, state) {
                 if (state.data != null && !state.isLoading) {
                   context.read<VoiceNavigationCubit>().speakDirections(
@@ -119,11 +127,15 @@ class _StationOnMapState extends State<StationOnMap> {
                   final points = state.data!.geometry.coordinates
                       .map<LatLng>((c) => LatLng(c[1], c[0]))
                       .toList();
+
                   _fitRouteToCamera(points);
+
                   _showStationBottomSheet(
-                    distance: (state.data!.properties.summary.distance / 1000)
+                    distance:
+                    (state.data!.properties.summary.distance / 1000)
                         .toStringAsFixed(1),
-                    duration: (state.data!.properties.summary.duration / 60)
+                    duration:
+                    (state.data!.properties.summary.duration / 60)
                         .toStringAsFixed(1),
                   );
                 }
@@ -137,8 +149,9 @@ class _StationOnMapState extends State<StationOnMap> {
 
                 return FlutterMap(
                   mapController: _mapController,
-                  options: MapOptions(
-                    initialCenter: userLocation!,
+                  options: const MapOptions(
+                    /// fallback فقط
+                    initialCenter: LatLng(30.0444, 31.2357),
                     initialZoom: 13,
                   ),
                   children: [
@@ -151,45 +164,22 @@ class _StationOnMapState extends State<StationOnMap> {
                     /// MARKERS
                     MarkerLayer(
                       markers: [
-                        Marker(
-                          point: userLocation!,
-                          child: Icon(
-                            Icons.person_pin_circle,
-                            color: AppColors.redColor,
-                            size: 30.r,
+                        if (userLocation != null)
+                          Marker(
+                            point: userLocation!,
+                            child: Icon(
+                              Icons.person_pin_circle,
+                              color: AppColors.redColor,
+                              size: 30.r,
+                            ),
                           ),
-                        ),
                         Marker(
                           point: LatLng(
                             widget.stationModel.data.location.coordinates[1],
                             widget.stationModel.data.location.coordinates[0],
                           ),
                           child: GestureDetector(
-                            onTap: () {
-                              context
-                                  .read<PathBetweenPointsDartCubit>()
-                                  .getAllGeometry(
-                                coordinates: [
-                                  [
-                                    userLocation!.longitude,
-                                    userLocation!.latitude,
-                                  ],
-                                  [
-                                    widget
-                                        .stationModel
-                                        .data
-                                        .location
-                                        .coordinates[0],
-                                    widget
-                                        .stationModel
-                                        .data
-                                        .location
-                                        .coordinates[1],
-                                  ],
-                                ],
-                                mode: selectedMode,
-                              );
-                            },
+                            onTap: _getRoute,
                             child: Icon(
                               Icons.location_on,
                               color: Colors.lightGreen,
@@ -199,18 +189,17 @@ class _StationOnMapState extends State<StationOnMap> {
                         ),
                       ],
                     ),
+
                     if (routePoints.isNotEmpty)
                       PolylineLayer(
                         polylines: [
                           Polyline(
-                            strokeCap: StrokeCap.round,
-                            strokeJoin: StrokeJoin.round,
-                            pattern: selectedMode != TravelMode.car
-                                ? StrokePattern.dotted()
-                                : StrokePattern.solid(),
                             points: routePoints,
                             strokeWidth: 2.5,
                             color: AppColors.mainColor,
+                            pattern: selectedMode != TravelMode.car
+                                ? StrokePattern.dotted()
+                                : StrokePattern.solid(),
                           ),
                         ],
                       ),
@@ -218,7 +207,9 @@ class _StationOnMapState extends State<StationOnMap> {
                 );
               },
             ),
-            if (showBottom && widget.stationModel != null)
+
+            /// BOTTOM SHEET
+            if (showBottom)
               Align(
                 alignment: Alignment.bottomCenter,
                 child: DraggableScrollableSheet(
@@ -231,9 +222,8 @@ class _StationOnMapState extends State<StationOnMap> {
                       padding: const EdgeInsets.all(16),
                       decoration: const BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
-                        ),
+                        borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
                         boxShadow: [
                           BoxShadow(color: Colors.black26, blurRadius: 10),
                         ],
@@ -262,65 +252,20 @@ class _StationOnMapState extends State<StationOnMap> {
                           const SizedBox(height: 16),
                           Row(
                             children: [
-                              infoItem(
-                                Icons.route,
-                                "$distanceKm كم",
-                                Colors.blue,
-                              ),
+                              infoItem(Icons.route, "$distanceKm كم",
+                                  Colors.blue),
                               const SizedBox(width: 20),
-                              infoItem(
-                                Icons.access_time,
-                                "$durationMin دقيقة",
-                                Colors.orange,
-                              ),
+                              infoItem(Icons.access_time,
+                                  "$durationMin دقيقة", Colors.orange),
                             ],
                           ),
                           const SizedBox(height: 16),
-
                           TravelModeSelector(
                             selectedMode: selectedMode,
                             onModeChanged: (mode) {
-                              setState(() {
-                                selectedMode = mode;
-                              });
-
-                              if (widget.stationModel.data != null) {
-                                context
-                                    .read<PathBetweenPointsDartCubit>()
-                                    .getAllGeometry(
-                                  coordinates: [
-                                    [
-                                      userLocation!.longitude,
-                                      userLocation!.latitude,
-                                    ],
-                                    [
-                                      widget
-                                          .stationModel
-                                          .data!
-                                          .location
-                                          .coordinates[0],
-                                      widget
-                                          .stationModel
-                                          .data!
-                                          .location
-                                          .coordinates[1],
-                                    ],
-                                  ],
-                                  mode: mode,
-                                );
-                              }
+                              setState(() => selectedMode = mode);
+                              _getRoute();
                             },
-                          ),
-
-                          const SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: () {
-                              context.pushNamed(
-                                stationDetailsScreen,
-                                arguments: widget.stationModel.data.id,
-                              );
-                            },
-                            child: const Text("عرض تفاصيل المحطة"),
                           ),
                         ],
                       ),
