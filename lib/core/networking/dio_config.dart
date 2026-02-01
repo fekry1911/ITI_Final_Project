@@ -18,14 +18,14 @@ class DioConfig {
   // تهيئة HiveCacheStore
   Future<void> init() async {
     final dir = await getApplicationDocumentsDirectory();
-    cacheStore = HiveCacheStore('${dir.path}/dio_cache'); // مجلد تخزين الكاش
+    cacheStore = HiveCacheStore('${dir.path}/dio_cache');
 
     cacheOptions = CacheOptions(
       store: cacheStore,
       policy: CachePolicy.request,
       hitCacheOnErrorExcept: [401, 403],
       maxStale: const Duration(days: 7),
-      priority: CachePriority.normal,
+      priority: CachePriority.high,
       keyBuilder: (request) => request.uri.toString(),
     );
 
